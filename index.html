@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html><html>
 <head>
-<title>Example Clothing</title>
-
-<style>
+<title>Example Clothing</title><style>
 body{
 margin:0;
 font-family:Arial,sans-serif;
@@ -12,18 +9,10 @@ font-family:Arial,sans-serif;
 .hero{
 position:relative;
 height:100vh;
-background:url('banner.png');
+background:url('hero-banner.png');
 background-size:cover;
 background-position:center;
 background-repeat:no-repeat;
-
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-
-color:white;
-text-shadow:2px 2px 10px black;
 }
 
 .logo{
@@ -52,7 +41,6 @@ right:220px;
 color:black;
 font-size:14px;
 font-weight:bold;
-text-shadow:none;
 }
 
 nav{
@@ -69,35 +57,38 @@ text-decoration:none;
 color:black;
 font-weight:bold;
 font-size:16px;
-text-shadow:none;
 }
 
-.hero h1{
-font-size:90px;
-margin:0;
-color:black;
-text-shadow:none;
+@media(max-width:768px){
+
+.logo{
+height:60px;
 }
 
-.hero p{
-font-size:24px;
-margin-top:10px;
-color:black;
-text-shadow:none;
+nav{
+top:90px;
+gap:15px;
+flex-wrap:wrap;
+width:90%;
+justify-content:center;
 }
-</style>
 
-</head>
+nav a{
+font-size:13px;
+}
 
-<body>
+.since{
+display:none;
+}
 
-<div class="hero">
-
-<img class="logo" src="logo.png">
-
-<div class="since">SINCE 2011</div>
-
-<a class="whatsapp"
+.whatsapp{
+top:20px;
+right:10px;
+font-size:12px;
+padding:10px 12px;
+}
+}
+</style></head><body><div class="hero"><img class="logo" src="logo.png"><div class="since">SINCE 2011</div><a class="whatsapp"
 href="https://wa.me/919656003555">
 Order on WhatsApp
 </a>
@@ -107,13 +98,5 @@ Order on WhatsApp
 <a href="polo.html">POLO T-SHIRTS</a>
 <a href="jackets.html">JACKETS</a>
 <a href="jeans.html">JEANS</a>
-</nav>
-
-<h1>EXAMPLE</h1>
-
-<p>Premium Men's Clothing</p>
-
-</div>
-
-</body>
+</nav></div></body>
 </html>
