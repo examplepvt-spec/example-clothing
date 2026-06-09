@@ -9,8 +9,29 @@ body{
     font-family:Arial,sans-serif;
 }
 
+.hero{
+    position:relative;
+    height:100vh;
+    background:url('banner.jpeg') center center/cover no-repeat;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    text-shadow:2px 2px 10px black;
+}
+
+.hero h1{
+    margin:0;
+    font-size:60px;
+}
+
+.hero p{
+    font-size:22px;
+}
+
 .whatsapp{
-    position:fixed;
+    position:absolute;
     top:20px;
     right:20px;
     background:#25D366;
@@ -18,46 +39,18 @@ body{
     padding:12px 20px;
     text-decoration:none;
     border-radius:5px;
-    z-index:999;
-}
-
-.hero{
-    height:100vh;
-    background:url('banner.jpeg');
-    background-size:cover;
-    background-position:center;
-    background-repeat:no-repeat;
-
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:flex-start;
-
-    padding-top:100px;
-
-    color:white;
-    text-shadow:2px 2px 10px black;
-}
-
-h1{
-    font-size:70px;
-    margin:0;
-}
-
-p{
-    font-size:24px;
 }
 
 .categories{
     background:white;
-    padding:20px;
     text-align:center;
+    padding:20px;
 }
 
 .categories a{
+    margin:0 15px;
     text-decoration:none;
     color:black;
-    margin:15px;
     font-weight:bold;
 }
 </style>
@@ -66,21 +59,22 @@ p{
 
 <body>
 
-<a class="whatsapp"
-href="https://wa.me/919656003555">
+<div class="hero">
+
+<a class="whatsapp" href="https://wa.me/919656003555">
 Order on WhatsApp
 </a>
 
-<div class="hero">
-    <h1>EXAMPLE</h1>
-    <p>Premium Men's Clothing</p>
+<h1>EXAMPLE</h1>
+<p>Premium Men's Clothing</p>
+
 </div>
 
 <div class="categories">
-    <a href="shirts.html">Shirts</a>
-    <a href="polo.html">Polo T-Shirts</a>
-    <a href="jackets.html">Jackets</a>
-    <a href="jeans.html">Jeans</a>
+<a href="shirts.html">Shirts</a>
+<a href="polo.html">Polo T-Shirts</a>
+<a href="jackets.html">Jackets</a>
+<a href="jeans.html">Jeans</a>
 </div>
 
 </body>
