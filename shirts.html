@@ -1,66 +1,87 @@
-<!DOCTYPE html><html>
+<!DOCTYPE html>
+<html>
 <head>
-<title>Shirts Collection</title><style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Shirts Collection</title>
+
+<style>
 body{
-margin:0;
-padding:15px;
-font-family:Arial,sans-serif;
-background:#f5f5f5;
+    font-family:Arial,sans-serif;
+    background:#f5f5f5;
+    margin:0;
+    padding:20px;
 }
 
 h1{
-text-align:center;
-margin-bottom:20px;
+    text-align:center;
 }
 
 .products{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:15px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:20px;
+    max-width:1200px;
+    margin:auto;
 }
 
-.product{
-background:white;
-border-radius:12px;
-overflow:hidden;
-box-shadow:0 2px 10px rgba(0,0,0,0.1);
-text-align:center;
-padding-bottom:15px;
+.card{
+    background:#fff;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+    text-align:center;
+    padding-bottom:20px;
 }
 
-.product img{
-width:100%;
-display:block;
+.card img{
+    width:100%;
+    display:block;
 }
 
-.product h3{
-font-size:15px;
-margin:10px 5px;
+.card h3{
+    margin:15px 0 5px;
 }
 
 .price{
-font-size:18px;
-font-weight:bold;
-margin-bottom:10px;
+    font-size:22px;
+    font-weight:bold;
 }
 
 .btn{
-display:inline-block;
-padding:10px 15px;
-background:black;
-color:white;
-text-decoration:none;
-border-radius:5px;
+    display:inline-block;
+    margin-top:10px;
+    padding:10px 20px;
+    background:black;
+    color:white;
+    text-decoration:none;
+    border-radius:6px;
 }
-</style></head><body><h1>Shirts Collection</h1><div class="products"><div class="product">
-<img src="shirt1-front.jpg">
-<h3>Black Premium Shirt</h3>
-<div class="price">₹1699</div>
-<a class="btn" href="black-shirt.html">View Product</a>
-</div><div class="product">
-<img src="shirt2-front.jpg">
-<h3>Premium Line Mix Shirt</h3>
-<div class="price">₹1699</div>
-<a class="btn" href="#">View Product</a>
-</div></div></body>
+</style>
+
+</head>
+<body>
+
+<h1>Shirts Collection</h1>
+
+<div class="products">
+
+    <div class="card">
+        <img src="shirt1-front.jpg" alt="Black Premium Shirt">
+        <h3>Black Premium Shirt</h3>
+        <div class="price">₹1699</div>
+        <a class="btn" href="black-shirt.html">View Product</a>
+    </div>
+
+    <div class="card">
+        <img src="shirt2-front.jpg" alt="Premium Line Mix Shirt">
+        <h3>Premium Line Mix Shirt</h3>
+        <div class="price">₹1699</div>
+        <a class="btn" href="line-mix-shirt.html">View Product</a>
+    </div>
+
+</div>
+
+</body>
 </html>
