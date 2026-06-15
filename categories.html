@@ -21,8 +21,8 @@ background:#f5f5f5;
 .header{
 background:black;
 color:white;
-padding:20px;
 text-align:center;
+padding:20px;
 font-size:24px;
 font-weight:bold;
 }
@@ -30,45 +30,54 @@ font-weight:bold;
 .grid{
 padding:20px;
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
 gap:20px;
 }
 
 .card{
-height:220px;
+position:relative;
+height:250px;
 border-radius:15px;
+overflow:hidden;
+text-decoration:none;
+}
+
+.card img{
+width:100%;
+height:100%;
+object-fit:cover;
+transition:.4s;
+}
+
+.card:hover img{
+transform:scale(1.08);
+}
+
+.overlay{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.35);
 display:flex;
 align-items:center;
 justify-content:center;
-text-decoration:none;
+}
+
+.overlay h2{
 color:white;
-font-size:28px;
+font-size:30px;
+letter-spacing:2px;
+}
+
+.back{
+display:block;
+text-align:center;
+padding:20px;
+text-decoration:none;
 font-weight:bold;
-transition:.3s;
-}
-
-.card:hover{
-transform:scale(1.03);
-}
-
-.men{
-background:#111;
-}
-
-.women{
-background:#333;
-}
-
-.kids{
-background:#555;
-}
-
-.sale{
-background:#c62828;
-}
-
-.accessories{
-background:#222;
+color:black;
 }
 </style>
 </head>
@@ -81,27 +90,46 @@ EXAMPLE CLOTHING
 
 <div class="grid">
 
-<a href="men.html" class="card men">
-MEN
+<a href="men.html" class="card">
+<img src="men.jpg">
+<div class="overlay">
+<h2>MEN</h2>
+</div>
 </a>
 
-<a href="women.html" class="card women">
-WOMEN
+<a href="women.html" class="card">
+<img src="women.jpg">
+<div class="overlay">
+<h2>WOMEN</h2>
+</div>
 </a>
 
-<a href="kids.html" class="card kids">
-KIDS
+<a href="kids.html" class="card">
+<img src="kids.jpg">
+<div class="overlay">
+<h2>KIDS</h2>
+</div>
 </a>
 
-<a href="sale.html" class="card sale">
-SALE
+<a href="sale.html" class="card">
+<img src="sale.jpg">
+<div class="overlay">
+<h2>SALE</h2>
+</div>
 </a>
 
-<a href="accessories.html" class="card accessories">
-ACCESSORIES
+<a href="accessories.html" class="card">
+<img src="accessories.jpg">
+<div class="overlay">
+<h2>ACCESSORIES</h2>
+</div>
 </a>
 
 </div>
+
+<a href="index.html" class="back">
+← Back to Home
+</a>
 
 </body>
 </html>
