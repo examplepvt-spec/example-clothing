@@ -115,14 +115,12 @@ padding:20px;
 .overlay h1{
 color:white;
 font-size:42px;
-animation:fadeUp 1.5s;
 }
 
 .overlay p{
 color:white;
 font-size:18px;
 margin-top:10px;
-animation:fadeUp 2s;
 }
 
 .shop-btn{
@@ -133,7 +131,41 @@ padding:14px 28px;
 text-decoration:none;
 font-weight:bold;
 border-radius:6px;
-animation:fadeUp 2.5s;
+}
+
+.featured{
+background:#000;
+padding-bottom:30px;
+}
+
+.featured video{
+width:100%;
+display:block;
+}
+
+.featured-content{
+text-align:center;
+padding:20px;
+color:white;
+}
+
+.featured-content h2{
+margin-bottom:10px;
+}
+
+.featured-content p{
+font-size:24px;
+font-weight:bold;
+margin-bottom:20px;
+}
+
+.view-btn{
+background:white;
+color:black;
+padding:12px 25px;
+text-decoration:none;
+border-radius:6px;
+font-weight:bold;
 }
 
 .categories{
@@ -151,22 +183,6 @@ padding:25px;
 border-radius:10px;
 font-weight:bold;
 text-decoration:none;
-transition:.3s;
-}
-
-.cat:hover{
-transform:translateY(-5px);
-}
-
-@keyframes fadeUp{
-from{
-opacity:0;
-transform:translateY(40px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
 }
 </style>
 </head>
@@ -203,31 +219,31 @@ WhatsApp
 <video autoplay muted loop playsinline>
 <source src="homepage-video.mp4" type="video/mp4">
 </video>
-<section>
-  <video autoplay muted loop playsinline width="100%">
-    <source src="crocs-feature.mp4" type="video/mp4">
-  </video>
 
-  <div style="text-align:center;padding:20px;">
-    <h2>CLASSIC ALL TERRAIN MARBLED CLOG</h2>
-    <p>₹2697</p>
-
-    <a href="crs8652.html"
-       style="background:white;color:black;padding:12px 25px;text-decoration:none;border-radius:5px;">
-       VIEW PRODUCT
-    </a>
-  </div>
-</section>
 <div class="overlay">
-
 <h1>EXAMPLE CLOTHING</h1>
-
 <p>Premium Fashion Since 2011</p>
 
 <a href="categories.html" class="shop-btn">
 SHOP NOW
 </a>
+</div>
 
+</section>
+
+<section class="featured">
+
+<video autoplay muted loop playsinline>
+<source src="crocs-feature.mp4" type="video/mp4">
+</video>
+
+<div class="featured-content">
+<h2>CLASSIC ALL TERRAIN MARBLED CLOG</h2>
+<p>₹2697</p>
+
+<a href="crs8652.html" class="view-btn">
+VIEW PRODUCT
+</a>
 </div>
 
 </section>
@@ -235,13 +251,9 @@ SHOP NOW
 <section class="categories">
 
 <a href="men.html" class="cat">MEN</a>
-
 <a href="women.html" class="cat">WOMEN</a>
-
 <a href="kids.html" class="cat">KIDS</a>
-
 <a href="sale.html" class="cat">SALE</a>
-
 <a href="accessories.html" class="cat">ACCESSORIES</a>
 
 </section>
@@ -258,4 +270,3 @@ document.getElementById("menu").style.left="-280px";
 
 </body>
 </html>
-```
