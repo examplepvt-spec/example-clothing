@@ -28,7 +28,7 @@ font-weight:bold;
 
 .grid{
 display:grid;
-grid-template-columns:repeat(2,1fr);
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
 gap:20px;
 padding:20px;
 }
@@ -36,9 +36,31 @@ padding:20px;
 .card{
 background:#181818;
 border-radius:15px;
-padding:40px 10px;
-text-align:center;
+overflow:hidden;
+text-decoration:none;
 color:white;
+}
+
+.card img{
+width:100%;
+height:380px;
+object-fit:cover;
+}
+
+.info{
+padding:15px;
+}
+
+.name{
+font-size:18px;
+font-weight:bold;
+margin-bottom:8px;
+}
+
+.price{
+font-size:22px;
+font-weight:bold;
+color:#ffd700;
 }
 
 .back{
@@ -59,13 +81,17 @@ WOMEN JACKETS
 
 <div class="grid">
 
-<div class="card">
-COMING SOON
+<a href="brk9992.html" class="card">
+<img src="brk9992.jpg">
+<div class="info">
+<div class="name">
+Bershka Light Blue Reflective Crop Windbreaker
 </div>
-
-<div class="card">
-COMING SOON
+<div class="price">
+₹1699
 </div>
+</div>
+</a>
 
 </div>
 
