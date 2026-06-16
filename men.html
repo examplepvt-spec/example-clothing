@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Men Collection - EXAMPLE CLOTHING</title>
+<title>Men Collection</title>
 
 <style>
 *{
@@ -20,7 +20,7 @@ color:white;
 
 .header{
 background:black;
-padding:20px;
+padding:25px;
 text-align:center;
 font-size:28px;
 font-weight:bold;
@@ -29,15 +29,17 @@ letter-spacing:2px;
 
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+grid-template-columns:repeat(2,1fr);
 gap:20px;
 padding:20px;
 }
 
 .card{
-background:#181818;
+background:#1a1a1a;
+border:1px solid #333;
 border-radius:15px;
-overflow:hidden;
+padding:40px 15px;
+text-align:center;
 text-decoration:none;
 color:white;
 transition:.3s;
@@ -45,28 +47,11 @@ transition:.3s;
 
 .card:hover{
 transform:translateY(-5px);
+border-color:#777;
 }
 
-.card img{
-width:100%;
-height:380px;
-object-fit:cover;
-}
-
-.info{
-padding:15px;
-}
-
-.name{
+.card h2{
 font-size:18px;
-font-weight:bold;
-margin-bottom:8px;
-}
-
-.price{
-font-size:22px;
-font-weight:bold;
-color:#ffd700;
 }
 
 .back{
@@ -75,6 +60,16 @@ text-align:center;
 padding:20px;
 color:white;
 text-decoration:none;
+}
+
+@media(max-width:600px){
+.grid{
+gap:15px;
+padding:15px;
+}
+.card{
+padding:30px 10px;
+}
 }
 </style>
 </head>
@@ -87,20 +82,28 @@ MEN COLLECTION
 
 <div class="grid">
 
-<a href="tydm5913.html" class="card">
-<img src="tydm5913.jpg">
-<div class="info">
-<div class="name">Tommy Denim Shirt OG</div>
-<div class="price">₹1699</div>
-</div>
+<a href="shirts.html" class="card">
+<h2>SHIRTS</h2>
 </a>
 
-<a href="bmblu3708.html" class="card">
-<img src="bmblu3708.jpg">
-<div class="info">
-<div class="name">Balmain Paris</div>
-<div class="price">₹1699</div>
-</div>
+<a href="tshirts.html" class="card">
+<h2>T-SHIRTS</h2>
+</a>
+
+<a href="jackets.html" class="card">
+<h2>JACKETS</h2>
+</a>
+
+<a href="jeans-pants.html" class="card">
+<h2>JEANS & PANTS</h2>
+</a>
+
+<a href="footwear.html" class="card">
+<h2>FOOTWEAR</h2>
+</a>
+
+<a href="shorts.html" class="card">
+<h2>SHORTS</h2>
 </a>
 
 </div>
@@ -111,4 +114,3 @@ MEN COLLECTION
 
 </body>
 </html>
-```
