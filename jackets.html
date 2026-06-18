@@ -39,11 +39,6 @@ border-radius:15px;
 overflow:hidden;
 text-decoration:none;
 color:white;
-transition:.3s;
-}
-
-.card:hover{
-transform:translateY(-5px);
 }
 
 .card img{
@@ -76,6 +71,17 @@ padding:20px;
 color:white;
 text-decoration:none;
 }
+
+@media(max-width:600px){
+.grid{
+grid-template-columns:1fr 1fr;
+gap:12px;
+padding:12px;
+}
+.card img{
+height:220px;
+}
+}
 </style>
 </head>
 
@@ -85,29 +91,49 @@ text-decoration:none;
 JACKETS COLLECTION
 </div>
 
-<div class="grid">
-
-<a href="ads1508.html" class="card">
-<img src="ads1508.jpg">
-<div class="info">
-<div class="name">Adidas Track Jacket</div>
-<div class="price">₹2299</div>
-</div>
-</a>
-
-<a href="rl1502.html" class="card">
-<img src="rl1502.jpg">
-<div class="info">
-<div class="name">Polo Ralph Lauren Harrington Jacket</div>
-<div class="price">₹2299</div>
-</div>
-</a>
-
-</div>
+<div class="grid" id="products"></div>
 
 <a href="men.html" class="back">
 ← Back to Men Collection
 </a>
+
+<script type="module">
+
+import { db } from "./firebase.js";
+
+import {
+collection,
+getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const productsDiv = document.getElementById("products");
+
+const querySnapshot = await getDocs(collection(db,"products"));
+
+querySnapshot.forEach((doc)=>{
+
+const product = doc.data();
+
+if(product.category !== "Jackets"){
+return;
+}
+
+productsDiv.innerHTML += `
+<a href="product.html?id=${doc.id}" class="card">
+
+<img src="${product.image}">
+
+<div class="info">
+<div class="name">${product.name}</div>
+<div class="price">₹${product.price}</div>
+</div>
+
+</a>
+`;
+
+});
+
+</script>
 
 </body>
 </html>
