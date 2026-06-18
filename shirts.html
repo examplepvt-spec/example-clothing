@@ -114,9 +114,7 @@ querySnapshot.forEach((doc)=>{
 
 const product = doc.data();
 
-if(product.category !== "Men"){
-return;
-}
+
 
 productsDiv.innerHTML += `
 <a href="product.html?id=${doc.id}" class="card">
