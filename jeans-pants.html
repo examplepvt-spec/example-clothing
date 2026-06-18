@@ -39,11 +39,6 @@ border-radius:15px;
 overflow:hidden;
 text-decoration:none;
 color:white;
-transition:.3s;
-}
-
-.card:hover{
-transform:translateY(-5px);
 }
 
 .card img{
@@ -85,29 +80,49 @@ text-decoration:none;
 JEANS & PANTS COLLECTION
 </div>
 
-<div class="grid">
-
-<a href="tmyp0623.html" class="card">
-<img src="tmyp0623.jpg">
-<div class="info">
-<div class="name">Tommy Hilfiger Denton Chino</div>
-<div class="price">₹1499</div>
-</div>
-</a>
-
-<a href="gas4773.html" class="card">
-<img src="gas4773.jpg">
-<div class="info">
-<div class="name">Gas Jeans</div>
-<div class="price">₹1899</div>
-</div>
-</a>
-
-</div>
+<div class="grid" id="products"></div>
 
 <a href="men.html" class="back">
 ← Back to Men Collection
 </a>
+
+<script type="module">
+
+import { db } from "./firebase.js";
+
+import {
+collection,
+getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const productsDiv = document.getElementById("products");
+
+const querySnapshot = await getDocs(collection(db,"products"));
+
+querySnapshot.forEach((doc)=>{
+
+const product = doc.data();
+
+if(product.category !== "Jeans & Pants"){
+return;
+}
+
+productsDiv.innerHTML += `
+<a href="product.html?id=${doc.id}" class="card">
+
+<img src="${product.image}">
+
+<div class="info">
+<div class="name">${product.name}</div>
+<div class="price">₹${product.price}</div>
+</div>
+
+</a>
+`;
+
+});
+
+</script>
 
 </body>
 </html>
