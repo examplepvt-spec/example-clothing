@@ -13,11 +13,11 @@ font-family:Arial,sans-serif;
 padding:20px;
 }
 
-img{
+#gallery img{
 width:100%;
 max-width:500px;
 display:block;
-margin:auto;
+margin:15px auto;
 border-radius:10px;
 }
 
@@ -53,7 +53,7 @@ font-weight:bold;
 
 <body>
 
-<img id="image">
+<div id="gallery"></div>
 
 <h1 id="name"></h1>
 
@@ -88,7 +88,21 @@ if(docSnap.exists()){
 
 const product = docSnap.data();
 
-document.getElementById("image").src = product.image;
+let images = "";
+
+if(product.image){
+images += `<img src="${product.image}">`;
+}
+
+if(product.image2){
+images += `<img src="${product.image2}">`;
+}
+
+if(product.image3){
+images += `<img src="${product.image3}">`;
+}
+
+document.getElementById("gallery").innerHTML = images;
 document.getElementById("name").innerText = product.name;
 document.getElementById("price").innerText = "₹" + product.price;
 document.getElementById("size").innerText = product.size;
