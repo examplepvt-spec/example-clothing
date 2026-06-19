@@ -83,6 +83,11 @@ border:1px solid #FFD700;
 
 <div id="cart"></div>
 
+<p id="emptyCart"
+style="display:none;text-align:center;font-size:24px;color:white;">
+Your Cart Is Empty
+</p>
+
 <div class="total" id="total"></div>
 
 <a href="#" id="checkout" class="checkout">
@@ -92,7 +97,9 @@ WhatsApp Checkout
 <script>
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
+if(cart.length === 0){
+document.getElementById("emptyCart").style.display = "block";
+}
 let cartDiv = document.getElementById("cart");
 
 let total = 0;
