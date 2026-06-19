@@ -90,7 +90,19 @@ height:220px;
 <div class="header">
 SHIRTS COLLECTION
 </div>
-
+<input
+type="text"
+id="search"
+placeholder="Search Shirts..."
+style="
+width:90%;
+margin:15px auto;
+display:block;
+padding:12px;
+border-radius:8px;
+border:none;
+font-size:16px;
+">
 <div class="grid" id="products"></div>
 
 <a href="men.html" class="back">
@@ -106,7 +118,7 @@ getDocs
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const productsDiv = document.getElementById("products");
-
+const searchInput = document.getElementById("search");
 const querySnapshot = await getDocs(collection(db,"products"));
 
 querySnapshot.forEach((doc)=>{
