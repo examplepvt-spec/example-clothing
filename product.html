@@ -64,7 +64,9 @@ font-weight:bold;
 <div class="info">Barcode: <span id="barcode"></span></div>
 
 <div class="info">Stock: <span id="stock"></span></div>
-
+<button class="btn" id="addToCart">
+Add To Cart
+</button>
 <a class="btn" href="#" id="whatsapp">
 WhatsApp Order
 </a>
@@ -87,7 +89,27 @@ const docSnap = await getDoc(docRef);
 if(docSnap.exists()){
 
 const product = docSnap.data();
+document.getElementById("addToCart").onclick = () => {
 
+let cart = JSON.parse(
+localStorage.getItem("cart")
+) || [];
+
+cart.push({
+id:id,
+name:product.name,
+price:product.price,
+image:product.image
+});
+
+localStorage.setItem(
+"cart",
+JSON.stringify(cart)
+);
+
+alert("Added to Cart");
+
+};
 let images = "";
 
 if(product.image){
