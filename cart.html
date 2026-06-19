@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Cart</title>
+
+<style>
+body{
+background:#111;
+color:white;
+font-family:Arial,sans-serif;
+padding:20px;
+}
+
+h1{
+text-align:center;
+margin-bottom:20px;
+}
+
+.cart-item{
+background:#222;
+padding:15px;
+margin-bottom:15px;
+border-radius:10px;
+}
+
+.cart-item img{
+width:100px;
+height:100px;
+object-fit:cover;
+border-radius:8px;
+}
+
+.name{
+font-size:20px;
+font-weight:bold;
+margin-top:10px;
+}
+
+.price{
+color:gold;
+font-size:22px;
+margin-top:5px;
+}
+
+.remove{
+background:red;
+color:white;
+border:none;
+padding:10px;
+margin-top:10px;
+border-radius:6px;
+cursor:pointer;
+}
+
+.total{
+font-size:28px;
+font-weight:bold;
+text-align:center;
+margin-top:20px;
+color:gold;
+}
+
+.checkout{
+display:block;
+background:#25D366;
+color:white;
+text-align:center;
+padding:15px;
+margin-top:20px;
+text-decoration:none;
+border-radius:10px;
+font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<h1>My Cart</h1>
+
+<div id="cart"></div>
+
+<div class="total" id="total"></div>
+
+<a href="#" id="checkout" class="checkout">
+WhatsApp Checkout
+</a>
+
+<script>
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+let cartDiv = document.getElementById("cart");
+
+let total = 0;
+
+cart.forEach((item,index)=>{
+
+total += Number(item.price);
+
+cartDiv.innerHTML += `
+<div class="cart-item">
+
+<img src="${item.image}">
+
+<div class="name">${item.name}</div>
+
+<div class="price">₹${item.price}</div>
+
+<button class="remove" onclick="removeItem(${index})">
+Remove
+</button>
+
+</div>
+`;
+
+});
+
+document.getElementById("total").innerText =
+"Total : ₹" + total;
+
+let message = "My Order:%0A";
+
+cart.forEach(item=>{
+message += item.name + " - ₹" + item.price + "%0A";
+});
+
+message += "%0ATotal: ₹" + total;
+
+document.getElementById("checkout").href =
+"https://wa.me/919656003555?text=" + message;
+
+function removeItem(index){
+
+cart.splice(index,1);
+
+localStorage.setItem(
+"cart",
+JSON.stringify(cart)
+);
+
+location.reload();
+
+}
+
+</script>
+
+</body>
+</html>
