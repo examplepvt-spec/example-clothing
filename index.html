@@ -200,7 +200,7 @@ text-decoration:none;
 </div>
 
 <a href="cart.html" class="whatsapp">
-🛒 Cart
+🛒 Cart (<span id="cartCount">0</span>)
 </a>
 </div>
 
@@ -329,7 +329,12 @@ document.getElementById("menu").style.left="0";
 function closeMenu(){
 document.getElementById("menu").style.left="-280px";
 }
-</script>
 
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+if(document.getElementById("cartCount")){
+document.getElementById("cartCount").innerText = cart.length;
+}
+</script>
 </body>
 </html>
