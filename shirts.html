@@ -122,13 +122,24 @@ const searchInput = document.getElementById("search");
 const querySnapshot = await getDocs(collection(db,"products"));
 
 querySnapshot.forEach((doc)=>{
-
+searchInput.addEventListener("input", () => {
+location.reload();
+});
 const product = doc.data();
 
 if(product.category !== "Shirts"){
 return;
 }
+const productName = product.name.toLowerCase();
 
+if(
+searchInput.value &&
+!productName.includes(
+searchInput.value.toLowerCase()
+)
+){
+return;
+}
 productsDiv.innerHTML += `
 <a href="product.html?id=${doc.id}" class="card">
 
