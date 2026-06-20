@@ -47,11 +47,27 @@ margin-top:20px;
 text-decoration:none;
 border-radius:10px;
 font-weight:bold;
+  
+.cart-btn{
+position:fixed;
+top:15px;
+right:15px;
+background:#FFD700;
+color:#111;
+padding:10px 15px;
+border-radius:10px;
+text-decoration:none;
+font-weight:bold;
+z-index:9999;
 }
 </style>
 </head>
 
 <body>
+
+<a href="cart.html" class="cart-btn">
+🛒 Cart (<span id="cartCount">0</span>)
+</a>
 
 <div id="gallery"></div>
 
@@ -138,7 +154,10 @@ document.getElementById("whatsapp").href =
 "https://wa.me/919656003555?text=I want " + product.name;
 
 }
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
+document.getElementById("cartCount").innerText = cart.length;
+  
 </script>
 
 </body>
