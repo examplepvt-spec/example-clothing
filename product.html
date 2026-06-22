@@ -150,6 +150,27 @@ JSON.stringify(cart)
 alert("Added to Cart");
 
 };
+document.getElementById("wishlist").onclick = () => {
+
+let wishlist = JSON.parse(
+localStorage.getItem("wishlist")
+) || [];
+
+wishlist.push({
+id:id,
+name:product.name,
+price:product.price,
+image:product.image
+});
+
+localStorage.setItem(
+"wishlist",
+JSON.stringify(wishlist)
+);
+
+alert("Added to Wishlist");
+
+};
 let images = "";
 
 if(product.image){
