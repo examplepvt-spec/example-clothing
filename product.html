@@ -41,19 +41,21 @@ color:#444;
 }
 .btn{
 display:block;
-background:#25D366;
-color:#111;
+width:220px;
+padding:16px;
+margin-top:15px;
 text-align:center;
-padding:15px;
-margin-top:20px;
 text-decoration:none;
-border-radius:10px;
+border-radius:12px;
 font-weight:bold;
+font-size:18px;
+border:none;
 }  
 #wishlist{
-background:#222;
+background:white;
+color:#111;
+border:1px solid #ddd;
 }
-
 #whatsapp{
 background:#111;
 }
@@ -67,13 +69,15 @@ position:fixed;
 top:15px;
 right:15px;
 background:#111;
-color:#111;
-padding:10px 15px;
+color:white;
+padding:12px 18px;
 border-radius:30px;
 text-decoration:none;
 font-weight:bold;
 z-index:9999;
-box-shadow:0 2px 10px rgba(0,0,0,.3);
+display:flex;
+align-items:center;
+gap:8px;
 }
 #cartCount{
 background:#111;
@@ -89,20 +93,14 @@ margin-left:5px;
 <body>
 
 <a href="cart.html" class="cart-btn">
-👜 Cart (<span id="cartCount">0</span>)
+🛍️ <span id="cartCount">0</span>
 </a>
-
 <div id="gallery"></div>
 
 <h1 id="name"></h1>
 
 <div class="price" id="price"></div>
 
-<div class="info">Size: <span id="size"></span></div>
-
-<div class="info">Barcode: <span id="barcode"></span></div>
-
-<div class="info">Stock: <span id="stock"></span></div>
 <button class="btn" id="wishlist">
 ♡ Wishlist
 </button>
