@@ -103,8 +103,8 @@ querySnapshot.forEach((doc)=>{
 
 const product = doc.data();
 
-if(product.category !== "Sale"){
-return;
+if(product.category?.toLowerCase() !== "sale"){
+    return;
 }
 
 productsDiv.innerHTML += `
