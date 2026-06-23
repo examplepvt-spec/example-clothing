@@ -106,8 +106,8 @@ querySnapshot.forEach((doc)=>{
 
 const product = doc.data();
 
-if(product.category !== "Footwear"){
-return;
+if(product.category?.toLowerCase() !== "footwear"){
+    return;
 }
 
 productsDiv.innerHTML += `
