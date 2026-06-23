@@ -103,7 +103,7 @@ querySnapshot.forEach((doc)=>{
 
 const product = doc.data();
 
-if(product.category !== "T-Shirts"){
+if(product.category?.toLowerCase() !== "t-shirts"){
 return;
 }
 
