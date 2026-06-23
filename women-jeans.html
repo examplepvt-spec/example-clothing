@@ -91,8 +91,8 @@ querySnapshot.forEach((doc)=>{
 
 const product = doc.data();
 
-if(product.category !== "Women Jeans"){
-return;
+if(product.category?.toLowerCase() !== "women jeans"){
+    return;
 }
 
 productsDiv.innerHTML += `
