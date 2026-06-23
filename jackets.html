@@ -115,7 +115,7 @@ querySnapshot.forEach((doc)=>{
 
 const product = doc.data();
 
-if(product.category !== "Jackets"){
+if(product.category?.toLowerCase() !== "jackets"){
 return;
 }
 
