@@ -104,10 +104,10 @@ querySnapshot.forEach((doc)=>{
 
 const product = doc.data();
 
-if(product.category !== "Jeans & Pants"){
-return;
+if(product.category?.toLowerCase() !== "jeans"){
+    return;
 }
-
+  
 productsDiv.innerHTML += `
 <a href="product.html?id=${doc.id}" class="card">
 
