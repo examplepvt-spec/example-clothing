@@ -138,9 +138,10 @@ location.reload();
 });
 const product = doc.data();
 
-if(product.category !== "Shirts"){
+if(product.category?.toLowerCase() !== "shirts"){
 return;
 }
+  
 const productName = product.name.toLowerCase();
 
 if(
