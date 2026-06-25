@@ -293,10 +293,11 @@ JSON.stringify(wishlist)
 alert("Added to Wishlist");
 
 };
+
 const images = [
-product.image,
-product.image2,
-product.image3
+product.image?.replace("/upload/","/upload/f_auto,q_auto,w_900/"),
+product.image2?.replace("/upload/","/upload/f_auto,q_auto,w_900/"),
+product.image3?.replace("/upload/","/upload/f_auto,q_auto,w_900/")
 ].filter(Boolean);
 
 let currentImage = 0;
