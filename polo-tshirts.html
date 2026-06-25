@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Polo T-Shirts Collection</title>
+
 <style>
 *{
 margin:0;
@@ -70,7 +71,20 @@ padding:20px;
 color:#111;
 text-decoration:none;
 }
+
+@media(max-width:600px){
+.grid{
+grid-template-columns:1fr 1fr;
+gap:12px;
+padding:12px;
+}
+
+.card img{
+height:220px;
+}
+}
 </style>
+
 </head>
 
 <body>
@@ -96,7 +110,8 @@ getDocs
 
 const productsDiv = document.getElementById("products");
 
-const querySnapshot = await getDocs(collection(db,"products"));
+const querySnapshot =
+await getDocs(collection(db,"products"));
 
 querySnapshot.forEach((doc)=>{
 
@@ -111,14 +126,11 @@ productsDiv.innerHTML += `
 
 <img src="${product.image}">
 
-productsDiv.innerHTML += `
-<a href="product.html?id=${doc.id}" class="card">
-
-<img src="${product.image}">
-
 <div class="info">
 
-<div class="name">${product.name}</div>
+<div class="name">
+${product.name}
+</div>
 
 <div class="price">
 ${product.offerPrice
@@ -130,10 +142,12 @@ ${product.offerPrice
 <div style="font-size:22px;font-weight:bold;">
 ₹${product.offerPrice}
 </div>
-
+`
+: `
+₹${product.price}
+`
+}
 </div>
-
-
 
 </div>
 
