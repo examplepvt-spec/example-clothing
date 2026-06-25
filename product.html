@@ -309,6 +309,16 @@ imageElement.src = images[0];
 document.getElementById("total").innerText =
 images.length;
 
+imageElement.src = images[0];
+
+images.forEach(src => {
+    const img = new Image();
+    img.src = src;
+});
+
+document.getElementById("total").innerText =
+images.length;
+
 document.getElementById("next").onclick = () => {
 
 currentImage++;
