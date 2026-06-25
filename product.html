@@ -65,11 +65,30 @@ color:#111;
 font-size:48px;
 font-weight:700;
 }
+.price-box{
+display:flex;
+align-items:center;
+gap:12px;
+margin:15px 0 5px;
+}
+
+.old-price{
+font-size:20px;
+color:#999;
+text-decoration:line-through;
+}
+
 .price{
-font-size:30px;
+font-size:34px;
+font-weight:700;
 color:#111;
-font-weight:bold;
-margin:15px 0;
+}
+
+.discount{
+font-size:16px;
+font-weight:600;
+color:#ff5500;
+margin-bottom:15px;
 }
 
 .info{
@@ -279,7 +298,22 @@ currentImage + 1;
 
 };
 document.getElementById("name").innerText = product.name;
-document.getElementById("price").innerText = "₹" + product.price;
+document.getElementById("price").innerText =
+"₹" + product.price;
+
+const oldPrice =
+Math.round(Number(product.price) * 1.4);
+
+document.getElementById("oldPrice").innerText =
+"₹" + oldPrice;
+
+const discount =
+Math.round(
+((oldPrice - product.price) / oldPrice) * 100
+);
+
+document.getElementById("discount").innerText =
+discount + "% OFF";
 document.getElementById("size").innerText = product.size;
 document.getElementById("barcode").innerText = product.barcode;
 document.getElementById("stock").innerText = product.stock;
