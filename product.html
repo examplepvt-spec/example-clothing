@@ -202,6 +202,8 @@ color:white;
 
 <div class="discount" id="discount"></div>
 
+if(product.offerPrice){
+
 document.getElementById("oldPrice").innerText =
 "₹" + product.price;
 
@@ -211,12 +213,22 @@ document.getElementById("price").innerText =
 const discount =
 Math.round(
 ((product.price - product.offerPrice)
- / product.price) * 100
+/ product.price) * 100
 );
 
 document.getElementById("discount").innerText =
 discount + "% OFF";
 
+}else{
+
+document.getElementById("oldPrice").style.display = "none";
+
+document.getElementById("discount").style.display = "none";
+
+document.getElementById("price").innerText =
+"₹" + product.price;
+
+}
 <div class="info">Barcode: <span id="barcode"></span></div>
 
 
