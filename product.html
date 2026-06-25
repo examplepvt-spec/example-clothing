@@ -356,6 +356,23 @@ document.getElementById("discount").innerText =
 discount + "% OFF";
 document.getElementById("size").innerText = product.size;
 document.getElementById("barcode").innerText = product.barcode;
+if(product.xs == 0 || !product.xs)
+document.getElementById("sizeXS").style.display = "none";
+
+if(product.s == 0 || !product.s)
+document.getElementById("sizeS").style.display = "none";
+
+if(product.m == 0 || !product.m)
+document.getElementById("sizeM").style.display = "none";
+
+if(product.l == 0 || !product.l)
+document.getElementById("sizeL").style.display = "none";
+
+if(product.xl == 0 || !product.xl)
+document.getElementById("sizeXL").style.display = "none";
+
+if(product.xxl == 0 || !product.xxl)
+document.getElementById("sizeXXL").style.display = "none";
 document.getElementById("stock").innerText = product.stock;
 
 document.getElementById("whatsapp").href =
