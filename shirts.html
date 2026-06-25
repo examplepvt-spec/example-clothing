@@ -158,14 +158,27 @@ productsDiv.innerHTML += `
 <img src="${product.image}">
 
 <div class="info">
+
 <div class="name">${product.name}</div>
+
+<div class="price">
 ${product.offerPrice
-? `<span style="text-decoration:line-through;color:#999;font-size:14px;">
+? `
+<div style="font-size:14px;color:#999;text-decoration:line-through;">
 ₹${product.price}
-</span><br>
-₹${product.offerPrice}`
-: `₹${product.price}`}
+</div>
+<div style="font-size:22px;font-weight:bold;color:#111;">
+₹${product.offerPrice}
+</div>
+`
+: `
+₹${product.price}
+`
+}
+</div>
+
 <div class="size">Size: ${product.size}</div>
+
 </div>
 
 </a>
