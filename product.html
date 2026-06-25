@@ -391,10 +391,34 @@ document.getElementById("sizeXL").style.display = "none";
 
 if(product.xxlStock == 0 || !product.xxlStock)
 document.getElementById("sizeXXL").style.display = "none";
-document.getElementById("stock").innerText = product.stock;
 
+if(product.xsStock > 0)
+document.getElementById("sizeXS").innerText =
+"XS (" + product.xsStock + ")";
+
+if(product.sStock > 0)
+document.getElementById("sizeS").innerText =
+"S (" + product.sStock + ")";
+
+if(product.mStock > 0)
+document.getElementById("sizeM").innerText =
+"M (" + product.mStock + ")";
+
+if(product.lStock > 0)
+document.getElementById("sizeL").innerText =
+"L (" + product.lStock + ")";
+
+if(product.xlStock > 0)
+document.getElementById("sizeXL").innerText =
+"XL (" + product.xlStock + ")";
+
+if(product.xxlStock > 0)
+document.getElementById("sizeXXL").innerText =
+"XXL (" + product.xxlStock + ")";
 document.getElementById("whatsapp").href =
 "https://wa.me/919656003555?text=I want " + product.name;
+
+
 
 }
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
