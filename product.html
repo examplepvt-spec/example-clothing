@@ -148,6 +148,28 @@ border-radius:50%;
 font-size:12px;
 margin-left:5px;
 }
+.sizes{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin:20px 0;
+}
+
+.sizes button{
+width:55px;
+height:55px;
+border:1px solid #ddd;
+border-radius:12px;
+background:white;
+font-size:18px;
+font-weight:600;
+cursor:pointer;
+}
+
+.sizes button:hover{
+background:#111;
+color:white;
+}
 </style>
 </head>
 
@@ -180,11 +202,24 @@ margin-left:5px;
 
 <div class="discount" id="discount"></div>
 
-<div class="info">Size: <span id="size"></span></div>
+document.getElementById("oldPrice").innerText =
+"₹" + product.price;
+
+document.getElementById("price").innerText =
+"₹" + product.offerPrice;
+
+const discount =
+Math.round(
+((product.price - product.offerPrice)
+ / product.price) * 100
+);
+
+document.getElementById("discount").innerText =
+discount + "% OFF";
 
 <div class="info">Barcode: <span id="barcode"></span></div>
 
-<div class="info">Stock: <span id="stock"></span></div>
+
 
 <button class="btn" id="wishlist">
 ♡ Wishlist
@@ -305,15 +340,16 @@ document.getElementById("name").innerText = product.name;
 document.getElementById("price").innerText =
 "₹" + product.price;
 
-const oldPrice =
-Math.round(Number(product.price) * 1.4);
-
 document.getElementById("oldPrice").innerText =
-"₹" + oldPrice;
+"₹" + product.price;
+
+document.getElementById("price").innerText =
+"₹" + product.offerPrice;
 
 const discount =
 Math.round(
-((oldPrice - product.price) / oldPrice) * 100
+((product.price - product.offerPrice)
+ / product.price) * 100
 );
 
 document.getElementById("discount").innerText =
