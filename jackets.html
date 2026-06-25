@@ -124,11 +124,22 @@ productsDiv.innerHTML += `
 
 <img src="${product.image}">
 
-<div class="info">
-<div class="name">${product.name}</div>
-<div class="price">₹${product.price}</div>
+<div class="price">
+${product.offerPrice
+? `
+<div style="text-decoration:line-through;color:#999;font-size:14px;">
+₹${product.price}
 </div>
 
+<div style="font-size:22px;font-weight:bold;">
+₹${product.offerPrice}
+</div>
+`
+: `
+₹${product.price}
+`
+}
+</div>
 </a>
 `;
 
