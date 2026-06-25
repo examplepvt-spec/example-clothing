@@ -159,7 +159,12 @@ productsDiv.innerHTML += `
 
 <div class="info">
 <div class="name">${product.name}</div>
-<div class="price">₹${product.price}</div>
+${product.offerPrice
+? `<span style="text-decoration:line-through;color:#999;font-size:14px;">
+₹${product.price}
+</span><br>
+₹${product.offerPrice}`
+: `₹${product.price}`}
 <div class="size">Size: ${product.size}</div>
 </div>
 
