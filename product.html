@@ -13,14 +13,51 @@ font-family:Arial,sans-serif;
 padding:20px;
 }
 
-#gallery img{
-width:100%;
-height:380px;
-object-fit:contain;
-display:block;
-margin:0 auto 10px;
+.slider{
+position:relative;
 background:#f5f5f5;
-border-radius:12px;
+border-radius:20px;
+overflow:hidden;
+margin-bottom:20px;
+}
+
+.slider img{
+width:100%;
+height:450px;
+object-fit:contain;
+background:#f5f5f5;
+}
+
+.slide-btn{
+position:absolute;
+top:50%;
+transform:translateY(-50%);
+width:40px;
+height:40px;
+border:none;
+border-radius:50%;
+background:white;
+font-size:26px;
+cursor:pointer;
+}
+
+#prev{
+left:10px;
+}
+
+#next{
+right:10px;
+}
+
+.counter{
+position:absolute;
+bottom:15px;
+left:50%;
+transform:translateX(-50%);
+background:white;
+padding:6px 14px;
+border-radius:20px;
+font-size:14px;
 }
 h1{
 margin-top:20px;
@@ -96,7 +133,20 @@ margin-left:5px;
 <a href="cart.html" class="cart-btn">
 🛍️ <span id="cartCount">0</span>
 </a>
-<div id="gallery"></div>
+<div class="slider">
+
+<img id="productImage" src="">
+
+<button id="prev" class="slide-btn">‹</button>
+
+<button id="next" class="slide-btn">›</button>
+
+<div class="counter">
+<span id="current">1</span> /
+<span id="total">1</span>
+</div>
+
+</div>
 
 <h1 id="name"></h1>
 
@@ -178,21 +228,51 @@ JSON.stringify(wishlist)
 alert("Added to Wishlist");
 
 };
-let images = "";
+const images = [
+product.image,
+product.image2,
+product.image3
+].filter(Boolean);
 
-if(product.image){
-images += `<img src="${product.image}">`;
+let currentImage = 0;
+
+const imageElement =
+document.getElementById("productImage");
+
+imageElement.src = images[0];
+
+document.getElementById("total").innerText =
+images.length;
+
+document.getElementById("next").onclick = () => {
+
+currentImage++;
+
+if(currentImage >= images.length){
+currentImage = 0;
 }
 
-if(product.image2){
-images += `<img src="${product.image2}">`;
+imageElement.src = images[currentImage];
+
+document.getElementById("current").innerText =
+currentImage + 1;
+
+};
+
+document.getElementById("prev").onclick = () => {
+
+currentImage--;
+
+if(currentImage < 0){
+currentImage = images.length - 1;
 }
 
-if(product.image3){
-images += `<img src="${product.image3}">`;
-}
+imageElement.src = images[currentImage];
 
-document.getElementById("gallery").innerHTML = images;
+document.getElementById("current").innerText =
+currentImage + 1;
+
+};
 document.getElementById("name").innerText = product.name;
 document.getElementById("price").innerText = "₹" + product.price;
 document.getElementById("size").innerText = product.size;
