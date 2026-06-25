@@ -111,9 +111,15 @@ productsDiv.innerHTML += `
 
 <img src="${product.image}">
 
+productsDiv.innerHTML += `
+<a href="product.html?id=${doc.id}" class="card">
+
+<img src="${product.image}">
+
 <div class="info">
 
 <div class="name">${product.name}</div>
+
 <div class="price">
 ${product.offerPrice
 ? `
@@ -129,6 +135,12 @@ ${product.offerPrice
 ₹${product.price}
 `
 }
+</div>
+
+</div>
+
+</a>
+`;
 </div>
 <div style="font-size:14px;color:#999;text-decoration:line-through;">
 ₹${product.price}
