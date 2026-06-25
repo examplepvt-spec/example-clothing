@@ -204,31 +204,7 @@ color:white;
 
 if(product.offerPrice){
 
-document.getElementById("oldPrice").innerText =
-"₹" + product.price;
 
-document.getElementById("price").innerText =
-"₹" + product.offerPrice;
-
-const discount =
-Math.round(
-((product.price - product.offerPrice)
-/ product.price) * 100
-);
-
-document.getElementById("discount").innerText =
-discount + "% OFF";
-
-}else{
-
-document.getElementById("oldPrice").style.display = "none";
-
-document.getElementById("discount").style.display = "none";
-
-document.getElementById("price").innerText =
-"₹" + product.price;
-
-}
 <div class="info">Barcode: <span id="barcode"></span></div>
 
 
@@ -355,37 +331,51 @@ document.getElementById("price").innerText =
 document.getElementById("oldPrice").innerText =
 "₹" + product.price;
 
+if(product.offerPrice){
+
+document.getElementById("oldPrice").innerText =
+"₹" + product.price;
+
 document.getElementById("price").innerText =
 "₹" + product.offerPrice;
 
-const discount =
-Math.round(
+const discount = Math.round(
 ((product.price - product.offerPrice)
- / product.price) * 100
+/ product.price) * 100
 );
-document.getElementById("discount").innerText =
-discount + "% OFF";
 
 document.getElementById("discount").innerText =
 discount + "% OFF";
-document.getElementById("size").innerText = product.size;
+
+}else{
+
+document.getElementById("oldPrice").style.display =
+"none";
+
+document.getElementById("discount").style.display =
+"none";
+
+document.getElementById("price").innerText =
+"₹" + product.price;
+
+}
 document.getElementById("barcode").innerText = product.barcode;
-if(product.xs == 0 || !product.xs)
+if(product.xsStock == 0 || !product.xsStock)
 document.getElementById("sizeXS").style.display = "none";
 
-if(product.s == 0 || !product.s)
+if(product.sStock == 0 || !product.sStock)
 document.getElementById("sizeS").style.display = "none";
 
-if(product.m == 0 || !product.m)
+if(product.mStock == 0 || !product.mStock)
 document.getElementById("sizeM").style.display = "none";
 
-if(product.l == 0 || !product.l)
+if(product.lStock == 0 || !product.lStock)
 document.getElementById("sizeL").style.display = "none";
 
-if(product.xl == 0 || !product.xl)
+if(product.xlStock == 0 || !product.xlStock)
 document.getElementById("sizeXL").style.display = "none";
 
-if(product.xxl == 0 || !product.xxl)
+if(product.xxlStock == 0 || !product.xxlStock)
 document.getElementById("sizeXXL").style.display = "none";
 document.getElementById("stock").innerText = product.stock;
 
