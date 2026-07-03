@@ -6,49 +6,149 @@
 <title>Payment</title>
 
 <style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
 body{
-background:#111;
-color:white;
-font-family:Arial;
-text-align:center;
+background:#ffffff;
+color:#111;
 padding:20px;
 }
 
-img{
+.container{
+max-width:500px;
+margin:auto;
+}
+
+h1{
+text-align:center;
+font-size:32px;
+margin-bottom:10px;
+}
+
+.subtitle{
+text-align:center;
+color:#666;
+margin-bottom:25px;
+}
+
+.qr-box{
+background:#fff;
+border:1px solid #ddd;
+border-radius:20px;
+padding:20px;
+text-align:center;
+box-shadow:0 2px 10px rgba(0,0,0,0.08);
+}
+
+.qr-box img{
 width:100%;
-max-width:350px;
+max-width:320px;
 border-radius:12px;
+}
+
+.upi{
+background:#f5f5f5;
+padding:15px;
+border-radius:12px;
+font-size:18px;
+font-weight:bold;
 margin-top:20px;
+word-break:break-all;
+}
+
+h2{
+margin-top:30px;
+margin-bottom:15px;
+font-size:24px;
+}
+
+input,
+textarea{
+width:100%;
+padding:15px;
+margin-bottom:15px;
+border:1px solid #ddd;
+border-radius:12px;
+font-size:16px;
+}
+
+textarea{
+height:100px;
+resize:none;
 }
 
 .btn{
 display:block;
-background:#25D366;
-color:white;
-padding:15px;
+width:100%;
+background:#111;
+color:#fff;
+padding:16px;
+text-align:center;
 text-decoration:none;
-border-radius:10px;
-margin-top:20px;
+border-radius:12px;
+font-size:18px;
 font-weight:bold;
+margin-top:15px;
 }
+
+.note{
+margin-top:20px;
+text-align:center;
+color:#666;
+font-size:14px;
+}
+
 </style>
+
 </head>
 
 <body>
 
-<h1>Scan & Pay</h1>
+<div class="container">
+
+<h1>Payment</h1>
+
+<p class="subtitle">
+Scan QR Code or Pay via UPI
+</p>
+
+<div class="qr-box">
 
 <img src="paytmqr.jpg">
 
-<p>
-After payment send screenshot on WhatsApp
-</p>
+<div class="upi">
+8089979791@paytm
+</div>
+
+</div>
+
+<h2>Customer Details</h2>
+
+<input type="text" placeholder="Full Name">
+
+<input type="tel" placeholder="Phone Number">
+
+<textarea placeholder="Address"></textarea>
+
+<input type="text" placeholder="Pincode">
 
 <a
 href="https://wa.me/919656003555"
 class="btn">
 Send Payment Screenshot
 </a>
+
+<p class="note">
+After payment send screenshot on WhatsApp.
+</p>
+
+</div>
 
 </body>
 </html>
