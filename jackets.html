@@ -92,6 +92,20 @@ height:220px;
 JACKETS COLLECTION
 </div>
 
+<input
+type="text"
+id="search"
+placeholder="Search Jackets..."
+style="
+width:90%;
+margin:15px auto;
+display:block;
+padding:12px;
+border-radius:8px;
+border:1px solid #ddd;
+font-size:16px;
+">
+  
 <div class="grid" id="products"></div>
 
 <a href="men.html" class="back">
@@ -109,11 +123,32 @@ getDocs
 
 const productsDiv = document.getElementById("products");
 
+const searchInput =
+document.getElementById("search");
+
 const querySnapshot = await getDocs(collection(db,"products"));
 
 querySnapshot.forEach((doc)=>{
 
+searchInput.addEventListener(
+"input",
+()=>{
+location.reload();
+});
+
 const product = doc.data();
+
+const productName =
+product.name.toLowerCase();
+
+if(
+searchInput.value &&
+!productName.includes(
+searchInput.value.toLowerCase()
+)
+){
+return;
+}
 
 if(product.category?.toLowerCase() !== "jackets"){
 return;
