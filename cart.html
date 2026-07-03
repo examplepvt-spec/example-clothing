@@ -7,8 +7,8 @@
 
 <style>
 body{
-background:#111;
-color:white;
+background:#fff;
+color:#111;
 font-family:Arial,sans-serif;
 padding:20px;
 }
@@ -16,13 +16,16 @@ padding:20px;
 h1{
 text-align:center;
 margin-bottom:20px;
+font-size:32px;
 }
 
 .cart-item{
-background:#1c1c1c;
+background:#fff;
 padding:20px;
 margin-bottom:20px;
 border-radius:20px;
+border:1px solid #ddd;
+box-shadow:0 2px 10px rgba(0,0,0,0.08);
 }
 
 .cart-item img{
@@ -30,24 +33,27 @@ width:140px;
 height:140px;
 object-fit:cover;
 border-radius:8px;
+background:#f5f5f5;
 }
 
 .name{
 font-size:20px;
 font-weight:bold;
 margin-top:10px;
+color:#111;
 }
 
 .price{
-color:white;
 font-size:24px;
 font-weight:bold;
+color:#111;
 margin-top:8px;
 }
+
 .remove{
-background:#333;
-color:white;
-border:none;
+background:#fff;
+color:#111;
+border:1px solid #111;
 padding:12px 18px;
 margin-top:12px;
 border-radius:10px;
@@ -60,20 +66,24 @@ font-size:28px;
 font-weight:bold;
 text-align:center;
 margin-top:20px;
-color:white;
+color:#111;
 }
 
 .checkout{
 display:block;
-background:#222;
-color:white;
+background:#111;
+color:#fff;
 text-align:center;
 padding:15px;
 margin-top:20px;
 text-decoration:none;
 border-radius:10px;
 font-weight:bold;
-border:1px solid #FFD700;
+border:none;
+}
+
+#emptyCart{
+color:#666 !important;
 }
 </style>
 </head>
