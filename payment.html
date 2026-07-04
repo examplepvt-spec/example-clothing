@@ -148,6 +148,49 @@ Send Payment Screenshot
 After payment send screenshot on WhatsApp.
 </p>
 
+<h2>Your Order</h2>
+
+<div id="orderSummary"
+style="
+background:#f8f8f8;
+border:1px solid #ddd;
+border-radius:12px;
+padding:15px;
+margin-top:20px;
+margin-bottom:20px;
+">
+Loading...
+</div>
+
+<script>
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+let total = 0;
+let html = "";
+
+cart.forEach(item=>{
+
+total += Number(item.price);
+
+html += `
+<p style="margin-bottom:10px;">
+<b>${item.name}</b><br>
+₹${item.price}
+</p>
+`;
+
+});
+
+html += `
+<hr>
+<h3>Total : ₹${total}</h3>
+`;
+
+document.getElementById("orderSummary").innerHTML = html;
+
+</script>
+
 </div>
 
 </body>
