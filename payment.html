@@ -130,18 +130,18 @@ Scan QR Code or Pay via UPI
 
 <h2>Customer Details</h2>
 
-<input type="text" placeholder="Full Name">
+<input type="text" id="name" placeholder="Full Name">
 
-<input type="tel" placeholder="Phone Number">
+<input type="tel" id="phone" placeholder="Phone Number">
 
-<textarea placeholder="Address"></textarea>
+<textarea id="address" placeholder="Address"></textarea>
 
-<input type="text" placeholder="Pincode">
-
+<input type="text" id="pincode" placeholder="Pincode">
 <a
-href="https://wa.me/919656003555"
+href="#"
+id="whatsappBtn"
 class="btn">
-Send Payment Screenshot
+Place Order on WhatsApp
 </a>
 
 <p class="note">
@@ -171,12 +171,17 @@ let html = "";
 
 cart.forEach(item=>{
 
-total += Number(item.price);
+let qty = item.qty || 1;
+let price = Number(item.offerPrice || item.price);
+
+total += price * qty;
 
 html += `
 <p style="margin-bottom:10px;">
 <b>${item.name}</b><br>
-₹${item.price}
+Size: ${item.size || "-"}<br>
+Qty: ${qty}<br>
+₹${price} × ${qty} = ₹${price * qty}
 </p>
 `;
 
@@ -188,6 +193,41 @@ html += `
 `;
 
 document.getElementById("orderSummary").innerHTML = html;
+
+document.getElementById("whatsappBtn").onclick=function(){
+
+let name=document.getElementById("name").value;
+let phone=document.getElementById("phone").value;
+let address=document.getElementById("address").value;
+let pincode=document.getElementById("pincode").value;
+
+let message="*NEW ORDER*%0A%0A";
+
+message+="Name: "+name+"%0A";
+message+="Phone: "+phone+"%0A";
+message+="Address: "+address+"%0A";
+message+="Pincode: "+pincode+"%0A%0A";
+
+cart.forEach(item=>{
+
+let qty=item.qty || 1;
+let price=item.offerPrice || item.price;
+
+message+=item.name+
+" | Size: "+(item.size||"-")+
+" | Qty: "+qty+
+" | ₹"+price+"%0A";
+
+});
+
+message+="%0ATotal: ₹"+total;
+
+window.open(
+"https://wa.me/919656003555?text="+message,
+"_blank"
+);
+
+};
 
 </script>
 
