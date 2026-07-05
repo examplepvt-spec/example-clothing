@@ -264,6 +264,13 @@ cart.push({
     image: product.image
 });
 
+localStorage.setItem(
+    "cart",
+    JSON.stringify(cart)
+);
+
+alert(JSON.stringify(cart));
+
 
 localStorage.setItem(
 "cart",
