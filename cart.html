@@ -261,12 +261,7 @@ ${item.name}
 ₹${(item.offerPrice || item.price)*qty}
 </span>
 
-${
-item.offerPrice
-?
-
 ${item.offerPrice ? `<span class="old-price">₹${item.price}</span>` : ""}
-
 </div>
 
 <div class="qty-row">
