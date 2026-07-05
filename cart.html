@@ -8,7 +8,7 @@
 <style>
 
 *{
-margin:0;
+margin:0;f
 padding:0;
 box-sizing:border-box;
 font-family:Arial,sans-serif;
@@ -265,15 +265,7 @@ ${
 item.offerPrice
 ?
 
-${
-item.offerPrice
-?
-`<span class="old-price">
-₹${item.price}
-</span>`
-:
-""
-}
+${item.offerPrice ? `<span class="old-price">₹${item.price}</span>` : ""}
 
 </div>
 
