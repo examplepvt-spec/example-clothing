@@ -264,17 +264,12 @@ cart.push({
     image: product.image
 });
 
-alert(
-"Price: " + product.price +
-"\nOffer: " + product.offerPrice
-);
-    
+
 localStorage.setItem(
 "cart",
 JSON.stringify(cart)
 );
 
-alert("Added to Cart");
 
 };
 document.getElementById("wishlist").onclick = () => {
@@ -439,8 +434,8 @@ document.getElementById("whatsapp").href =
 }
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-alert(JSON.stringify(cart));
-
+alert(JSON.stringify(cart[cart.length - 1]));
+    
 document.getElementById("cartCount").innerText = cart.length;
   
 </script>
