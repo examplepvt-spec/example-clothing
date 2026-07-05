@@ -264,6 +264,11 @@ cart.push({
     image: product.image
 });
 
+alert(
+"Price: " + product.price +
+"\nOffer: " + product.offerPrice
+);
+    
 localStorage.setItem(
 "cart",
 JSON.stringify(cart)
