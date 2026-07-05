@@ -206,12 +206,8 @@ Proceed →
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-console.log(cart);
-
 const cartDiv = document.getElementById("cart");
 const totalDiv = document.getElementById("total");
-
-alert("Cart JS Loaded");
 
 renderCart();
 
@@ -265,11 +261,14 @@ ${
 item.offerPrice
 ?
 
-<span class="old-price">
+${
+item.offerPrice
+?
+`<span class="old-price">
 ₹${item.price}
-</span>
-:""
-
+</span>`
+:
+""
 }
 
 </div>
