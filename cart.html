@@ -209,10 +209,12 @@ let cart = JSON.parse(localStorage.getItem("cart")) || [];
 const cartDiv = document.getElementById("cart");
 const totalDiv = document.getElementById("total");
 
-alert(JSON.stringify(cart));
+
 
 renderCart();
-
+  
+alert(JSON.stringify(cart));
+  
 function renderCart(){
 
 cartDiv.innerHTML="";
