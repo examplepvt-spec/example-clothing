@@ -235,8 +235,8 @@ cart.forEach((item,index)=>{
 
 let qty=item.qty || 1;
 
-total+=Number(item.offerPrice || item.price)*qty;
-
+total += Number(item.offerPrice || item.price) * (item.qty || 1);
+  
 cartDiv.innerHTML+=`
 
 <div class="cart-item">
@@ -262,7 +262,7 @@ item.offerPrice
 ?
 
 `<span class="old-price">
-₹${item.price}
+₹${item.offerPrice || item.price}
 </span>`
 
 :""
