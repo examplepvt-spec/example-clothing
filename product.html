@@ -264,11 +264,6 @@ cart.push({
     image: product.image
 });
 
-localStorage.setItem(
-    "cart",
-    JSON.stringify(cart)
-);
-
 
 localStorage.setItem(
 "cart",
@@ -295,7 +290,7 @@ localStorage.setItem(
 JSON.stringify(wishlist)
 );
 
-
+};
 
 const images = [
 product.image?.replace("/upload/","/upload/f_auto,q_auto,w_900/"),
