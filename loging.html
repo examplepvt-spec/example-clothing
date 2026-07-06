@@ -125,5 +125,36 @@ Forgot Password?
 
 </div>
 
+<script type="module">
+
+import { login } from "./auth.js";
+
+document.getElementById("loginBtn").onclick = async () => {
+
+const email = document.getElementById("email").value.trim();
+const password = document.getElementById("password").value;
+
+if(!email || !password){
+alert("Please enter email and password");
+return;
+}
+
+try{
+
+await login(email,password);
+
+window.location.href = "profile.html";
+
+}
+catch(error){
+
+alert(error.message);
+
+}
+
+};
+
+</script>
+
 </body>
 </html>
