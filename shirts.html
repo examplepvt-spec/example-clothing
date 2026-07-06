@@ -132,28 +132,36 @@ const productsDiv = document.getElementById("products");
 const searchInput = document.getElementById("search");
 const querySnapshot = await getDocs(collection(db,"products"));
 
-querySnapshot.forEach((doc)=>{
-searchInput.addEventListener("input", () => {
-location.reload();
+const allProducts = [];
+
+querySnapshot.forEach((doc) => {
+    allProducts.push({
+        id: doc.id,
+        ...doc.data()
+    });
 });
-const product = doc.data();
 
-if(product.category?.toLowerCase() !== "shirts"){
-return;
-}
-  
-const productName = product.name.toLowerCase();
+function displayProducts(searchText = "") {
 
-if(
-searchInput.value &&
-!productName.includes(
-searchInput.value.toLowerCase()
-)
-){
-return;
-}
-productsDiv.innerHTML += `
-<a href="product.html?id=${doc.id}" class="card">
+    productsDiv.innerHTML = "";
+
+    allProducts.forEach((product) => {
+
+        if ((product.category || "").toLowerCase() !== "shirts") {
+            return;
+        }
+
+        const productName = (product.name || "").toLowerCase();
+
+        if (
+            searchText &&
+            !productName.includes(searchText.toLowerCase())
+        ) {
+            return;
+        }
+
+        productsDiv.innerHTML += `
+<a href="product.html?id=${product.id}" class="card">
 
 <img src="${product.image}">
 
@@ -177,14 +185,21 @@ ${product.offerPrice
 }
 </div>
 
-<div class="size">Size: ${product.size}</div>
+<div class="size">Size: ${product.size || "-"}</div>
 
 </div>
 
 </a>
 `;
+    });
+}
 
+displayProducts();
+
+searchInput.addEventListener("input", () => {
+    displayProducts(searchInput.value);
 });
+
 
 </script>
 
