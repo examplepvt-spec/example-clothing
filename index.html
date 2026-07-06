@@ -338,9 +338,13 @@ document.getElementById("menu").style.left="-280px";
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-if(document.getElementById("cartCount")){
-document.getElementById("cartCount").innerText = cart.length;
-}
+let totalQty = 0;
+
+cart.forEach(item => {
+    totalQty += item.qty || 1;
+});
+
+document.getElementById("cartCount").innerText = totalQty;
 </script>
 </body>
 </html>
