@@ -108,13 +108,8 @@ return;
 
 document.getElementById("email").innerText = user.email;
 
-const profile = await getProfile(user.uid);
-
-if(profile){
-document.getElementById("name").innerText = profile.name;
-}else{
-document.getElementById("name").innerText = "Customer";
-}
+document.getElementById("name").innerText =
+user.displayName || "Customer";
 });
 
 document.getElementById("logoutBtn").onclick =
