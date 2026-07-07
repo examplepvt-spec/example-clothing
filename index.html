@@ -18,24 +18,24 @@ background:#fff;
 overflow-x:hidden;
 }
 
+
 .header{
 position:fixed;
 top:0;
 left:0;
 width:100%;
-padding:12px 20px;
+height:72px;
+background:#fff;
 display:flex;
-justify-content:space-between;
 align-items:center;
+justify-content:space-between;
+padding:0 16px;
+box-shadow:0 2px 12px rgba(0,0,0,.08);
 z-index:1000;
-background:rgba(255,255,255,0.95);
-border-bottom:1px solid #e5e5e5;
-backdrop-filter:blur(8px);
 }
 
 .menu-btn{
-font-size:28px;
-color:#111;
+font-size:30px;
 cursor:pointer;
 }
 
@@ -43,17 +43,49 @@ cursor:pointer;
 display:flex;
 align-items:center;
 gap:10px;
-}
-  
-.logo-area img{
-height:35px;
+flex:1;
+margin-left:10px;
 }
 
+.logo{
+width:38px;
+height:38px;
+border-radius:50%;
+}
 
 .logo-text{
+font-size:22px;
+font-weight:700;
+letter-spacing:.5px;
+}
+
+.header-icons{
+display:flex;
+align-items:center;
+gap:18px;
+}
+
+.header-icon{
+position:relative;
+text-decoration:none;
 color:#111;
+font-size:26px;
+}
+
+.cart-icon span{
+position:absolute;
+top:-6px;
+right:-8px;
+background:#111;
+color:#fff;
+width:18px;
+height:18px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:11px;
 font-weight:bold;
-font-size:18px;
 }
 
 .whatsapp{
@@ -217,18 +249,19 @@ text-decoration:none;
 <div class="menu-btn" onclick="openMenu()">☰</div>
 
 <div class="logo-area">
-<img src="logo.png">
-<div class="logo-text">EXAMPLE CLOTHING</div>
+<img src="logo.png" class="logo">
+<span class="logo-text">EXAMPLE CLOTHING</span>
 </div>
 
-<div style="display:flex;gap:10px;align-items:center;">
+<div class="header-icons">
 
-<a href="login.html" id="accountBtn" class="icon-btn">
-👤
-</a>
+<a href="login.html" id="accountBtn" class="header-icon">👤</a>
 
-<a href="cart.html" class="icon-btn">
-🛒 <span id="cartCount">0</span>
+<a href="wishlist.html" class="header-icon">♡</a>
+
+<a href="cart.html" class="header-icon cart-icon">
+🛒
+<span id="cartCount">0</span>
 </a>
 
 </div>
