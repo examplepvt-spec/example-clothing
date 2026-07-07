@@ -96,8 +96,7 @@ Logout
 
 <script type="module">
 
-import { logout, checkUser } from "./auth.js";
-
+import { logout, checkUser, getProfile } from "./auth.js";
 checkUser((user)=>{
 
 if(!user){
@@ -107,12 +106,15 @@ return;
 
 }
 
-document.getElementById("email").innerText =
-user.email;
+document.getElementById("email").innerText = user.email;
 
-document.getElementById("name").innerText =
-user.displayName || "Customer";
+const profile = await getProfile(user.uid);
 
+if(profile){
+document.getElementById("name").innerText = profile.name;
+}else{
+document.getElementById("name").innerText = "Customer";
+}
 });
 
 document.getElementById("logoutBtn").onclick =
