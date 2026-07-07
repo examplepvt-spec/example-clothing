@@ -205,6 +205,10 @@ text-decoration:none;
 <div class="logo-text">EXAMPLE CLOTHING</div>
 </div>
 
+<a href="login.html" id="accountBtn" class="whatsapp">
+LOGIN
+</a>
+  
 <a href="cart.html" class="whatsapp">
 ♡ <span id="cartCount">0</span>
 </a>
@@ -347,6 +351,27 @@ cart.forEach(item => {
 });
 
 document.getElementById("cartCount").innerText = totalQty;
+
+import { checkUser } from "./auth.js";
+
+checkUser((user) => {
+
+const accountBtn = document.getElementById("accountBtn");
+
+if(user){
+
+accountBtn.href = "profile.html";
+accountBtn.innerText = "PROFILE";
+
+}else{
+
+accountBtn.href = "login.html";
+accountBtn.innerText = "LOGIN";
+
+}
+
+});
+  
 </script>
 </body>
 </html>
