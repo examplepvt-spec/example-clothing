@@ -70,10 +70,21 @@ gap:8px;
 border:none;
 }
 
-.login-btn{
-    position: relative;
-    top: 8px;
+.icon-btn{
+width:48px;
+height:48px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#111;
+color:#fff;
+text-decoration:none;
+border-radius:50%;
+font-size:22px;
+font-weight:bold;
 }
+
+
 
 .side-menu{
 position:fixed;
@@ -212,12 +223,12 @@ text-decoration:none;
 
 <div style="display:flex;gap:10px;align-items:center;">
 
-<a href="login.html" id="accountBtn" class="whatsapp login-btn">
-LOGIN
+<a href="login.html" id="accountBtn" class="icon-btn">
+👤
 </a>
 
-<a href="cart.html" class="whatsapp">
-♡ <span id="cartCount">0</span>
+<a href="cart.html" class="icon-btn">
+🛒 <span id="cartCount">0</span>
 </a>
 
 </div>
@@ -370,11 +381,10 @@ const accountBtn = document.getElementById("accountBtn");
 if(user){
 
 accountBtn.href = "profile.html";
-accountBtn.innerText = "PROFILE";
-
+accountBtn.innerHTML = "👤";
 }else{
 
-accountBtn.href = "login.html";
+accountBtn.innerHTML = "👤";
 accountBtn.innerText = "LOGIN";
 
 }
