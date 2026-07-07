@@ -9,9 +9,9 @@ onAuthStateChanged
 
 import {
 doc,
-setDoc
+setDoc,
+getDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
 // REGISTER
 export async function register(name, email, password){
 
@@ -63,5 +63,16 @@ onAuthStateChanged(auth,(user)=>{
 callback(user);
 
 });
+
+}
+export async function getProfile(uid){
+
+const snap = await getDoc(doc(db,"customers",uid));
+
+if(snap.exists()){
+return snap.data();
+}
+
+return null;
 
 }
