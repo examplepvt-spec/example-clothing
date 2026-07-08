@@ -3,179 +3,413 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Payment</title>
+<title>Payment — EXAMPLE CLOTHING</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
+:root{
+  --ink:#161412;
+  --ivory:#f6f3ec;
+  --ivory-dim:#eee9dd;
+  --brass:#9c7a3c;
+  --brass-soft:#c7ab74;
+  --oxblood:#5e2430;
+  --line:#e2dccb;
+  --white:#ffffff;
+}
+
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
+
 body{
-background:#ffffff;
-color:#111;
-padding:20px;
+  background:var(--ivory);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  -webkit-font-smoothing:antialiased;
 }
+
+a{ color:inherit; }
+
+h1,h2{
+  font-family:'Libre Caslon Display',serif;
+  font-weight:400;
+}
+
+/* ---------- HEADER ---------- */
+
+.header{
+  background:rgba(246,243,236,.95);
+  backdrop-filter:blur(10px);
+  padding:0 18px;
+  height:64px;
+  display:flex;
+  align-items:center;
+  border-bottom:1px solid var(--line);
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.back-btn{
+  width:36px;
+  height:36px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  text-decoration:none;
+}
+
+.back-btn:hover{ background:var(--ivory-dim); }
+
+.back-btn svg{
+  width:19px;
+  height:19px;
+  stroke:var(--ink);
+  fill:none;
+  stroke-width:1.8;
+}
+
+.header-title{
+  font-family:'Libre Caslon Display',serif;
+  font-size:20px;
+  flex:1;
+  text-align:center;
+  margin-right:36px;
+}
+
 .container{
-max-width:500px;
-margin:auto;
+  max-width:520px;
+  margin:auto;
+  padding:24px 18px 60px;
 }
-h1{
-text-align:center;
-font-size:32px;
-margin-bottom:10px;
+
+.eyebrow-dark{
+  font-size:11px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--brass);
+  font-weight:700;
+  display:block;
+  margin-bottom:6px;
 }
-.subtitle{
-text-align:center;
-color:#666;
-margin-bottom:25px;
-}
-.qr-box{
-background:#fff;
-border:1px solid #ddd;
-border-radius:20px;
-padding:20px;
-text-align:center;
-box-shadow:0 2px 10px rgba(0,0,0,0.08);
-}
-.qr-box img{
-width:100%;
-max-width:320px;
-border-radius:12px;
-}
-.upi{
-background:#f5f5f5;
-padding:15px;
-border-radius:12px;
-font-size:18px;
-font-weight:bold;
-margin-top:20px;
-word-break:break-all;
-}
+
 h2{
-margin-top:30px;
-margin-bottom:15px;
-font-size:24px;
+  font-size:20px;
+  margin-top:34px;
+  margin-bottom:14px;
 }
-input,
+
+.qr-box{
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:22px;
+  text-align:center;
+}
+
+.qr-box img{
+  width:100%;
+  max-width:280px;
+  border-radius:6px;
+  background:var(--ivory-dim);
+}
+
+.qr-fallback{
+  padding:60px 20px;
+  color:#999;
+  font-size:14px;
+  background:var(--ivory-dim);
+  border-radius:6px;
+}
+
+.upi{
+  background:var(--ivory-dim);
+  padding:14px;
+  border-radius:6px;
+  font-size:16px;
+  font-weight:700;
+  margin-top:18px;
+  word-break:break-all;
+  color:var(--ink);
+}
+
+.field-error{
+  color:var(--oxblood);
+  font-size:12.5px;
+  margin:-10px 0 12px;
+  min-height:16px;
+}
+
+input, textarea{
+  width:100%;
+  padding:15px;
+  margin-bottom:4px;
+  border:1px solid var(--line);
+  border-radius:6px;
+  font-size:15px;
+  font-family:'Inter',sans-serif;
+  background:var(--white);
+  color:var(--ink);
+}
+
+input:focus, textarea:focus{
+  outline:none;
+  border-color:var(--brass);
+}
+
 textarea{
-width:100%;
-padding:15px;
-margin-bottom:15px;
-border:1px solid #ddd;
-border-radius:12px;
-font-size:16px;
+  height:90px;
+  resize:none;
 }
-textarea{
-height:100px;
-resize:none;
-}
+
 .btn{
-display:block;
-width:100%;
-background:#111;
-color:#fff;
-padding:16px;
-text-align:center;
-text-decoration:none;
-border-radius:12px;
-font-size:18px;
-font-weight:bold;
-margin-top:15px;
+  display:block;
+  width:100%;
+  background:var(--ink);
+  color:var(--ivory);
+  padding:16px;
+  text-align:center;
+  text-decoration:none;
+  border-radius:6px;
+  font-size:15px;
+  font-weight:600;
+  letter-spacing:.3px;
+  margin-top:8px;
+  border:none;
+  cursor:pointer;
 }
+
+.btn:disabled{
+  background:#bbb;
+  cursor:not-allowed;
+}
+
 .note{
-margin-top:20px;
-text-align:center;
-color:#666;
-font-size:14px;
+  margin-top:16px;
+  text-align:center;
+  color:#777;
+  font-size:13px;
+}
+
+.order-summary{
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:16px;
+  margin-top:8px;
+}
+
+.order-line{
+  padding:10px 0;
+  border-bottom:1px solid var(--line);
+  font-size:14px;
+}
+
+.order-line:last-of-type{
+  border-bottom:none;
+}
+
+.order-line .item-name{
+  font-weight:600;
+  margin-bottom:3px;
+}
+
+.order-line .item-meta{
+  color:#666;
+  font-size:13px;
+}
+
+.order-total{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  padding-top:14px;
+  margin-top:6px;
+  border-top:1px solid var(--line);
+}
+
+.order-total h3{
+  font-family:'Libre Caslon Display',serif;
+  font-size:20px;
+}
+
+.empty-note{
+  text-align:center;
+  color:#777;
+  padding:20px 0;
 }
 </style>
 </head>
+
 <body>
+
+<div class="header">
+  <a href="javascript:history.back()" class="back-btn" aria-label="Back">
+    <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg>
+  </a>
+  <span class="header-title">Payment</span>
+</div>
+
 <div class="container">
-<h1>Payment</h1>
-<p class="subtitle">
-Scan QR Code or Pay via UPI
-</p>
-<div class="qr-box">
-<img src="paytmqr.jpg">
-<div class="upi">
-8089979791@paytm
+
+  <span class="eyebrow-dark">Step 1</span>
+  <h2 style="margin-top:6px;">Scan QR or Pay via UPI</h2>
+
+  <div class="qr-box">
+    <img src="paytmqr.jpg" alt="Payment QR code" onerror="this.outerHTML='&lt;div class=&quot;qr-fallback&quot;&gt;QR code image not found&lt;/div&gt;'">
+    <div class="upi">8089979791@paytm</div>
+  </div>
+
+  <h2>Customer Details</h2>
+
+  <input type="text" id="name" placeholder="Full Name">
+  <div class="field-error" id="nameError"></div>
+
+  <input type="tel" id="phone" placeholder="Phone Number" maxlength="10">
+  <div class="field-error" id="phoneError"></div>
+
+  <textarea id="address" placeholder="Full Address"></textarea>
+  <div class="field-error" id="addressError"></div>
+
+  <input type="text" id="pincode" placeholder="Pincode" maxlength="6">
+  <div class="field-error" id="pincodeError"></div>
+
+  <button class="btn" id="whatsappBtn">Place Order on WhatsApp</button>
+
+  <p class="note">After payment, send the screenshot on WhatsApp.</p>
+
+  <h2>Your Order</h2>
+
+  <div class="order-summary" id="orderSummary">Loading...</div>
+
 </div>
-</div>
-<h2>Customer Details</h2>
-<input type="text" id="name" placeholder="Full Name">
-<input type="tel" id="phone" placeholder="Phone Number">
-<textarea id="address" placeholder="Address"></textarea>
-<input type="text" id="pincode" placeholder="Pincode">
-<a
-href="#"
-id="whatsappBtn"
-class="btn">
-Place Order on WhatsApp
-</a>
-<p class="note">
-After payment send screenshot on WhatsApp.
-</p>
-<h2>Your Order</h2>
-<div id="orderSummary"
-style="
-background:#f8f8f8;
-border:1px solid #ddd;
-border-radius:12px;
-padding:15px;
-margin-top:20px;
-margin-bottom:20px;
-">
-Loading...
-</div>
+
 <script>
+
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
-let total = 0;
-let html = "";
-cart.forEach(item=>{
-let qty = item.qty || 1;
-let price = Number(item.offerPrice || item.price);
-total += price * qty;
-html += `
-<p style="margin-bottom:10px;">
-<b>${item.name}</b><br>
-Size: ${item.size || "-"}<br>
-Qty: ${qty}<br>
-₹${price} × ${qty} = ₹${price * qty}
-</p>
-`;
+
+const orderSummary = document.getElementById("orderSummary");
+const whatsappBtn = document.getElementById("whatsappBtn");
+
+function escapeHtml(str){
+    const div = document.createElement("div");
+    div.innerText = str ?? "";
+    return div.innerHTML;
+}
+
+function renderOrderSummary(){
+
+    if(cart.length === 0){
+        orderSummary.innerHTML = `<div class="empty-note">Your cart is empty.</div>`;
+        whatsappBtn.disabled = true;
+        return 0;
+    }
+
+    let total = 0;
+    let html = "";
+
+    cart.forEach(item => {
+        const qty = item.qty || 1;
+        const price = Number(item.offerPrice || item.price) || 0;
+        const lineTotal = price * qty;
+        total += lineTotal;
+
+        html += `
+            <div class="order-line">
+                <div class="item-name">${escapeHtml(item.name)}</div>
+                <div class="item-meta">Size: ${escapeHtml(item.size) || "-"} &nbsp;·&nbsp; Qty: ${qty} &nbsp;·&nbsp; ₹${price} each</div>
+            </div>
+        `;
+    });
+
+    html += `
+        <div class="order-total">
+            <h3>Total</h3>
+            <h3>₹${total}</h3>
+        </div>
+    `;
+
+    orderSummary.innerHTML = html;
+    return total;
+}
+
+const orderTotal = renderOrderSummary();
+
+function showFieldError(id, msg){
+    document.getElementById(id + "Error").innerText = msg;
+}
+
+function clearFieldErrors(){
+    ["name","phone","address","pincode"].forEach(id => showFieldError(id, ""));
+}
+
+function validateForm(){
+    clearFieldErrors();
+    let valid = true;
+
+    const name = document.getElementById("name").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const address = document.getElementById("address").value.trim();
+    const pincode = document.getElementById("pincode").value.trim();
+
+    if(!name){
+        showFieldError("name", "Enter your full name");
+        valid = false;
+    }
+
+    if(!/^[6-9]\d{9}$/.test(phone)){
+        showFieldError("phone", "Enter a valid 10-digit phone number");
+        valid = false;
+    }
+
+    if(!address || address.length < 10){
+        showFieldError("address", "Enter your complete delivery address");
+        valid = false;
+    }
+
+    if(!/^\d{6}$/.test(pincode)){
+        showFieldError("pincode", "Enter a valid 6-digit pincode");
+        valid = false;
+    }
+
+    return valid ? { name, phone, address, pincode } : null;
+}
+
+whatsappBtn.addEventListener("click", () => {
+
+    if(cart.length === 0) return;
+
+    const formData = validateForm();
+    if(!formData) return;
+
+    let message = "*NEW ORDER*\n\n";
+    message += "Name: " + formData.name + "\n";
+    message += "Phone: " + formData.phone + "\n";
+    message += "Address: " + formData.address + "\n";
+    message += "Pincode: " + formData.pincode + "\n\n";
+
+    cart.forEach(item => {
+        const qty = item.qty || 1;
+        const price = Number(item.offerPrice || item.price) || 0;
+        message += item.name + " | Size: " + (item.size || "-") + " | Qty: " + qty + " | ₹" + price + "\n";
+    });
+
+    message += "\nTotal: ₹" + orderTotal;
+
+    window.open("https://wa.me/919656003555?text=" + encodeURIComponent(message), "_blank");
+
+    // Clear cart after handing off to WhatsApp, so the user doesn't accidentally re-order
+    localStorage.removeItem("cart");
 });
-html += `
-<hr>
-<h3>Total : ₹${total}</h3>
-`;
-document.getElementById("orderSummary").innerHTML = html;
-document.getElementById("whatsappBtn").onclick=function(){
-let name=document.getElementById("name").value;
-let phone=document.getElementById("phone").value;
-let address=document.getElementById("address").value;
-let pincode=document.getElementById("pincode").value;
-let message="*NEW ORDER*%0A%0A";
-message+="Name: "+name+"%0A";
-message+="Phone: "+phone+"%0A";
-message+="Address: "+address+"%0A";
-message+="Pincode: "+pincode+"%0A%0A";
-cart.forEach(item=>{
-let qty=item.qty || 1;
-let price=item.offerPrice || item.price;
-message+=item.name+
-" | Size: "+(item.size||"-")+
-" | Qty: "+qty+
-" | ₹"+price+"%0A";
-});
-message+="%0ATotal: ₹"+total;
-window.open(
-"https://wa.me/919656003555?text="+message,
-"_blank"
-);
-};
+
 </script>
-</div>
+
 </body>
 </html>
