@@ -4,39 +4,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Payment</title>
-
 <style>
-
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
 font-family:Arial,sans-serif;
 }
-
 body{
 background:#ffffff;
 color:#111;
 padding:20px;
 }
-
 .container{
 max-width:500px;
 margin:auto;
 }
-
 h1{
 text-align:center;
 font-size:32px;
 margin-bottom:10px;
 }
-
 .subtitle{
 text-align:center;
 color:#666;
 margin-bottom:25px;
 }
-
 .qr-box{
 background:#fff;
 border:1px solid #ddd;
@@ -45,13 +38,11 @@ padding:20px;
 text-align:center;
 box-shadow:0 2px 10px rgba(0,0,0,0.08);
 }
-
 .qr-box img{
 width:100%;
 max-width:320px;
 border-radius:12px;
 }
-
 .upi{
 background:#f5f5f5;
 padding:15px;
@@ -61,13 +52,11 @@ font-weight:bold;
 margin-top:20px;
 word-break:break-all;
 }
-
 h2{
 margin-top:30px;
 margin-bottom:15px;
 font-size:24px;
 }
-
 input,
 textarea{
 width:100%;
@@ -77,12 +66,10 @@ border:1px solid #ddd;
 border-radius:12px;
 font-size:16px;
 }
-
 textarea{
 height:100px;
 resize:none;
 }
-
 .btn{
 display:block;
 width:100%;
@@ -96,46 +83,30 @@ font-size:18px;
 font-weight:bold;
 margin-top:15px;
 }
-
 .note{
 margin-top:20px;
 text-align:center;
 color:#666;
 font-size:14px;
 }
-
 </style>
-
 </head>
-
 <body>
-
 <div class="container">
-
 <h1>Payment</h1>
-
 <p class="subtitle">
 Scan QR Code or Pay via UPI
 </p>
-
 <div class="qr-box">
-
 <img src="paytmqr.jpg">
-
 <div class="upi">
 8089979791@paytm
 </div>
-
 </div>
-
 <h2>Customer Details</h2>
-
 <input type="text" id="name" placeholder="Full Name">
-
 <input type="tel" id="phone" placeholder="Phone Number">
-
 <textarea id="address" placeholder="Address"></textarea>
-
 <input type="text" id="pincode" placeholder="Pincode">
 <a
 href="#"
@@ -143,13 +114,10 @@ id="whatsappBtn"
 class="btn">
 Place Order on WhatsApp
 </a>
-
 <p class="note">
 After payment send screenshot on WhatsApp.
 </p>
-
 <h2>Your Order</h2>
-
 <div id="orderSummary"
 style="
 background:#f8f8f8;
@@ -161,21 +129,14 @@ margin-bottom:20px;
 ">
 Loading...
 </div>
-
 <script>
-
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
 let total = 0;
 let html = "";
-
 cart.forEach(item=>{
-
 let qty = item.qty || 1;
 let price = Number(item.offerPrice || item.price);
-
 total += price * qty;
-
 html += `
 <p style="margin-bottom:10px;">
 <b>${item.name}</b><br>
@@ -184,54 +145,37 @@ Qty: ${qty}<br>
 ₹${price} × ${qty} = ₹${price * qty}
 </p>
 `;
-
 });
-
 html += `
 <hr>
 <h3>Total : ₹${total}</h3>
 `;
-
 document.getElementById("orderSummary").innerHTML = html;
-
 document.getElementById("whatsappBtn").onclick=function(){
-
 let name=document.getElementById("name").value;
 let phone=document.getElementById("phone").value;
 let address=document.getElementById("address").value;
 let pincode=document.getElementById("pincode").value;
-
 let message="*NEW ORDER*%0A%0A";
-
 message+="Name: "+name+"%0A";
 message+="Phone: "+phone+"%0A";
 message+="Address: "+address+"%0A";
 message+="Pincode: "+pincode+"%0A%0A";
-
 cart.forEach(item=>{
-
 let qty=item.qty || 1;
 let price=item.offerPrice || item.price;
-
 message+=item.name+
 " | Size: "+(item.size||"-")+
 " | Qty: "+qty+
 " | ₹"+price+"%0A";
-
 });
-
 message+="%0ATotal: ₹"+total;
-
 window.open(
 "https://wa.me/919656003555?text="+message,
 "_blank"
 );
-
 };
-
 </script>
-
 </div>
-
 </body>
 </html>
