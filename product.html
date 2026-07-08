@@ -3,438 +3,599 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Product Details</title>
+<title>Product Details — EXAMPLE CLOTHING</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-body{
-background:#ffffff;
-color:#111;
-font-family:Arial,sans-serif;
-padding:20px;
+:root{
+  --ink:#161412;
+  --ivory:#f6f3ec;
+  --ivory-dim:#eee9dd;
+  --brass:#9c7a3c;
+  --brass-soft:#c7ab74;
+  --oxblood:#5e2430;
+  --line:#e2dccb;
+  --white:#ffffff;
 }
 
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  background:var(--ivory);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  -webkit-font-smoothing:antialiased;
+  padding-bottom:40px;
+}
+
+h1{
+  font-family:'Libre Caslon Display',serif;
+  font-weight:400;
+}
+
+a{
+  color:inherit;
+}
+
+/* ---------- HEADER ---------- */
+
+.header{
+  position:sticky;
+  top:0;
+  width:100%;
+  height:68px;
+  background:rgba(246,243,236,.95);
+  backdrop-filter:blur(10px);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 18px;
+  z-index:1000;
+  border-bottom:1px solid var(--line);
+}
+
+.back-btn{
+  width:38px;
+  height:38px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  text-decoration:none;
+}
+
+.back-btn:hover{
+  background:var(--ivory-dim);
+}
+
+.back-btn svg{
+  width:20px;
+  height:20px;
+  stroke:var(--ink);
+  fill:none;
+  stroke-width:1.8;
+}
+
+.header-title{
+  font-family:'Libre Caslon Display',serif;
+  font-size:16px;
+  flex:1;
+  text-align:center;
+}
+
+.cart-icon{
+  position:relative;
+  width:38px;
+  height:38px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  text-decoration:none;
+}
+
+.cart-icon:hover{
+  background:var(--ivory-dim);
+}
+
+.cart-icon svg{
+  width:20px;
+  height:20px;
+  stroke:var(--ink);
+  fill:none;
+  stroke-width:1.6;
+}
+
+.badge{
+  position:absolute;
+  top:0;
+  right:0;
+  background:var(--brass);
+  color:var(--white);
+  min-width:16px;
+  height:16px;
+  padding:0 3px;
+  border-radius:50%;
+  font-size:10px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* ---------- SLIDER ---------- */
+
 .slider{
-position:relative;
-background:#f5f5f5;
-border-radius:20px;
-overflow:hidden;
-margin-bottom:20px;
+  position:relative;
+  background:var(--ivory-dim);
+  overflow:hidden;
 }
 
 .slider img{
-width:100%;
-height:380px;
-object-fit:contain;
-background:#f5f5f5;
+  width:100%;
+  height:420px;
+  object-fit:contain;
+  background:var(--ivory-dim);
+  display:block;
 }
 
 .slide-btn{
-position:absolute;
-top:50%;
-transform:translateY(-50%);
-width:40px;
-height:40px;
-border:none;
-border-radius:50%;
-background:white;
-font-size:26px;
-cursor:pointer;
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  width:38px;
+  height:38px;
+  border:none;
+  border-radius:50%;
+  background:var(--white);
+  box-shadow:0 2px 8px rgba(0,0,0,.12);
+  font-size:22px;
+  cursor:pointer;
+  color:var(--ink);
 }
 
-#prev{
-left:10px;
-}
-
-#next{
-right:10px;
-}
+#prev{ left:14px; }
+#next{ right:14px; }
 
 .counter{
-position:absolute;
-bottom:15px;
-left:50%;
-transform:translateX(-50%);
-background:white;
-padding:6px 14px;
-border-radius:20px;
-font-size:14px;
+  position:absolute;
+  bottom:16px;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(22,20,18,.75);
+  color:var(--ivory);
+  padding:5px 14px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:600;
 }
-h1{
-margin-top:20px;
-font-size:34px;
-font-weight:700;
-line-height:1.2;
-letter-spacing:-1px;
-color:#111;
+
+/* ---------- DETAILS ---------- */
+
+.details{
+  padding:24px 20px 0;
 }
+
+.eyebrow{
+  font-size:11px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--brass);
+  font-weight:700;
+  display:block;
+  margin-bottom:8px;
+}
+
+h1#name{
+  font-size:26px;
+  line-height:1.25;
+}
+
 .price-box{
-display:flex;
-align-items:center;
-gap:12px;
-margin:15px 0 5px;
+  display:flex;
+  align-items:baseline;
+  gap:12px;
+  margin:16px 0 4px;
 }
 
 .old-price{
-font-size:20px;
-color:#999;
-text-decoration:line-through;
+  font-size:17px;
+  color:#999;
+  text-decoration:line-through;
 }
 
 .price{
-font-size:34px;
-font-weight:700;
-color:#111;
+  font-size:28px;
+  font-weight:700;
+  font-family:'Libre Caslon Display',serif;
 }
 
 .discount{
-font-size:16px;
-font-weight:600;
-color:#ff5500;
-margin-bottom:15px;
+  font-size:14px;
+  font-weight:700;
+  color:var(--oxblood);
+  margin-bottom:10px;
 }
 
-.info{
-margin:8px 0;
-font-size:17px;
-color:#666;
-font-weight:500;
-}
-.btn{
-display:block;
-width:100%;
-padding:18px;
-margin-top:15px;
-text-align:center;
-text-decoration:none;
-border-radius:16px;
-font-weight:600;
-font-size:18px;
-border:none;
-box-sizing:border-box;
-}
-#wishlist{
-background:#ffffff;
-color:#111;
-border:1px solid #ddd;
-}
-#whatsapp{
-background:#111;
+h3.section-label{
+  font-size:12px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:#666;
+  font-weight:700;
+  margin:22px 0 12px;
 }
 
-#addToCart{
-background:#111;
-color:#white;
-}
-.cart-btn{
-position:fixed;
-top:15px;
-right:15px;
-background:#111;
-color:white;
-padding:12px 18px;
-border-radius:30px;
-text-decoration:none;
-font-weight:bold;
-z-index:9999;
-display:flex;
-align-items:center;
-gap:8px;
-}
-#cartCount{
-background:#111;
-color:#ffffff;
-padding:2px 6px;
-border-radius:50%;
-font-size:12px;
-margin-left:5px;
-}
 .sizes{
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-margin:20px 0;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
 }
 
 .sizes button{
-width:55px;
-height:55px;
-border:1px solid #ddd;
-border-radius:12px;
-background:white;
-font-size:18px;
-font-weight:600;
-cursor:pointer;
+  min-width:52px;
+  height:52px;
+  padding:0 10px;
+  border:1px solid var(--line);
+  border-radius:6px;
+  background:var(--white);
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  color:var(--ink);
+  transition:.2s;
 }
 
-.sizes button:hover{
-background:#111;
-color:white;
+.sizes button:hover,
+.sizes button.selected{
+  background:var(--ink);
+  color:var(--ivory);
+  border-color:var(--ink);
+}
+
+.info{
+  margin:20px 0 0;
+  font-size:14px;
+  color:#666;
+  font-weight:500;
+}
+
+.btn{
+  display:block;
+  width:100%;
+  padding:17px;
+  margin-top:12px;
+  text-align:center;
+  text-decoration:none;
+  border-radius:6px;
+  font-weight:600;
+  font-size:15px;
+  letter-spacing:.3px;
+  border:none;
+  box-sizing:border-box;
+  cursor:pointer;
+}
+
+#wishlist{
+  background:var(--white);
+  color:var(--ink);
+  border:1px solid var(--line);
+}
+
+#addToCart{
+  background:var(--ink);
+  color:var(--ivory);
+}
+
+#addToCart:disabled{
+  background:#bbb;
+  cursor:not-allowed;
+}
+
+#whatsapp{
+  background:#25D366;
+  color:#fff;
+}
+
+.action-row{
+  margin-top:24px;
+  padding-bottom:10px;
+}
+
+.error-banner{
+  margin:60px 20px;
+  text-align:center;
+  color:#666;
+}
+
+.toast{
+  position:fixed;
+  bottom:24px;
+  left:50%;
+  transform:translateX(-50%) translateY(20px);
+  background:var(--ink);
+  color:var(--ivory);
+  padding:14px 22px;
+  border-radius:6px;
+  font-size:14px;
+  font-weight:600;
+  opacity:0;
+  pointer-events:none;
+  transition:.3s;
+  z-index:3000;
+  white-space:nowrap;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
 }
 </style>
 </head>
 
 <body>
 
-<a href="cart.html" class="cart-btn">
-🛍️ <span id="cartCount">0</span>
-</a>
+<div class="header">
+  <a href="javascript:history.back()" class="back-btn" aria-label="Back">
+    <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg>
+  </a>
+  <span class="header-title">EXAMPLE CLOTHING</span>
+  <a href="cart.html" class="cart-icon" aria-label="Cart">
+    <svg viewBox="0 0 24 24"><path d="M4 7h16l-1.4 10.3a2 2 0 0 1-2 1.7H7.4a2 2 0 0 1-2-1.7L4 7Z"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/></svg>
+    <span class="badge" id="cartCount">0</span>
+  </a>
+</div>
+
+<div id="productWrap">
+
 <div class="slider">
-
-<img id="productImage" src="">
-
-<button id="prev" class="slide-btn">‹</button>
-
-<button id="next" class="slide-btn">›</button>
-
-<div class="counter">
-<span id="current">1</span> /
-<span id="total">1</span>
+  <img id="productImage" src="" alt="Product image">
+  <button id="prev" class="slide-btn" aria-label="Previous image">‹</button>
+  <button id="next" class="slide-btn" aria-label="Next image">›</button>
+  <div class="counter"><span id="current">1</span> / <span id="total">1</span></div>
 </div>
 
-</div>
+<div class="details">
 
-<h1 id="name"></h1>
+  <span class="eyebrow">Genuine Brand</span>
+  <h1 id="name"></h1>
 
-<div class="price-box">
+  <div class="price-box">
     <span class="old-price" id="oldPrice"></span>
     <span class="price" id="price"></span>
+  </div>
+
+  <div class="discount" id="discount"></div>
+
+  <h3 class="section-label">Select Size</h3>
+  <div class="sizes" id="sizeRow">
+    <button id="sizeXS" data-size="XS">XS</button>
+    <button id="sizeS" data-size="S">S</button>
+    <button id="sizeM" data-size="M">M</button>
+    <button id="sizeL" data-size="L">L</button>
+    <button id="sizeXL" data-size="XL">XL</button>
+    <button id="sizeXXL" data-size="XXL">XXL</button>
+  </div>
+
+  <div class="info">Barcode: <span id="barcode"></span></div>
+
+  <div class="action-row">
+    <button class="btn" id="wishlist">♡ Add to Wishlist</button>
+    <button class="btn" id="addToCart">Add To Cart</button>
+    <a class="btn" href="#" id="whatsapp" target="_blank" rel="noopener">WhatsApp Order</a>
+  </div>
+
+</div>
 </div>
 
-<div class="discount" id="discount"></div>
-<h3>Select Size</h3>
-
-<div class="sizes">
-
-<button id="sizeXS">XS</button>
-
-<button id="sizeS">S</button>
-
-<button id="sizeM">M</button>
-
-<button id="sizeL">L</button>
-
-<button id="sizeXL">XL</button>
-
-<button id="sizeXXL">XXL</button>
-
-</div>
-
-<div class="info">Barcode: <span id="barcode"></span></div>
-
-
-
-<button class="btn" id="wishlist">
-♡ Wishlist
-</button>
-<button class="btn" id="addToCart">
-Add To Cart
-</button>
-<a class="btn" href="#" id="whatsapp">
-WhatsApp Order
-</a>
+<div class="toast" id="toast"></div>
 
 <script type="module">
 
 import { db } from "./firebase.js";
 
 import {
-doc,
-getDoc
+  doc,
+  getDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
-const docRef = doc(db,"products",id);
-const docSnap = await getDoc(docRef);
+const productWrap = document.getElementById("productWrap");
+const toast = document.getElementById("toast");
 
-if(docSnap.exists()){
-
-const product = docSnap.data();
-document.getElementById("addToCart").onclick = () => {
-
-let cart = JSON.parse(
-localStorage.getItem("cart")
-) || [];
-
-cart.push({
-    name: product.name,
-    price: product.price,
-    offerPrice: product.offerPrice,
-    image: product.image
-});
-
-
-localStorage.setItem(
-"cart",
-JSON.stringify(cart)
-);
-
-
-};
-document.getElementById("wishlist").onclick = () => {
-
-let wishlist = JSON.parse(
-localStorage.getItem("wishlist")
-) || [];
-
-wishlist.push({
-id:id,
-name:product.name,
-price:product.price,
-image:product.image
-});
-
-localStorage.setItem(
-"wishlist",
-JSON.stringify(wishlist)
-);
-
-};
-
-const images = [
-product.image?.replace("/upload/","/upload/f_auto,q_auto,w_900/"),
-product.image2?.replace("/upload/","/upload/f_auto,q_auto,w_900/"),
-product.image3?.replace("/upload/","/upload/f_auto,q_auto,w_900/")
-].filter(Boolean);
-
-let currentImage = 0;
-
-const imageElement =
-document.getElementById("productImage");
-
-imageElement.src = images[0];
-
-document.getElementById("total").innerText =
-images.length;
-
-imageElement.src = images[0];
-
-images.forEach(src => {
-    const img = new Image();
-    img.src = src;
-});
-
-document.getElementById("total").innerText =
-images.length;
-
-document.getElementById("next").onclick = () => {
-
-currentImage++;
-
-if(currentImage >= images.length){
-currentImage = 0;
+function showToast(msg){
+  toast.innerText = msg;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2200);
 }
 
-imageElement.src = images[currentImage];
-
-document.getElementById("current").innerText =
-currentImage + 1;
-
-};
-
-document.getElementById("prev").onclick = () => {
-
-currentImage--;
-
-if(currentImage < 0){
-currentImage = images.length - 1;
+function showError(msg){
+  productWrap.innerHTML = `<div class="error-banner"><h3>${msg}</h3></div>`;
 }
 
-imageElement.src = images[currentImage];
-
-document.getElementById("current").innerText =
-currentImage + 1;
-
-};
-document.getElementById("name").innerText = product.name;
-document.getElementById("price").innerText =
-"₹" + product.price;
-
-document.getElementById("oldPrice").innerText =
-"₹" + product.price;
-
-if(product.offerPrice){
-
-document.getElementById("oldPrice").innerText =
-"₹" + product.price;
-
-document.getElementById("price").innerText =
-"₹" + product.offerPrice;
-
-const discount = Math.round(
-((product.price - product.offerPrice)
-/ product.price) * 100
-);
-
-document.getElementById("discount").innerText =
-discount + "% OFF";
-
-}else{
-
-document.getElementById("oldPrice").style.display =
-"none";
-
-document.getElementById("discount").style.display =
-"none";
-
-document.getElementById("price").innerText =
-"₹" + product.price;
-
+function updateCartCount(){
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let totalQty = 0;
+  cart.forEach(item => { totalQty += item.qty || 1; });
+  document.getElementById("cartCount").innerText = totalQty;
 }
-document.getElementById("barcode").innerText = product.barcode;
-if(product.xsStock == 0 || !product.xsStock)
-document.getElementById("sizeXS").style.display = "none";
 
-if(product.sStock == 0 || !product.sStock)
-document.getElementById("sizeS").style.display = "none";
+updateCartCount();
 
-if(product.mStock == 0 || !product.mStock)
-document.getElementById("sizeM").style.display = "none";
+if(!id){
+  showError("No product specified.");
+} else {
 
-if(product.lStock == 0 || !product.lStock)
-document.getElementById("sizeL").style.display = "none";
+  try {
+    const docRef = doc(db, "products", id);
+    const docSnap = await getDoc(docRef);
 
-if(product.xlStock == 0 || !product.xlStock)
-document.getElementById("sizeXL").style.display = "none";
+    if(!docSnap.exists()){
+      showError("This product could not be found.");
+    } else {
 
-if(product.xxlStock == 0 || !product.xxlStock)
-document.getElementById("sizeXXL").style.display = "none";
+      const product = docSnap.data();
+      let selectedSize = null;
 
-if(product.xsStock > 0)
-document.getElementById("sizeXS").innerText =
-"XS (" + product.xsStock + ")";
+      // ---- Images ----
+      const images = [
+        product.image?.replace("/upload/","/upload/f_auto,q_auto,w_900/"),
+        product.image2?.replace("/upload/","/upload/f_auto,q_auto,w_900/"),
+        product.image3?.replace("/upload/","/upload/f_auto,q_auto,w_900/")
+      ].filter(Boolean);
 
-if(product.sStock > 0)
-document.getElementById("sizeS").innerText =
-"S (" + product.sStock + ")";
+      let currentImage = 0;
+      const imageElement = document.getElementById("productImage");
 
-if(product.mStock > 0)
-document.getElementById("sizeM").innerText =
-"M (" + product.mStock + ")";
+      if(images.length > 0){
+        imageElement.src = images[0];
+        images.forEach(src => { const img = new Image(); img.src = src; });
+      }
 
-if(product.lStock > 0)
-document.getElementById("sizeL").innerText =
-"L (" + product.lStock + ")";
+      document.getElementById("total").innerText = images.length || 1;
 
-if(product.xlStock > 0)
-document.getElementById("sizeXL").innerText =
-"XL (" + product.xlStock + ")";
+      document.getElementById("next").onclick = () => {
+        if(images.length === 0) return;
+        currentImage = (currentImage + 1) % images.length;
+        imageElement.src = images[currentImage];
+        document.getElementById("current").innerText = currentImage + 1;
+      };
 
-if(product.xxlStock > 0)
-document.getElementById("sizeXXL").innerText =
-"XXL (" + product.xxlStock + ")";
-document.getElementById("whatsapp").href =
-"https://wa.me/919656003555?text=I want " + product.name;
+      document.getElementById("prev").onclick = () => {
+        if(images.length === 0) return;
+        currentImage = (currentImage - 1 + images.length) % images.length;
+        imageElement.src = images[currentImage];
+        document.getElementById("current").innerText = currentImage + 1;
+      };
 
+      // ---- Text content (safe: textContent, not innerHTML) ----
+      document.getElementById("name").textContent = product.name || "";
+      document.getElementById("barcode").textContent = product.barcode || "-";
 
+      const price = Number(product.price) || 0;
+      const offerPrice = product.offerPrice ? Number(product.offerPrice) : null;
 
+      document.getElementById("price").textContent = "₹" + price;
+
+      if(offerPrice && offerPrice < price){
+        document.getElementById("oldPrice").textContent = "₹" + price;
+        document.getElementById("price").textContent = "₹" + offerPrice;
+        const discountPct = Math.round(((price - offerPrice) / price) * 100);
+        document.getElementById("discount").textContent = discountPct + "% OFF";
+      } else {
+        document.getElementById("oldPrice").style.display = "none";
+        document.getElementById("discount").style.display = "none";
+      }
+
+      // ---- Sizes ----
+      const sizeMap = {
+        XS: product.xsStock,
+        S: product.sStock,
+        M: product.mStock,
+        L: product.lStock,
+        XL: product.xlStock,
+        XXL: product.xxlStock
+      };
+
+      let anySizeAvailable = false;
+
+      Object.entries(sizeMap).forEach(([size, stock]) => {
+        const btn = document.getElementById("size" + size);
+        const stockNum = Number(stock) || 0;
+
+        if(stockNum <= 0){
+          btn.style.display = "none";
+          return;
+        }
+
+        anySizeAvailable = true;
+        btn.textContent = size + " (" + stockNum + ")";
+        btn.onclick = () => {
+          document.querySelectorAll(".sizes button").forEach(b => b.classList.remove("selected"));
+          btn.classList.add("selected");
+          selectedSize = size;
+        };
+      });
+
+      const addToCartBtn = document.getElementById("addToCart");
+
+      if(!anySizeAvailable){
+        addToCartBtn.textContent = "Out of Stock";
+        addToCartBtn.disabled = true;
+      }
+
+      // ---- Add to cart ----
+      addToCartBtn.onclick = () => {
+        if(!anySizeAvailable) return;
+
+        if(!selectedSize){
+          showToast("Please select a size");
+          return;
+        }
+
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        const existing = cart.find(item => item.id === id && item.size === selectedSize);
+
+        if(existing){
+          existing.qty = (existing.qty || 1) + 1;
+        } else {
+          cart.push({
+            id: id,
+            name: product.name,
+            price: price,
+            offerPrice: offerPrice,
+            image: product.image,
+            size: selectedSize,
+            qty: 1
+          });
+        }
+
+        localStorage.setItem("cart", JSON.stringify(cart));
+        updateCartCount();
+        showToast("Added to cart");
+      };
+
+      // ---- Wishlist ----
+      document.getElementById("wishlist").onclick = () => {
+        let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+
+        if(wishlist.some(item => item.id === id)){
+          showToast("Already in wishlist");
+          return;
+        }
+
+        wishlist.push({
+          id: id,
+          name: product.name,
+          price: price,
+          image: product.image
+        });
+
+        localStorage.setItem("wishlist", JSON.stringify(wishlist));
+        showToast("Added to wishlist");
+      };
+
+      // ---- WhatsApp ----
+      const waMessage = encodeURIComponent("I want " + (product.name || "this product"));
+      document.getElementById("whatsapp").href = "https://wa.me/919656003555?text=" + waMessage;
+
+    }
+  } catch(err){
+    console.error(err);
+    showError("Something went wrong loading this product. Please try again.");
+  }
 }
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    
-document.getElementById("cartCount").innerText = cart.length;
-  
 </script>
 
 </body>
