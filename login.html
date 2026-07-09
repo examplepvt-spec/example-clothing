@@ -3,86 +3,296 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login - EXAMPLE CLOTHING</title>
+<title>Login — EXAMPLE CLOTHING</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
+:root{
+  --ink:#0e0d0b;
+  --ivory:#f7f4ee;
+  --gold:#b08d3e;
+  --gold-soft:#d4b878;
+  --line:#e4ddcd;
+  --white:#ffffff;
+  --error:#b03e3e;
+  --ok:#3e8a52;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
 body{
-background:#f5f5f5;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-padding:20px;
+  background:var(--ivory);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100svh;
+  padding:24px;
+  -webkit-font-smoothing:antialiased;
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(ellipse 60% 40% at 80% 0%, rgba(176,141,62,.08), transparent),
+    radial-gradient(ellipse 60% 40% at 10% 100%, rgba(14,13,11,.05), transparent);
+  pointer-events:none;
 }
 
 .login-box{
-width:100%;
-max-width:400px;
-background:#fff;
-padding:30px;
-border-radius:18px;
-box-shadow:0 4px 20px rgba(0,0,0,.08);
+  position:relative;
+  width:100%;
+  max-width:410px;
+  background:var(--white);
+  padding:44px 34px 34px;
+  border:1px solid var(--line);
+  box-shadow:0 24px 60px rgba(14,13,11,.08);
+  opacity:0;
+  transform:translateY(26px);
+  animation:cardIn .9s var(--ease) .1s forwards;
+}
+
+@keyframes cardIn{
+  to{opacity:1;transform:translateY(0);}
+}
+
+.login-box::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:3px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  transform:scaleX(0);
+  animation:lineGrow 1.2s var(--ease) .6s forwards;
+}
+
+@keyframes lineGrow{
+  to{transform:scaleX(1);}
+}
+
+.brand{
+  text-align:center;
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;
+  letter-spacing:6px;
+  text-indent:6px;
+  margin-bottom:4px;
+}
+
+.brand-tag{
+  display:block;
+  text-align:center;
+  font-size:9px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--gold);
+  font-weight:700;
+  margin-bottom:28px;
 }
 
 h1{
-text-align:center;
-margin-bottom:10px;
-font-size:30px;
+  font-family:'Cormorant Garamond',serif;
+  font-weight:500;
+  text-align:center;
+  font-size:32px;
+  margin-bottom:8px;
 }
 
-p{
-text-align:center;
-color:#666;
-margin-bottom:25px;
+.sub{
+  text-align:center;
+  color:rgba(14,13,11,.55);
+  font-size:14px;
+  font-weight:300;
+  margin-bottom:30px;
+  line-height:1.5;
+}
+
+.field{
+  position:relative;
+  margin-bottom:16px;
 }
 
 input{
-width:100%;
-padding:15px;
-margin-bottom:15px;
-border:1px solid #ddd;
-border-radius:12px;
-font-size:16px;
+  width:100%;
+  padding:16px 15px;
+  border:1px solid var(--line);
+  background:var(--ivory);
+  font-size:15px;
+  font-family:'Inter',sans-serif;
+  font-weight:400;
+  color:var(--ink);
+  outline:none;
+  transition:border-color .3s, background .3s, box-shadow .3s;
 }
 
-button{
-width:100%;
-padding:15px;
-border:none;
-border-radius:12px;
-font-size:17px;
-font-weight:bold;
-cursor:pointer;
-margin-bottom:12px;
+input::placeholder{
+  color:rgba(14,13,11,.4);
+  font-weight:300;
+}
+
+input:focus{
+  border-color:var(--gold);
+  background:var(--white);
+  box-shadow:0 0 0 3px rgba(176,141,62,.12);
+}
+
+input.invalid{
+  border-color:var(--error);
+}
+
+.toggle-pass{
+  position:absolute;
+  right:6px;
+  top:50%;
+  transform:translateY(-50%);
+  width:38px;
+  height:38px;
+  background:none;
+  border:none;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0;
+  padding:0;
+}
+
+.toggle-pass svg{
+  width:19px;
+  height:19px;
+  stroke:rgba(14,13,11,.45);
+  fill:none;
+  stroke-width:1.6;
+  transition:stroke .2s;
+}
+
+.toggle-pass:hover svg{
+  stroke:var(--gold);
+}
+
+.msg{
+  font-size:12.5px;
+  line-height:1.5;
+  margin:-6px 0 14px;
+  min-height:0;
+  display:none;
+}
+
+.msg.show{
+  display:block;
+}
+
+.msg.error{color:var(--error);}
+.msg.ok{color:var(--ok);}
+
+button.btn{
+  position:relative;
+  width:100%;
+  padding:17px;
+  border:none;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+  cursor:pointer;
+  margin-bottom:12px;
+  font-family:'Inter',sans-serif;
+  overflow:hidden;
+  z-index:1;
+  transition:color .4s var(--ease);
+}
+
+button.btn::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  transform:scaleX(0);
+  transform-origin:right;
+  transition:transform .5s var(--ease);
+}
+
+button.btn:hover::after{
+  transform:scaleX(1);
+  transform-origin:left;
 }
 
 #loginBtn{
-background:#111;
-color:#fff;
+  background:var(--ink);
+  color:var(--ivory);
+}
+
+#loginBtn::after{
+  background:var(--gold);
+}
+
+#loginBtn:disabled{
+  opacity:.6;
+  cursor:not-allowed;
 }
 
 #createBtn{
-background:#fff;
-color:#111;
-border:1px solid #111;
+  background:transparent;
+  color:var(--ink);
+  border:1px solid var(--ink);
 }
 
+#createBtn::after{
+  background:var(--ink);
+}
+
+#createBtn:hover{
+  color:var(--ivory);
+}
+
+.spinner{
+  display:none;
+  width:16px;
+  height:16px;
+  border:2px solid rgba(247,244,238,.3);
+  border-top-color:var(--ivory);
+  border-radius:50%;
+  animation:spin .7s linear infinite;
+  margin:0 auto;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg);}
+}
+
+#loginBtn.loading .btn-label{display:none;}
+#loginBtn.loading .spinner{display:block;}
+
 .links{
-text-align:center;
-margin-top:15px;
+  text-align:center;
+  margin-top:18px;
 }
 
 .links a{
-text-decoration:none;
-color:#111;
-font-size:15px;
+  text-decoration:none;
+  color:rgba(14,13,11,.6);
+  font-size:12px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  font-weight:500;
+  transition:color .2s;
+}
+
+.links a:hover{
+  color:var(--gold);
 }
 </style>
 </head>
@@ -91,69 +301,138 @@ font-size:15px;
 
 <div class="login-box">
 
-<h1>Login</h1>
+  <div class="brand">EXAMPLE</div>
+  <span class="brand-tag">Premium Fashion</span>
 
-<p>Welcome to EXAMPLE CLOTHING</p>
+  <h1>Welcome Back</h1>
+  <p class="sub">Log in to continue to EXAMPLE CLOTHING.</p>
 
-<input
-type="email"
-id="email"
-placeholder="Email Address">
+  <div class="field">
+    <input type="email" id="email" placeholder="Email Address" autocomplete="email">
+  </div>
 
-<input
-type="password"
-id="password"
-placeholder="Password">
+  <div class="field">
+    <input type="password" id="password" placeholder="Password" autocomplete="current-password">
+    <button type="button" class="toggle-pass" id="togglePass" aria-label="Show password">
+      <svg viewBox="0 0 24 24"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12Z"/><circle cx="12" cy="12" r="2.6"/></svg>
+    </button>
+  </div>
 
-<button id="loginBtn">
-Login
-</button>
+  <div class="msg" id="msg"></div>
 
-<button
-id="createBtn"
-onclick="location.href='register.html'">
-Create Account
-</button>
+  <button class="btn" id="loginBtn">
+    <span class="btn-label">Login</span>
+    <span class="spinner"></span>
+  </button>
 
-<div class="links">
+  <button class="btn" id="createBtn" onclick="location.href='register.html'">
+    Create Account
+  </button>
 
-<a href="forgot-password.html">
-Forgot Password?
-</a>
+  <div class="links">
+    <a href="forgot-password.html">Forgot Password?</a>
+  </div>
 
-</div>
+  <div class="links">
+    <a href="index.html">← Back to Home</a>
+  </div>
 
 </div>
 
 <script type="module">
-
 import { login } from "./auth.js";
 
-document.getElementById("loginBtn").onclick = async () => {
+const emailEl = document.getElementById("email");
+const passEl = document.getElementById("password");
+const loginBtn = document.getElementById("loginBtn");
+const msg = document.getElementById("msg");
 
-const email = document.getElementById("email").value.trim();
-const password = document.getElementById("password").value;
+/* ---- show/hide password ---- */
+document.getElementById("togglePass").addEventListener("click", () => {
+  passEl.type = passEl.type === "password" ? "text" : "password";
+});
 
-if(!email || !password){
-alert("Please enter email and password");
-return;
+/* ---- inline messages instead of alert() ---- */
+function showMsg(text, type){
+  msg.textContent = text;
+  msg.className = "msg show " + type;
 }
 
-try{
-
-await login(email,password);
-
-window.location.href = "index.html";
-
-}
-catch(error){
-
-alert(error.message);
-
+function clearMsg(){
+  msg.className = "msg";
 }
 
-};
+/* ---- friendly Firebase error messages ---- */
+function friendlyError(error){
+  const code = error && error.code ? error.code : "";
+  switch(code){
+    case "auth/invalid-credential":
+    case "auth/wrong-password":
+    case "auth/user-not-found":
+      return "Incorrect email or password.";
+    case "auth/invalid-email":
+      return "Please enter a valid email address.";
+    case "auth/too-many-requests":
+      return "Too many attempts. Please wait a moment and try again.";
+    case "auth/network-request-failed":
+      return "Network error. Check your connection and try again.";
+    default:
+      return (error && error.message) ? error.message : "Something went wrong. Please try again.";
+  }
+}
 
+/* ---- validation ---- */
+function validate(){
+  const email = emailEl.value.trim();
+  const password = passEl.value;
+
+  [emailEl, passEl].forEach(el => el.classList.remove("invalid"));
+
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  if(!emailOk){
+    emailEl.classList.add("invalid");
+    showMsg("Please enter a valid email address.", "error");
+    return null;
+  }
+
+  if(!password){
+    passEl.classList.add("invalid");
+    showMsg("Please enter your password.", "error");
+    return null;
+  }
+
+  return { email, password };
+}
+
+/* ---- submit ---- */
+async function submit(){
+  clearMsg();
+  const data = validate();
+  if(!data) return;
+
+  loginBtn.disabled = true;
+  loginBtn.classList.add("loading");
+
+  try{
+    await login(data.email, data.password);
+    window.location.href = "index.html";
+  }
+  catch(error){
+    console.error(error);
+    showMsg(friendlyError(error), "error");
+    loginBtn.disabled = false;
+    loginBtn.classList.remove("loading");
+  }
+}
+
+loginBtn.addEventListener("click", submit);
+
+/* Enter key submits from either field */
+[emailEl, passEl].forEach(el => {
+  el.addEventListener("keydown", (e) => {
+    if(e.key === "Enter") submit();
+  });
+});
 </script>
 
 </body>
