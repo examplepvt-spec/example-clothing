@@ -139,7 +139,7 @@ a{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 18px;
+  padding:0 24px;
   z-index:1000;
   transition:background .5s var(--ease), border-color .5s, transform .45s var(--ease);
   background:transparent;
@@ -167,6 +167,33 @@ a{
 
 .header.on-hero .menu-btn span{
   background:var(--ivory);
+}
+
+/* Desktop Navigation styling */
+.desktop-nav{
+  display:none;
+  align-items:center;
+  gap:32px;
+  list-style:none;
+}
+
+.desktop-nav a{
+  text-decoration:none;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:2px;
+  font-weight:500;
+  color:var(--ink);
+  transition:color .3s;
+}
+
+.header.on-hero .desktop-nav a{
+  color:var(--ivory);
+}
+
+.desktop-nav a:hover,
+.header.on-hero .desktop-nav a:hover{
+  color:var(--gold);
 }
 
 .menu-btn{
@@ -201,7 +228,6 @@ a{
   display:flex;
   align-items:center;
   gap:10px;
-  flex:1;
   margin-left:14px;
 }
 
@@ -406,6 +432,12 @@ a{
   padding:0 26px 84px;
 }
 
+@media (min-width: 768px) {
+  .overlay {
+    padding: 0 80px 100px;
+  }
+}
+
 .eyebrow{
   color:var(--gold-soft);
   font-size:11px;
@@ -436,7 +468,7 @@ a{
   color:var(--ivory);
   font-size:clamp(42px,11vw,64px);
   line-height:1.04;
-  max-width:400px;
+  max-width:550px;
   font-weight:500;
 }
 
@@ -468,7 +500,7 @@ a{
   color:rgba(247,244,238,.78);
   font-size:15px;
   margin-top:18px;
-  max-width:300px;
+  max-width:480px;
   line-height:1.65;
   font-weight:300;
   opacity:0;
@@ -488,6 +520,13 @@ a{
   max-width:300px;
   opacity:0;
   animation:fadeUp 1s var(--ease) 2.25s forwards;
+}
+
+@media(min-width: 576px) {
+  .btn-row {
+    flex-direction: row;
+    max-width: none;
+  }
 }
 
 .btn{
@@ -664,16 +703,24 @@ a{
   font-size:14px;
   color:rgba(14,13,11,.55);
   font-weight:300;
-  max-width:300px;
+  max-width:380px;
   margin-left:auto;
   margin-right:auto;
   line-height:1.6;
 }
 
-/* ---------- FEATURED ---------- */
+/* ---------- FEATURED SHOWCASE ---------- */
+
+.featured-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:24px;
+  padding:0 22px;
+  max-width:1200px;
+  margin:28px auto 0;
+}
 
 .featured-card{
-  margin:28px 22px 0;
   background:var(--white);
   border:1px solid var(--line);
   position:relative;
@@ -707,9 +754,11 @@ a{
 
 .media-wrap{
   overflow:hidden;
+  position:relative;
 }
 
-.featured-card video{
+.featured-card video,
+.featured-card img{
   width:100%;
   display:block;
   aspect-ratio:4/5;
@@ -717,7 +766,8 @@ a{
   transition:transform 1.2s var(--ease);
 }
 
-.featured-card:hover video{
+.featured-card:hover video,
+.featured-card:hover img{
   transform:scale(1.05);
 }
 
@@ -957,6 +1007,31 @@ footer hr{
   letter-spacing:1px;
 }
 
+/* ---------- RESPONSIVE ADAPTATIONS ---------- */
+
+@media(min-width: 768px) {
+  .desktop-nav {
+    display: flex;
+  }
+  .logo-area {
+    margin-left: 0;
+  }
+  .featured-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+  .craft-grid {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+    gap: 20px;
+  }
+  .categories {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{
     animation-duration:.01ms !important;
@@ -978,6 +1053,7 @@ footer hr{
 
 <div class="menu-overlay" id="menuOverlay"></div>
 
+<!-- HEADER -->
 <div class="header on-hero" id="header">
 
   <button class="menu-btn" id="menuBtn" aria-label="Open menu">
@@ -988,6 +1064,15 @@ footer hr{
     <img src="logo.png" class="logo" alt="EXAMPLE CLOTHING">
     <span class="logo-text">EXAMPLE</span>
   </div>
+
+  <!-- Inline Desktop Navigation Menu -->
+  <nav class="desktop-nav">
+    <a href="men.html">Men</a>
+    <a href="women.html">Women</a>
+    <a href="kids.html">Kids</a>
+    <a href="sale.html">Sale</a>
+    <a href="accessories.html">Accessories</a>
+  </nav>
 
   <div class="header-icons">
 
@@ -1008,239 +1093,10 @@ footer hr{
 
 </div>
 
+<!-- SIDE DRAWER MENU -->
 <div class="side-menu" id="menu">
   <button class="close-btn" id="closeMenuBtn" aria-label="Close menu">✕</button>
   <span class="menu-tag">Browse Collections</span>
   <a href="men.html" class="nav-link">Men</a>
   <a href="women.html" class="nav-link">Women</a>
-  <a href="kids.html" class="nav-link">Kids</a>
-  <a href="sale.html" class="nav-link">Sale</a>
-  <a href="accessories.html" class="nav-link">Accessories</a>
-  <a href="footwear.html" class="nav-link">Footwear</a>
-  <a href="login.html" class="nav-link">Login</a>
-  <span class="menu-foot">Calicut · Kerala · India</span>
-</div>
-
-<section class="hero">
-  <video autoplay muted loop playsinline>
-    <source src="homepage-video.mp4" type="video/mp4">
-  </video>
-  <div class="overlay">
-    <span class="eyebrow">Premium Fashion · Since 2011</span>
-    <h1>
-      <span class="line"><span>Dress in</span></span>
-      <span class="line"><span><em>quality</em> that</span></span>
-      <span class="line"><span>speaks for you.</span></span>
-    </h1>
-    <p>Premium shirts, jackets, tees &amp; polos for men — refined jackets for women and a curated kids collection. Every piece quality-checked before it reaches you.</p>
-    <div class="btn-row">
-      <a href="categories.html" class="btn btn-primary">Shop the collection</a>
-      <a href="https://wa.me/919656003555" class="btn btn-outline">Order on WhatsApp</a>
-    </div>
-  </div>
-  <div class="scroll-hint"></div>
-</section>
-
-<!-- SCROLLING MARQUEE -->
-<div class="marquee">
-  <div class="marquee-track">
-    <span class="txt">Premium Quality</span>
-    <span class="txt">Genuine Brands</span>
-    <span class="txt">Quality Inspected</span>
-    <span class="txt">Calicut, Kerala</span>
-    <span class="txt">Premium Quality</span>
-    <span class="txt">Genuine Brands</span>
-    <span class="txt">Quality Inspected</span>
-    <span class="txt">Calicut, Kerala</span>
-  </div>
-</div>
-
-<div class="section-head reveal">
-  <span class="eyebrow-dark">Featured</span>
-  <h2>This Week's Picks</h2>
-  <p class="lede">Hand-selected pieces from our latest arrivals.</p>
-</div>
-
-<div class="featured-card reveal">
-  <span class="tag-badge">
-    <svg viewBox="0 0 24 24"><path d="M14 3 21 10 11 20a2 2 0 0 1-2.8 0L3.5 15.3a2 2 0 0 1 0-2.8L14 3Z"/></svg>
-    Premium
-  </span>
-  <div class="media-wrap">
-    <video autoplay muted loop playsinline>
-      <source src="crocs-feature.mp4" type="video/mp4">
-    </video>
-  </div>
-  <div class="featured-content">
-    <h3>Classic All Terrain Marbled Clog</h3>
-    <div class="price-row">
-      <span class="price">₹2,697</span>
-    </div>
-    <a href="crs8652.html" class="view-btn">View Product</a>
-  </div>
-</div>
-
-<div class="featured-card reveal" style="margin-top:28px;">
-  <span class="tag-badge">
-    <svg viewBox="0 0 24 24"><path d="M14 3 21 10 11 20a2 2 0 0 1-2.8 0L3.5 15.3a2 2 0 0 1 0-2.8L14 3Z"/></svg>
-    Premium
-  </span>
-  <div class="media-wrap">
-    <video autoplay muted loop playsinline>
-      <source src="crocs-hiker.mp4" type="video/mp4">
-    </video>
-  </div>
-  <div class="featured-content">
-    <h3>Classic Hiker Ikat Clog</h3>
-    <div class="price-row">
-      <span class="price">₹3,177</span>
-    </div>
-    <a href="crs6107.html" class="view-btn">View Product</a>
-  </div>
-</div>
-
-<!-- CRAFT / BRAND VALUES -->
-<section class="craft reveal">
-  <span class="eyebrow-dark">The EXAMPLE Standard</span>
-  <h2>Every piece, <em>held to a higher</em> standard.</h2>
-  <div class="craft-grid">
-    <div class="craft-item">
-      <span class="num">01</span>
-      <h3>Curated Selection</h3>
-      <p>We stock only premium garments from genuine brands — no compromises, no imitations.</p>
-    </div>
-    <div class="craft-item">
-      <span class="num">02</span>
-      <h3>Quality Inspection</h3>
-      <p>Every item is individually checked for fabric, stitching and finish before it goes on sale.</p>
-    </div>
-    <div class="craft-item">
-      <span class="num">03</span>
-      <h3>Personal Service</h3>
-      <p>Order directly on WhatsApp and get personal styling help from our Calicut store.</p>
-    </div>
-  </div>
-</section>
-
-<div class="section-head reveal">
-  <span class="eyebrow-dark">Explore</span>
-  <h2>Shop by Category</h2>
-</div>
-
-<section class="categories reveal">
-  <a href="men.html" class="cat">Men<small>Shirts · Jackets · Polos</small></a>
-  <a href="women.html" class="cat">Women<small>Jackets</small></a>
-  <a href="kids.html" class="cat">Kids<small>Collection</small></a>
-  <a href="sale.html" class="cat">Sale<small>Limited Offers</small></a>
-  <a href="accessories.html" class="cat">Accessories<small>Finishing Touches</small></a>
-  <a href="footwear.html" class="cat">Footwear<small>Clogs &amp; More</small></a>
-</section>
-
-<footer>
-  <div class="foot-logo">EXAMPLE</div>
-  <div class="foot-tag">Premium Fashion · Since 2011</div>
-
-  <h2>Customer Care</h2>
-
-  <p><b>Store Time</b>11:00 AM – 10:00 PM</p>
-  <p><b>WhatsApp</b>+91 9656003555</p>
-  <p><b>Email</b>examplepvt@gmail.com</p>
-  <p><b>Address</b>Calicut, Kerala, India</p>
-
-  <hr>
-
-  <p class="copyright">© 2026 EXAMPLE CLOTHING</p>
-</footer>
-
-<script>
-/* ---- Preloader ---- */
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    document.getElementById("preloader").classList.add("done");
-  }, 1400);
-});
-/* Safety: hide preloader even if some asset never finishes loading */
-setTimeout(() => {
-  document.getElementById("preloader").classList.add("done");
-}, 4000);
-
-/* ---- Menu ---- */
-const menu = document.getElementById("menu");
-const overlay = document.getElementById("menuOverlay");
-
-function openMenu(){
-  menu.classList.add("open");
-  overlay.classList.add("open");
-  document.body.style.overflow = "hidden";
-}
-
-function closeMenu(){
-  menu.classList.remove("open");
-  overlay.classList.remove("open");
-  document.body.style.overflow = "";
-}
-
-document.getElementById("menuBtn").addEventListener("click", openMenu);
-document.getElementById("closeMenuBtn").addEventListener("click", closeMenu);
-overlay.addEventListener("click", closeMenu);
-
-/* ---- Header: transparent on hero, solid after; hide on scroll down ---- */
-const header = document.getElementById("header");
-let lastY = 0;
-
-window.addEventListener("scroll", () => {
-  const y = window.scrollY;
-  const heroH = window.innerHeight - 80;
-
-  if(y > heroH){
-    header.classList.add("solid");
-    header.classList.remove("on-hero");
-  } else {
-    header.classList.remove("solid");
-    header.classList.add("on-hero");
-  }
-
-  if(y > lastY && y > heroH){
-    header.classList.add("hide");
-  } else {
-    header.classList.remove("hide");
-  }
-  lastY = y;
-}, {passive:true});
-
-/* ---- Reveal on scroll ---- */
-const io = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if(e.isIntersecting){
-      e.target.classList.add("in");
-      io.unobserve(e.target);
-    }
-  });
-}, {threshold:.12});
-
-document.querySelectorAll(".reveal").forEach(el => io.observe(el));
-
-/* ---- Cart count ---- */
-let cart = [];
-try{
-  const stored = JSON.parse(localStorage.getItem("cart"));
-  if(Array.isArray(stored)) cart = stored;
-}catch(e){}
-let totalQty = 0;
-cart.forEach(item => { totalQty += item.qty || 1; });
-document.getElementById("cartCount").innerText = totalQty;
-</script>
-
-<script type="module">
-import { checkUser } from "./auth.js";
-
-checkUser((user) => {
-  const accountBtn = document.getElementById("accountBtn");
-  if(user){
-    accountBtn.href = "profile.html";
-  }
-});
-</script>
-
-</body>
-</html>
+  <a href="kids.
