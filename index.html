@@ -68,17 +68,14 @@ a{
   justify-content:center;
   gap:18px;
   pointer-events: auto;
-  
-  /* PURE CSS FALLBACK: If JS fails or slows down, the preloader fades out automatically in 2.2 seconds */
   animation: plAutoFade 0.8s var(--ease) 2.2s forwards;
 }
 
-/* Explicit rule when preloader is cleared by JS */
 .preloader.done{
   opacity:0 !important;
   visibility:hidden !important;
   pointer-events:none !important;
-  animation: none !important; /* Stop fallback animation to prevent conflicts */
+  animation: none !important;
   transition: opacity .6s var(--ease), visibility .6s;
 }
 
@@ -151,7 +148,7 @@ a{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 24px;
+  padding:0 18px;
   z-index:1000;
   transition:background .5s var(--ease), border-color .5s, transform .45s var(--ease);
   background:transparent;
@@ -179,33 +176,6 @@ a{
 
 .header.on-hero .menu-btn span{
   background:var(--ivory);
-}
-
-/* Desktop Navigation styling */
-.desktop-nav{
-  display:none;
-  align-items:center;
-  gap:32px;
-  list-style:none;
-}
-
-.desktop-nav a{
-  text-decoration:none;
-  font-size:11px;
-  text-transform:uppercase;
-  letter-spacing:2px;
-  font-weight:500;
-  color:var(--ink);
-  transition:color .3s;
-}
-
-.header.on-hero .desktop-nav a{
-  color:var(--ivory);
-}
-
-.desktop-nav a:hover,
-.header.on-hero .desktop-nav a:hover{
-  color:var(--gold);
 }
 
 .menu-btn{
@@ -240,6 +210,7 @@ a{
   display:flex;
   align-items:center;
   gap:10px;
+  flex:1;
   margin-left:14px;
 }
 
@@ -444,12 +415,6 @@ a{
   padding:0 26px 84px;
 }
 
-@media (min-width: 768px) {
-  .overlay {
-    padding: 0 80px 100px;
-  }
-}
-
 .eyebrow{
   color:var(--gold-soft);
   font-size:11px;
@@ -480,7 +445,7 @@ a{
   color:var(--ivory);
   font-size:clamp(42px,11vw,64px);
   line-height:1.04;
-  max-width:550px;
+  max-width:400px;
   font-weight:500;
 }
 
@@ -512,7 +477,7 @@ a{
   color:rgba(247,244,238,.78);
   font-size:15px;
   margin-top:18px;
-  max-width:480px;
+  max-width:300px;
   line-height:1.65;
   font-weight:300;
   opacity:0;
@@ -532,13 +497,6 @@ a{
   max-width:300px;
   opacity:0;
   animation:fadeUp 1s var(--ease) 2.25s forwards;
-}
-
-@media(min-width: 576px) {
-  .btn-row {
-    flex-direction: row;
-    max-width: none;
-  }
 }
 
 .btn{
@@ -715,24 +673,16 @@ a{
   font-size:14px;
   color:rgba(14,13,11,.55);
   font-weight:300;
-  max-width:380px;
+  max-width:300px;
   margin-left:auto;
   margin-right:auto;
   line-height:1.6;
 }
 
-/* ---------- FEATURED SHOWCASE ---------- */
-
-.featured-grid{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:24px;
-  padding:0 22px;
-  max-width:1200px;
-  margin:28px auto 0;
-}
+/* ---------- FEATURED ---------- */
 
 .featured-card{
+  margin:28px 22px 0;
   background:var(--white);
   border:1px solid var(--line);
   position:relative;
@@ -766,11 +716,9 @@ a{
 
 .media-wrap{
   overflow:hidden;
-  position:relative;
 }
 
-.featured-card video,
-.featured-card img{
+.featured-card video{
   width:100%;
   display:block;
   aspect-ratio:4/5;
@@ -778,8 +726,7 @@ a{
   transition:transform 1.2s var(--ease);
 }
 
-.featured-card:hover video,
-.featured-card:hover img{
+.featured-card:hover video{
   transform:scale(1.05);
 }
 
@@ -1019,31 +966,6 @@ footer hr{
   letter-spacing:1px;
 }
 
-/* ---------- RESPONSIVE ADAPTATIONS ---------- */
-
-@media(min-width: 768px) {
-  .desktop-nav {
-    display: flex;
-  }
-  .logo-area {
-    margin-left: 0;
-  }
-  .featured-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 30px;
-  }
-  .craft-grid {
-    grid-template-columns: repeat(3, 1fr);
-    max-width: 1100px;
-    margin-left: auto;
-    margin-right: auto;
-    gap: 20px;
-  }
-  .categories {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{
     animation-duration:.01ms !important;
@@ -1056,7 +978,7 @@ footer hr{
 
 <body>
 
-<!-- PRELOADER (Now with CSS auto-removal backup) -->
+<!-- PRELOADER (With Mobile Connection Fail-Safe) -->
 <div class="preloader" id="preloader">
   <div class="pl-logo"><span>EXAMPLE</span></div>
   <div class="pl-line"></div>
@@ -1065,7 +987,7 @@ footer hr{
 
 <div class="menu-overlay" id="menuOverlay"></div>
 
-<!-- HEADER -->
+<!-- HEADER (Restored to Clean Classic Look) -->
 <div class="header on-hero" id="header">
 
   <button class="menu-btn" id="menuBtn" aria-label="Open menu">
@@ -1076,15 +998,6 @@ footer hr{
     <img src="logo.png" class="logo" alt="EXAMPLE CLOTHING">
     <span class="logo-text">EXAMPLE</span>
   </div>
-
-  <!-- Inline Desktop Navigation Menu -->
-  <nav class="desktop-nav">
-    <a href="men.html">Men</a>
-    <a href="women.html">Women</a>
-    <a href="kids.html">Kids</a>
-    <a href="sale.html">Sale</a>
-    <a href="accessories.html">Accessories</a>
-  </nav>
 
   <div class="header-icons">
 
@@ -1105,7 +1018,7 @@ footer hr{
 
 </div>
 
-<!-- SIDE DRAWER MENU -->
+<!-- SIDE DRAW MENU -->
 <div class="side-menu" id="menu">
   <button class="close-btn" id="closeMenuBtn" aria-label="Close menu">✕</button>
   <span class="menu-tag">Browse Collections</span>
@@ -1121,7 +1034,6 @@ footer hr{
 
 <!-- HERO SECTION -->
 <section class="hero">
-  <!-- preload="metadata" prevents the page from blocking load on slower mobile networks -->
   <video autoplay muted loop playsinline preload="metadata">
     <source src="homepage-video.mp4" type="video/mp4">
   </video>
@@ -1135,253 +1047,4 @@ footer hr{
     <p>Premium shirts, jackets, tees &amp; polos for men — refined jackets for women and a curated kids collection. Every piece quality-checked before it reaches you.</p>
     <div class="btn-row">
       <a href="categories.html" class="btn btn-primary">Shop the collection</a>
-      <a href="https://wa.me/919656003555" class="btn btn-outline" target="_blank" rel="noopener">Order on WhatsApp</a>
-    </div>
-  </div>
-  <div class="scroll-hint"></div>
-</section>
-
-<!-- SCROLLING MARQUEE -->
-<div class="marquee">
-  <div class="marquee-track">
-    <span class="txt">Premium Quality</span>
-    <span class="txt">Genuine Brands</span>
-    <span class="txt">Quality Inspected</span>
-    <span class="txt">Calicut, Kerala</span>
-    <span class="txt">Premium Quality</span>
-    <span class="txt">Genuine Brands</span>
-    <span class="txt">Quality Inspected</span>
-    <span class="txt">Calicut, Kerala</span>
-  </div>
-</div>
-
-<!-- FEATURED SHOWCASE -->
-<section class="reveal">
-  <div class="section-head">
-    <span class="eyebrow-dark">Curated Selection</span>
-    <h2>Seasonal Exclusives</h2>
-    <p class="lede">Artisanally crafted wardrobe staples designed to stand the test of time.</p>
-  </div>
-  
-  <div class="featured-grid">
-    <!-- Featured Item 1 -->
-    <div class="featured-card">
-      <span class="tag-badge">
-        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        Signature
-      </span>
-      <div class="media-wrap">
-        <video autoplay muted loop playsinline preload="metadata">
-          <source src="featured-suit.mp4" type="video/mp4">
-          <img src="featured-fallback-1.jpg" alt="Signature Wardrobe Piece">
-        </video>
-      </div>
-      <div class="featured-content">
-        <h3>The Mercer Linen Blazer</h3>
-        <div class="price-row">
-          <span class="price">₹4,999</span>
-        </div>
-        <a href="product-detail.html" class="view-btn">View Details</a>
-      </div>
-    </div>
-    
-    <!-- Featured Item 2 -->
-    <div class="featured-card">
-      <span class="tag-badge">New Arrival</span>
-      <div class="media-wrap">
-        <video autoplay muted loop playsinline preload="metadata">
-          <source src="featured-knit.mp4" type="video/mp4">
-          <img src="featured-fallback-2.jpg" alt="Contemporary Knit Polo">
-        </video>
-      </div>
-      <div class="featured-content">
-        <h3>Supima Cotton Knit Polo</h3>
-        <div class="price-row">
-          <span class="price">₹2,499</span>
-        </div>
-        <a href="product-detail.html" class="view-btn">View Details</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- BRAND PHILOSOPHY / CRAFT -->
-<section class="craft reveal">
-  <span class="eyebrow-dark">The Brand Philosophy</span>
-  <h2>Our commitment to <em>extraordinary</em> detail.</h2>
-  
-  <div class="craft-grid">
-    <div class="craft-item">
-      <span class="num">01 /</span>
-      <h3>Premium Materials</h3>
-      <p>We source only the finest Egyptian cotton, raw Italian linen, and fine merino wools.</p>
-    </div>
-    <div class="craft-item">
-      <span class="num">02 /</span>
-      <h3>Quality-Inspected</h3>
-      <p>Every single garment undergoes an exhaustive multi-point quality check prior to packaging.</p>
-    </div>
-    <div class="craft-item">
-      <span class="num">03 /</span>
-      <h3>Timeless Tailoring</h3>
-      <p>Designed with clean lines and contemporary silhouettes that age gracefully.</p>
-    </div>
-  </div>
-</section>
-
-<!-- EXPLORE CATEGORIES -->
-<section class="reveal">
-  <div class="section-head">
-    <span class="eyebrow-dark">Explore Collections</span>
-    <h2>Shop by Category</h2>
-  </div>
-  
-  <div class="categories" style="max-width: 1200px; margin: 28px auto 0;">
-    <a href="men.html" class="cat">
-      Men
-      <small>Explore Apparel</small>
-    </a>
-    <a href="women.html" class="cat">
-      Women
-      <small>Refined Style</small>
-    </a>
-    <a href="accessories.html" class="cat">
-      Accessories
-      <small>Curated Extras</small>
-    </a>
-    <a href="footwear.html" class="cat">
-      Footwear
-      <small>Staple Steps</small>
-    </a>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="foot-logo">EXAMPLE</div>
-  <div class="foot-tag">Premium Fashion Store</div>
-  
-  <div style="max-width: 600px; margin: 0 auto;">
-    <h2>Visit Us</h2>
-    <p>
-      <b>Flagship Boutique</b>
-      Calicut, Kerala, India
-    </p>
-    <p>
-      <b>Support &amp; Custom Orders</b>
-      Feel free to reach out via WhatsApp for personalized sizing assistance or custom orders.
-    </p>
-  </div>
-  
-  <hr>
-  <div class="copyright">
-    &copy; 2026 EXAMPLE CLOTHING. All rights reserved. Built with precision.
-  </div>
-</footer>
-
-<!-- INTERACTION JAVASCRIPT -->
-<script>
-// Safe IIFE to protect visual states
-(function() {
-  const pl = document.getElementById('preloader');
-  function clearPreloader() {
-    if (pl && !pl.classList.contains('done')) {
-      pl.classList.add('done');
-    }
-  }
-
-  // Dismiss as soon as HTML document structure is fully complete/ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      setTimeout(clearPreloader, 400); // 400ms delay to display initial animation gracefully
-    });
-  } else {
-    clearPreloader();
-  }
-
-  // Double backup check - guarantees preloader is gone quickly
-  setTimeout(clearPreloader, 1800);
-})();
-
-// Initialize other UI triggers safely on DOM interactivity
-document.addEventListener('DOMContentLoaded', () => {
-
-  // Mobile Menu Drawer Control
-  const menuBtn = document.getElementById('menuBtn');
-  const closeMenuBtn = document.getElementById('closeMenuBtn');
-  const sideMenu = document.getElementById('menu');
-  const overlay = document.getElementById('menuOverlay');
-
-  function openMenu() {
-    if (sideMenu && overlay) {
-      sideMenu.classList.add('open');
-      overlay.classList.add('open');
-      document.body.style.overflow = 'hidden'; 
-    }
-  }
-
-  function closeMenu() {
-    if (sideMenu && overlay) {
-      sideMenu.classList.remove('open');
-      overlay.classList.remove('open');
-      document.body.style.overflow = ''; 
-    }
-  }
-
-  if (menuBtn) menuBtn.addEventListener('click', openMenu);
-  if (closeMenuBtn) closeMenuBtn.addEventListener('click', closeMenu);
-  if (overlay) overlay.addEventListener('click', closeMenu);
-
-  // Dynamic Header Scroll Effects
-  let lastScrollY = window.scrollY;
-  const header = document.getElementById('header');
-  const hero = document.querySelector('.hero');
-  const heroHeight = hero ? hero.offsetHeight : window.innerHeight;
-
-  if (header) {
-    window.addEventListener('scroll', () => {
-      const currentScrollY = window.scrollY;
-
-      if (currentScrollY > 50) {
-        header.classList.add('solid');
-        header.classList.remove('on-hero');
-      } else {
-        header.classList.remove('solid');
-        header.classList.add('on-hero');
-      }
-
-      if (currentScrollY > lastScrollY && currentScrollY > (heroHeight - 80)) {
-        header.classList.add('hide');
-      } else {
-        header.classList.remove('hide');
-      }
-
-      lastScrollY = currentScrollY;
-    }, { passive: true });
-  }
-
-  // Elements scroll animation entry
-  const revealElements = document.querySelectorAll('.reveal');
-  if (revealElements.length > 0) {
-    if ('IntersectionObserver' in window) {
-      const revealObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('in');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, {
-        threshold: 0.1,
-        rootMargin: "0px 0px -60px 0px"
-      });
-
-      revealElements.forEach(el => revealObserver.observe(el));
-    } else {
-      revealElements.forEach(el => el.classList.add('in'));
-    }
-  }
-});
-</script>
-</body>
-</html>
+      <a href="https://wa.me/919656003555" class="btn btn-outline" target="_b
