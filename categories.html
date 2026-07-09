@@ -1,447 +1,1150 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Categories — EXAMPLE CLOTHING</title>
+
+<title>Collections — EXAMPLE CLOTHING</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
+
 :root{
-  --ink:#161412;
-  --ivory:#f6f3ec;
-  --ivory-dim:#eee9dd;
-  --brass:#9c7a3c;
-  --brass-soft:#c7ab74;
-  --line:#e2dccb;
-  --white:#ffffff;
+
+--ink:#0e0d0b;
+--ink-soft:#191715;
+
+--ivory:#f7f4ee;
+--ivory-soft:#f2eee6;
+
+--gold:#b08d3e;
+--gold-light:#d8bf83;
+
+--line:#e4ddcd;
+
+--white:#fff;
+
+--ease:cubic-bezier(.22,1,.36,1);
+
 }
 
 *{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
+
+margin:0;
+padding:0;
+box-sizing:border-box;
+
+}
+
+html{
+
+scroll-behavior:smooth;
+
 }
 
 body{
-  background:var(--ivory);
-  color:var(--ink);
-  font-family:'Inter',sans-serif;
-  -webkit-font-smoothing:antialiased;
+
+background:var(--ivory);
+color:var(--ink);
+
+font-family:Inter,sans-serif;
+
+overflow-x:hidden;
+
+-webkit-font-smoothing:antialiased;
+
 }
 
-h1,h2{
-  font-family:'Libre Caslon Display',serif;
-  font-weight:400;
+img{
+
+display:block;
+max-width:100%;
+
 }
 
 a{
-  color:inherit;
+
+text-decoration:none;
+color:inherit;
+
 }
 
-/* ---------- HEADER (shared) ---------- */
+h1,h2,h3{
+
+font-family:"Cormorant Garamond",serif;
+font-weight:500;
+
+}
+
+/*==========================
+PRELOADER
+==========================*/
+
+.preloader{
+
+position:fixed;
+inset:0;
+
+background:var(--ink);
+
+display:flex;
+
+align-items:center;
+justify-content:center;
+
+flex-direction:column;
+
+z-index:99999;
+
+transition:.8s;
+
+}
+
+.preloader.hide{
+
+opacity:0;
+visibility:hidden;
+
+}
+
+.loaderLogo{
+
+font-family:"Cormorant Garamond",serif;
+
+font-size:36px;
+
+letter-spacing:8px;
+
+color:white;
+
+margin-bottom:15px;
+
+}
+
+.loaderLine{
+
+width:120px;
+height:2px;
+
+background:rgba(255,255,255,.15);
+
+overflow:hidden;
+
+}
+
+.loaderLine span{
+
+display:block;
+
+height:100%;
+width:0;
+
+background:var(--gold);
+
+animation:loading 2s forwards;
+
+}
+
+@keyframes loading{
+
+100%{
+
+width:100%;
+
+}
+
+}
+
+/*==========================
+HEADER
+==========================*/
 
 .header{
-  position:sticky;
-  top:0;
-  width:100%;
-  height:68px;
-  background:rgba(246,243,236,.95);
-  backdrop-filter:blur(10px);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 18px;
-  z-index:1000;
-  border-bottom:1px solid var(--line);
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+
+height:72px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+padding:0 20px;
+
+z-index:5000;
+
+transition:.45s;
+
+background:transparent;
+
+}
+
+.header.active{
+
+background:rgba(247,244,238,.94);
+
+backdrop-filter:blur(18px);
+
+border-bottom:1px solid var(--line);
+
 }
 
 .menu-btn{
-  width:24px;
-  height:18px;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  cursor:pointer;
-  background:none;
-  border:none;
-  padding:0;
+
+width:44px;
+height:44px;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+gap:6px;
+
+cursor:pointer;
+
+background:none;
+
+border:none;
+
 }
 
 .menu-btn span{
-  display:block;
-  height:2px;
-  background:var(--ink);
-  border-radius:2px;
+
+display:block;
+
+height:2px;
+
+background:white;
+
+transition:.35s;
+
 }
 
-.logo-area{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  flex:1;
-  margin-left:18px;
+.header.active .menu-btn span{
+
+background:var(--ink);
+
+}
+
+.menu-btn span:nth-child(1){
+
+width:24px;
+
+}
+
+.menu-btn span:nth-child(2){
+
+width:17px;
+
+}
+
+.menu-btn span:nth-child(3){
+
+width:21px;
+
+}
+
+.logoArea{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+flex:1;
+
+margin-left:14px;
+
 }
 
 .logo{
-  width:34px;
-  height:34px;
-  border-radius:50%;
-  object-fit:cover;
+
+width:36px;
+height:36px;
+
+border-radius:50%;
+
+object-fit:cover;
+
 }
 
-.logo-text{
-  font-family:'Libre Caslon Display',serif;
-  font-size:17px;
-  letter-spacing:.3px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
+.logoText{
+
+font-family:"Cormorant Garamond",serif;
+
+font-size:22px;
+
+letter-spacing:4px;
+
+color:white;
+
+transition:.35s;
+
 }
 
-.header-icons{
-  display:flex;
-  align-items:center;
-  gap:6px;
+.header.active .logoText{
+
+color:var(--ink);
+
 }
 
-.icon-link{
-  position:relative;
-  width:42px;
-  height:42px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-decoration:none;
-  border-radius:50%;
-  transition:background .2s;
+.headerIcons{
+
+display:flex;
+
+gap:6px;
+
 }
 
-.icon-link:hover{
-  background:var(--ivory-dim);
+.icon{
+
+position:relative;
+
+width:42px;
+height:42px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+border-radius:50%;
+
+transition:.3s;
+
 }
 
-.icon-link svg{
-  width:21px;
-  height:21px;
-  stroke:var(--ink);
-  fill:none;
-  stroke-width:1.6;
+.icon:hover{
+
+background:rgba(176,141,62,.12);
+
+}
+
+.icon svg{
+
+width:21px;
+height:21px;
+
+stroke:white;
+
+fill:none;
+
+stroke-width:1.5;
+
+transition:.35s;
+
+}
+
+.header.active .icon svg{
+
+stroke:var(--ink);
+
 }
 
 .badge{
-  position:absolute;
-  top:2px;
-  right:2px;
-  background:var(--brass);
-  color:var(--white);
-  min-width:16px;
-  height:16px;
-  padding:0 3px;
-  border-radius:50%;
-  font-size:10px;
-  font-weight:700;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+
+position:absolute;
+
+top:2px;
+right:2px;
+
+background:var(--gold);
+
+color:white;
+
+font-size:10px;
+
+font-weight:700;
+
+min-width:16px;
+height:16px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+border-radius:50%;
+
 }
 
-/* ---------- SIDE MENU (shared) ---------- */
+/*==========================
+SIDE MENU
+==========================*/
 
-.side-menu{
-  position:fixed;
-  top:0;
-  left:-300px;
-  width:290px;
-  height:100%;
-  background:var(--ink);
-  color:var(--ivory);
-  padding:90px 32px 32px;
-  transition:.4s cubic-bezier(.4,0,.2,1);
-  z-index:2000;
+.overlayMenu{
+
+position:fixed;
+
+inset:0;
+
+background:rgba(0,0,0,.5);
+
+opacity:0;
+
+visibility:hidden;
+
+transition:.4s;
+
+z-index:8000;
+
 }
 
-.side-menu.open{
-  left:0;
+.overlayMenu.show{
+
+opacity:1;
+
+visibility:visible;
+
 }
 
-.menu-tag{
-  font-size:11px;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  color:var(--brass-soft);
-  margin-bottom:20px;
-  display:block;
+.sideMenu{
+
+position:fixed;
+
+top:0;
+
+left:-320px;
+
+width:300px;
+
+height:100%;
+
+background:#111;
+
+color:white;
+
+padding:90px 35px;
+
+transition:.5s;
+
+z-index:9000;
+
 }
 
-.side-menu a.nav-link{
-  display:block;
-  text-decoration:none;
-  color:var(--ivory);
-  font-family:'Libre Caslon Display',serif;
-  font-size:22px;
-  padding:13px 0;
-  border-bottom:1px solid rgba(255,255,255,.1);
+.sideMenu.show{
+
+left:0;
+
 }
 
-.close-btn{
-  position:absolute;
-  top:24px;
-  right:24px;
-  background:none;
-  border:none;
-  color:var(--ivory);
-  font-size:26px;
-  cursor:pointer;
-  line-height:1;
+.sideMenu h5{
+
+font-size:11px;
+
+letter-spacing:4px;
+
+text-transform:uppercase;
+
+color:var(--gold-light);
+
+margin-bottom:25px;
+
 }
 
-.menu-overlay{
-  display:none;
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,.4);
-  z-index:1500;
+.sideMenu a{
+
+display:block;
+
+padding:15px 0;
+
+font-family:"Cormorant Garamond",serif;
+
+font-size:28px;
+
+border-bottom:1px solid rgba(255,255,255,.08);
+
+transition:.35s;
+
 }
 
-.menu-overlay.open{
-  display:block;
+.sideMenu a:hover{
+
+padding-left:10px;
+
+color:var(--gold-light);
+
 }
 
-/* ---------- PAGE HEAD ---------- */
+/*==========================
+HERO
+==========================*/
 
-.page-head{
-  padding:36px 22px 8px;
+.hero{
+
+height:55vh;
+
+background:url("categories-banner.jpg") center/cover;
+
+position:relative;
+
+display:flex;
+
+align-items:flex-end;
+
 }
 
-.eyebrow-dark{
-  font-size:11px;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  color:var(--brass);
-  font-weight:700;
+.hero::before{
+
+content:"";
+
+position:absolute;
+
+inset:0;
+
+background:linear-gradient(to top,
+rgba(0,0,0,.78),
+rgba(0,0,0,.15));
+
 }
 
-.page-head h1{
-  font-size:30px;
-  margin-top:8px;
+.heroContent{
+
+position:relative;
+
+z-index:2;
+
+padding:35px 25px;
+
+color:white;
+
 }
 
-/* ---------- GRID ---------- */
+.heroSmall{
 
-.grid{
-  padding:20px 22px 40px;
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-  gap:14px;
+font-size:11px;
+
+letter-spacing:4px;
+
+text-transform:uppercase;
+
+color:var(--gold-light);
+
+margin-bottom:10px;
+
 }
 
-.card{
-  position:relative;
-  height:220px;
-  border-radius:6px;
-  overflow:hidden;
-  text-decoration:none;
-  background:var(--ivory-dim);
-  border:1px solid var(--line);
+.heroTitle{
+
+font-size:46px;
+
+line-height:1.05;
+
+max-width:320px;
+
 }
 
-.card img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  transition:transform .5s ease;
-  display:block;
+.heroDesc{
+
+margin-top:15px;
+
+font-size:15px;
+
+opacity:.75;
+
+line-height:1.7;
+
+max-width:330px;
+
 }
 
-.card:hover img{
-  transform:scale(1.06);
-}
+<!-- =========================
+LUXURY CATEGORY GRID
+========================= -->
 
-.card .overlay{
-  position:absolute;
-  inset:0;
-  background:linear-gradient(180deg,rgba(22,20,18,0) 40%,rgba(22,20,18,.65) 100%);
-  display:flex;
-  align-items:flex-end;
-  justify-content:flex-start;
-  padding:16px;
-}
+<section class="collections">
 
-.card .overlay h2{
-  color:var(--ivory);
-  font-size:19px;
-  letter-spacing:.5px;
-}
+<div class="section-head reveal">
 
-.card-fallback{
-  width:100%;
-  height:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:var(--ivory-dim);
-  color:var(--brass);
-  font-family:'Libre Caslon Display',serif;
-  font-size:16px;
-}
+<span class="mini-title">
+Browse Collection
+</span>
 
-/* ---------- BACK LINK ---------- */
+<h2>
+Choose Your Style
+</h2>
 
-.back{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  justify-content:center;
-  padding:10px 22px 40px;
-  text-decoration:none;
-  font-weight:600;
-  font-size:14px;
-  color:var(--ink);
-}
-
-.back svg{
-  width:16px;
-  height:16px;
-  stroke:var(--ink);
-  fill:none;
-  stroke-width:2;
-}
-</style>
-</head>
-
-<body>
-
-<div class="menu-overlay" id="menuOverlay"></div>
-
-<div class="header">
-
-  <button class="menu-btn" id="menuBtn" aria-label="Open menu">
-    <span></span><span></span><span></span>
-  </button>
-
-  <div class="logo-area">
-    <img src="logo.png" class="logo" alt="EXAMPLE CLOTHING">
-    <span class="logo-text">EXAMPLE CLOTHING</span>
-  </div>
-
-  <div class="header-icons">
-
-    <a href="login.html" id="accountBtn" class="icon-link" aria-label="Account">
-      <svg viewBox="0 0 24 24"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z"/><path d="M4.5 20.5c1.4-3.6 4.3-5.5 7.5-5.5s6.1 1.9 7.5 5.5"/></svg>
-    </a>
-
-    <a href="wishlist.html" class="icon-link" aria-label="Wishlist">
-      <svg viewBox="0 0 24 24"><path d="M12 20.2s-7.6-4.5-9.9-9C.6 8 2 4.5 5.4 3.7c2-.5 3.9.3 5 2 .3.4.5.9.6 1.3.1-.4.3-.9.6-1.3 1.1-1.7 3-2.5 5-2 3.4.8 4.8 4.3 3.3 7.5-2.3 4.5-9.9 9-9.9 9Z"/></svg>
-    </a>
-
-    <a href="cart.html" class="icon-link" aria-label="Cart">
-      <svg viewBox="0 0 24 24"><path d="M4 7h16l-1.4 10.3a2 2 0 0 1-2 1.7H7.4a2 2 0 0 1-2-1.7L4 7Z"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/></svg>
-      <span class="badge" id="cartCount">0</span>
-    </a>
-
-  </div>
+<p>
+Explore premium collections crafted with quality fabrics and timeless design.
+</p>
 
 </div>
 
-<div class="side-menu" id="menu">
-  <button class="close-btn" id="closeMenuBtn" aria-label="Close menu">✕</button>
-  <span class="menu-tag">Browse</span>
-  <a href="men.html" class="nav-link">Men</a>
-  <a href="women.html" class="nav-link">Women</a>
-  <a href="kids.html" class="nav-link">Kids</a>
-  <a href="sale.html" class="nav-link">Sale</a>
-  <a href="accessories.html" class="nav-link">Accessories</a>
-  <a href="footwear.html" class="nav-link">Footwear</a>
-  <a href="login.html" class="nav-link" id="menuLoginLink">Login</a>
-</div>
+<div class="category-grid">
 
-<div class="page-head">
-  <span class="eyebrow-dark">Explore</span>
-  <h1>Shop by Category</h1>
-</div>
+<a href="men.html" class="category-card reveal">
 
-<div class="grid">
+<div class="image-wrap">
 
-<a href="men.html" class="card">
-  <img src="men.jpg" alt="Men" onerror="this.outerHTML='&lt;div class=&quot;card-fallback&quot;&gt;MEN&lt;/div&gt;'">
-  <div class="overlay"><h2>MEN</h2></div>
-</a>
+<img src="men.jpg" alt="Men">
 
-<a href="women.html" class="card">
-  <img src="women.jpg" alt="Women" onerror="this.outerHTML='&lt;div class=&quot;card-fallback&quot;&gt;WOMEN&lt;/div&gt;'">
-  <div class="overlay"><h2>WOMEN</h2></div>
-</a>
+<div class="dark-overlay"></div>
 
-<a href="kids.html" class="card">
-  <img src="kids.jpg" alt="Kids" onerror="this.outerHTML='&lt;div class=&quot;card-fallback&quot;&gt;KIDS&lt;/div&gt;'">
-  <div class="overlay"><h2>KIDS</h2></div>
-</a>
+<div class="category-content">
 
-<a href="sale.html" class="card">
-  <img src="sale.jpg" alt="Sale" onerror="this.outerHTML='&lt;div class=&quot;card-fallback&quot;&gt;SALE&lt;/div&gt;'">
-  <div class="overlay"><h2>SALE</h2></div>
-</a>
+<span>Premium Collection</span>
 
-<a href="accessories.html" class="card">
-  <img src="accessories.jpg" alt="Accessories" onerror="this.outerHTML='&lt;div class=&quot;card-fallback&quot;&gt;ACCESSORIES&lt;/div&gt;'">
-  <div class="overlay"><h2>ACCESSORIES</h2></div>
-</a>
+<h3>MEN</h3>
 
-<a href="footwear.html" class="card">
-  <img src="footwear.jpg" alt="Footwear" onerror="this.outerHTML='&lt;div class=&quot;card-fallback&quot;&gt;FOOTWEAR&lt;/div&gt;'">
-  <div class="overlay"><h2>FOOTWEAR</h2></div>
-</a>
+<div class="explore-btn">
+
+Explore →
 
 </div>
 
-<a href="index.html" class="back">
-  <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg>
-  Back to Home
+</div>
+
+</div>
+
 </a>
+
+<a href="women.html" class="category-card reveal">
+
+<div class="image-wrap">
+
+<img src="women.jpg" alt="Women">
+
+<div class="dark-overlay"></div>
+
+<div class="category-content">
+
+<span>Elegant Fashion</span>
+
+<h3>WOMEN</h3>
+
+<div class="explore-btn">
+
+Explore →
+
+</div>
+
+</div>
+
+</div>
+
+</a>
+
+<a href="kids.html" class="category-card reveal">
+
+<div class="image-wrap">
+
+<img src="kids.jpg">
+
+<div class="dark-overlay"></div>
+
+<div class="category-content">
+
+<span>Comfort Wear</span>
+
+<h3>KIDS</h3>
+
+<div class="explore-btn">
+
+Explore →
+
+</div>
+
+</div>
+
+</div>
+
+</a>
+
+<a href="sale.html" class="category-card reveal">
+
+<div class="image-wrap">
+
+<img src="sale.jpg">
+
+<div class="dark-overlay"></div>
+
+<div class="category-content">
+
+<span>Limited Time</span>
+
+<h3>SALE</h3>
+
+<div class="explore-btn">
+
+Shop Now →
+
+</div>
+
+</div>
+
+</div>
+
+</a>
+
+<a href="accessories.html" class="category-card reveal">
+
+<div class="image-wrap">
+
+<img src="accessories.jpg">
+
+<div class="dark-overlay"></div>
+
+<div class="category-content">
+
+<span>Luxury Details</span>
+
+<h3>ACCESSORIES</h3>
+
+<div class="explore-btn">
+
+Explore →
+
+</div>
+
+</div>
+
+</div>
+
+</a>
+
+<a href="footwear.html" class="category-card reveal">
+
+<div class="image-wrap">
+
+<img src="footwear.jpg">
+
+<div class="dark-overlay"></div>
+
+<div class="category-content">
+
+<span>Premium Shoes</span>
+
+<h3>FOOTWEAR</h3>
+
+<div class="explore-btn">
+
+Explore →
+
+</div>
+
+</div>
+
+</div>
+
+</a>
+
+</div>
+
+</section>
+
+/*============================
+
+CATEGORY SECTION
+
+============================*/
+
+.collections{
+
+padding:90px 22px;
+
+}
+
+.section-head{
+
+text-align:center;
+
+margin-bottom:45px;
+
+}
+
+.mini-title{
+
+display:inline-block;
+
+font-size:11px;
+
+letter-spacing:4px;
+
+text-transform:uppercase;
+
+color:var(--gold);
+
+margin-bottom:12px;
+
+}
+
+.section-head h2{
+
+font-size:44px;
+
+margin-bottom:15px;
+
+}
+
+.section-head p{
+
+max-width:520px;
+
+margin:auto;
+
+line-height:1.8;
+
+color:#666;
+
+}
+
+.category-grid{
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:18px;
+
+}
+
+.category-card{
+
+display:block;
+
+overflow:hidden;
+
+border-radius:18px;
+
+background:#fff;
+
+box-shadow:0 18px 50px rgba(0,0,0,.08);
+
+transition:.5s;
+
+}
+
+.category-card:hover{
+
+transform:translateY(-10px);
+
+}
+
+.image-wrap{
+
+position:relative;
+
+height:320px;
+
+overflow:hidden;
+
+}
+
+.image-wrap img{
+
+width:100%;
+
+height:100%;
+
+object-fit:cover;
+
+transition:1s;
+
+}
+
+.category-card:hover img{
+
+transform:scale(1.12);
+
+}
+
+.dark-overlay{
+
+position:absolute;
+
+inset:0;
+
+background:linear-gradient(to top,
+rgba(0,0,0,.75),
+rgba(0,0,0,.05));
+
+}
+
+.category-content{
+
+position:absolute;
+
+left:22px;
+
+bottom:22px;
+
+color:white;
+
+}
+
+.category-content span{
+
+font-size:11px;
+
+letter-spacing:3px;
+
+text-transform:uppercase;
+
+color:#d8bf83;
+
+}
+
+.category-content h3{
+
+font-size:34px;
+
+margin:10px 0;
+
+}
+
+.explore-btn{
+
+display:inline-block;
+
+margin-top:8px;
+
+font-size:13px;
+
+letter-spacing:2px;
+
+text-transform:uppercase;
+
+border-bottom:1px solid rgba(255,255,255,.5);
+
+padding-bottom:4px;
+
+}
+
+.reveal{
+
+opacity:0;
+
+transform:translateY(50px);
+
+transition:1s;
+
+}
+
+.reveal.active{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+@media(max-width:768px){
+
+.category-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.image-wrap{
+
+height:280px;
+
+}
+
+.section-head h2{
+
+font-size:36px;
+
+}
+
+}
+
+<!-- ===========================
+FOOTER
+=========================== -->
+
+<footer class="footer">
+
+<div class="footer-logo">
+EXAMPLE
+</div>
+
+<p class="footer-tag">
+Premium Clothing Collection
+</p>
+
+<div class="footer-links">
+
+<a href="index.html">Home</a>
+
+<a href="categories.html">Collections</a>
+
+<a href="wishlist.html">Wishlist</a>
+
+<a href="cart.html">Cart</a>
+
+<a href="login.html" id="footerLoginLink">Login</a>
+
+</div>
+
+<div class="footer-contact">
+
+<p>Calicut, Kerala</p>
+
+<p>example@email.com</p>
+
+<p>+91 9656003555</p>
+
+</div>
+
+<div class="copyright">
+
+© 2026 EXAMPLE CLOTHING
+
+</div>
+
+</footer>
 
 <script>
-const menu = document.getElementById("menu");
-const overlay = document.getElementById("menuOverlay");
+
+const header=document.querySelector(".header");
+
+window.addEventListener("scroll",()=>{
+
+if(window.scrollY>40){
+
+header.classList.add("active");
+
+}else{
+
+header.classList.remove("active");
+
+}
+
+});
+
+/* MENU */
+
+const menu=document.querySelector(".sideMenu");
+
+const overlay=document.querySelector(".overlayMenu");
+
+const menuBtn=document.querySelector(".menu-btn");
+
+const closeBtn=document.querySelector(".close-btn");
 
 function openMenu(){
-  menu.classList.add("open");
-  overlay.classList.add("open");
+
+menu.classList.add("show");
+
+overlay.classList.add("show");
+
+document.body.style.overflow="hidden";
+
 }
 
 function closeMenu(){
-  menu.classList.remove("open");
-  overlay.classList.remove("open");
+
+menu.classList.remove("show");
+
+overlay.classList.remove("show");
+
+document.body.style.overflow="";
+
 }
 
-document.getElementById("menuBtn").addEventListener("click", openMenu);
-document.getElementById("closeMenuBtn").addEventListener("click", closeMenu);
-overlay.addEventListener("click", closeMenu);
+menuBtn.onclick=openMenu;
 
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-let totalQty = 0;
-cart.forEach(item => { totalQty += item.qty || 1; });
-document.getElementById("cartCount").innerText = totalQty;
+closeBtn.onclick=closeMenu;
+
+overlay.onclick=closeMenu;
+
+/* PRELOADER */
+
+window.addEventListener("load",()=>{
+
+setTimeout(()=>{
+
+document.querySelector(".preloader").classList.add("hide");
+
+},1200);
+
+});
+
+/* SCROLL REVEAL */
+
+const reveals=document.querySelectorAll(".reveal");
+
+const observer=new IntersectionObserver((entries)=>{
+
+entries.forEach(entry=>{
+
+if(entry.isIntersecting){
+
+entry.target.classList.add("active");
+
+}
+
+});
+
+},{threshold:.15});
+
+reveals.forEach(item=>{
+
+observer.observe(item);
+
+});
+
+/* CART BADGE */
+
+let cart=JSON.parse(localStorage.getItem("cart"))||[];
+
+let qty=0;
+
+cart.forEach(item=>{
+
+qty+=item.qty||1;
+
+});
+
+document.getElementById("cartCount").innerText=qty;
+
 </script>
 
 <script type="module">
-import { checkUser } from "./auth.js";
 
-checkUser((user) => {
-  const accountBtn = document.getElementById("accountBtn");
-  const menuLoginLink = document.getElementById("menuLoginLink");
-  if(user){
-    accountBtn.href = "profile.html";
-    if(menuLoginLink) menuLoginLink.style.display = "none";
-  }
+import {checkUser} from "./auth.js";
+
+checkUser((user)=>{
+
+const accountBtn=document.getElementById("accountBtn");
+
+const menuLogin=document.getElementById("menuLoginLink");
+
+const footerLogin=document.getElementById("footerLoginLink");
+
+if(user){
+
+accountBtn.href="profile.html";
+
+if(menuLogin)menuLogin.style.display="none";
+
+if(footerLogin)footerLogin.style.display="none";
+
+}
+
 });
+
 </script>
 
 </body>
+
 </html>
