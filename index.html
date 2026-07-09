@@ -67,21 +67,12 @@ a{
   align-items:center;
   justify-content:center;
   gap:18px;
-  pointer-events: auto;
-  animation: plAutoFade 0.8s var(--ease) 2.2s forwards;
+  transition:opacity .8s var(--ease), visibility .8s;
 }
 
 .preloader.done{
-  opacity:0 !important;
-  visibility:hidden !important;
-  pointer-events:none !important;
-  animation: none !important;
-  transition: opacity .6s var(--ease), visibility .6s;
-}
-
-@keyframes plAutoFade {
-  0% { opacity: 1; visibility: visible; }
-  100% { opacity: 0; visibility: hidden; pointer-events: none; }
+  opacity:0;
+  visibility:hidden;
 }
 
 .preloader .pl-logo{
@@ -148,7 +139,7 @@ a{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 18px;
+  padding:0 24px;
   z-index:1000;
   transition:background .5s var(--ease), border-color .5s, transform .45s var(--ease);
   background:transparent;
@@ -176,6 +167,33 @@ a{
 
 .header.on-hero .menu-btn span{
   background:var(--ivory);
+}
+
+/* Desktop Navigation styling */
+.desktop-nav{
+  display:none;
+  align-items:center;
+  gap:32px;
+  list-style:none;
+}
+
+.desktop-nav a{
+  text-decoration:none;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:2px;
+  font-weight:500;
+  color:var(--ink);
+  transition:color .3s;
+}
+
+.header.on-hero .desktop-nav a{
+  color:var(--ivory);
+}
+
+.desktop-nav a:hover,
+.header.on-hero .desktop-nav a:hover{
+  color:var(--gold);
 }
 
 .menu-btn{
@@ -210,7 +228,6 @@ a{
   display:flex;
   align-items:center;
   gap:10px;
-  flex:1;
   margin-left:14px;
 }
 
@@ -415,6 +432,12 @@ a{
   padding:0 26px 84px;
 }
 
+@media (min-width: 768px) {
+  .overlay {
+    padding: 0 80px 100px;
+  }
+}
+
 .eyebrow{
   color:var(--gold-soft);
   font-size:11px;
@@ -445,7 +468,7 @@ a{
   color:var(--ivory);
   font-size:clamp(42px,11vw,64px);
   line-height:1.04;
-  max-width:400px;
+  max-width:550px;
   font-weight:500;
 }
 
@@ -477,7 +500,7 @@ a{
   color:rgba(247,244,238,.78);
   font-size:15px;
   margin-top:18px;
-  max-width:300px;
+  max-width:480px;
   line-height:1.65;
   font-weight:300;
   opacity:0;
@@ -497,6 +520,13 @@ a{
   max-width:300px;
   opacity:0;
   animation:fadeUp 1s var(--ease) 2.25s forwards;
+}
+
+@media(min-width: 576px) {
+  .btn-row {
+    flex-direction: row;
+    max-width: none;
+  }
 }
 
 .btn{
@@ -673,16 +703,24 @@ a{
   font-size:14px;
   color:rgba(14,13,11,.55);
   font-weight:300;
-  max-width:300px;
+  max-width:380px;
   margin-left:auto;
   margin-right:auto;
   line-height:1.6;
 }
 
-/* ---------- FEATURED ---------- */
+/* ---------- FEATURED SHOWCASE ---------- */
+
+.featured-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:24px;
+  padding:0 22px;
+  max-width:1200px;
+  margin:28px auto 0;
+}
 
 .featured-card{
-  margin:28px 22px 0;
   background:var(--white);
   border:1px solid var(--line);
   position:relative;
@@ -716,9 +754,11 @@ a{
 
 .media-wrap{
   overflow:hidden;
+  position:relative;
 }
 
-.featured-card video{
+.featured-card video,
+.featured-card img{
   width:100%;
   display:block;
   aspect-ratio:4/5;
@@ -726,7 +766,8 @@ a{
   transition:transform 1.2s var(--ease);
 }
 
-.featured-card:hover video{
+.featured-card:hover video,
+.featured-card:hover img{
   transform:scale(1.05);
 }
 
@@ -966,6 +1007,31 @@ footer hr{
   letter-spacing:1px;
 }
 
+/* ---------- RESPONSIVE ADAPTATIONS ---------- */
+
+@media(min-width: 768px) {
+  .desktop-nav {
+    display: flex;
+  }
+  .logo-area {
+    margin-left: 0;
+  }
+  .featured-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+  .craft-grid {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+    gap: 20px;
+  }
+  .categories {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{
     animation-duration:.01ms !important;
@@ -978,7 +1044,7 @@ footer hr{
 
 <body>
 
-<!-- PRELOADER (With Mobile Connection Fail-Safe) -->
+<!-- PRELOADER -->
 <div class="preloader" id="preloader">
   <div class="pl-logo"><span>EXAMPLE</span></div>
   <div class="pl-line"></div>
@@ -987,7 +1053,7 @@ footer hr{
 
 <div class="menu-overlay" id="menuOverlay"></div>
 
-<!-- HEADER (Restored to Clean Classic Look) -->
+<!-- HEADER -->
 <div class="header on-hero" id="header">
 
   <button class="menu-btn" id="menuBtn" aria-label="Open menu">
@@ -998,6 +1064,15 @@ footer hr{
     <img src="logo.png" class="logo" alt="EXAMPLE CLOTHING">
     <span class="logo-text">EXAMPLE</span>
   </div>
+
+  <!-- Inline Desktop Navigation Menu -->
+  <nav class="desktop-nav">
+    <a href="men.html">Men</a>
+    <a href="women.html">Women</a>
+    <a href="kids.html">Kids</a>
+    <a href="sale.html">Sale</a>
+    <a href="accessories.html">Accessories</a>
+  </nav>
 
   <div class="header-icons">
 
@@ -1018,33 +1093,10 @@ footer hr{
 
 </div>
 
-<!-- SIDE DRAW MENU -->
+<!-- SIDE DRAWER MENU -->
 <div class="side-menu" id="menu">
   <button class="close-btn" id="closeMenuBtn" aria-label="Close menu">✕</button>
   <span class="menu-tag">Browse Collections</span>
   <a href="men.html" class="nav-link">Men</a>
   <a href="women.html" class="nav-link">Women</a>
-  <a href="kids.html" class="nav-link">Kids</a>
-  <a href="sale.html" class="nav-link">Sale</a>
-  <a href="accessories.html" class="nav-link">Accessories</a>
-  <a href="footwear.html" class="nav-link">Footwear</a>
-  <a href="login.html" class="nav-link">Login</a>
-  <span class="menu-foot">Calicut · Kerala · India</span>
-</div>
-
-<!-- HERO SECTION -->
-<section class="hero">
-  <video autoplay muted loop playsinline preload="metadata">
-    <source src="homepage-video.mp4" type="video/mp4">
-  </video>
-  <div class="overlay">
-    <span class="eyebrow">Premium Fashion · Since 2011</span>
-    <h1>
-      <span class="line"><span>Dress in</span></span>
-      <span class="line"><span><em>quality</em> that</span></span>
-      <span class="line"><span>speaks for you.</span></span>
-    </h1>
-    <p>Premium shirts, jackets, tees &amp; polos for men — refined jackets for women and a curated kids collection. Every piece quality-checked before it reaches you.</p>
-    <div class="btn-row">
-      <a href="categories.html" class="btn btn-primary">Shop the collection</a>
-      <a href="https://wa.me/919656003555" class="btn btn-outline" target="_b
+  <a href="kids.
