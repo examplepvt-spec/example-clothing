@@ -429,7 +429,9 @@ a{
 import { db } from "./firebase.js";
 import {
     collection,
-    getDocs
+    getDocs,
+    query,
+    where
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const productsDiv = document.getElementById("products");
@@ -452,7 +454,9 @@ async function loadProducts(){
     showState("Loading footwear...");
 
     try{
-        const querySnapshot = await getDocs(collection(db, "products"));
+        // Correction: Query server side to load only footwear, reducing read load on Firestore [1]
+        const q = query(collection(db, "products"), where("category", "==", "footwear"));
+        const querySnapshot = await getDocs(q);
 
         allProducts = [];
         querySnapshot.forEach((doc) => {
@@ -469,10 +473,7 @@ async function loadProducts(){
 function displayProducts(searchText = ""){
 
     const filtered = allProducts.filter((product) => {
-        // Matches the 'footwear' category in your database
-        if((product.category || "").toLowerCase() !== "footwear"){
-            return false;
-        }
+        // Local filtering now only handles keyword search logic
         if(searchText){
             const name = (product.name || "").toLowerCase();
             if(!name.includes(searchText.toLowerCase())){
@@ -497,9 +498,10 @@ function displayProducts(searchText = ""){
             ? `<span class="old-price">₹${escapeHtml(String(product.price))}</span><span class="price">₹${escapeHtml(String(product.offerPrice))}</span>`
             : `<span class="price">₹${escapeHtml(String(product.price))}</span>`;
 
+        // Correction: Standardized onerror inline string template injection
         return `
             <a href="product.html?id=${encodeURIComponent(product.id)}" class="card">
-                <img src="${image}" alt="${name}" loading="lazy" onerror="this.outerHTML='&lt;div class=&quot;img-fallback&quot;&gt;No image&lt;/div&gt;'">
+                <img src="${image}" alt="${name}" loading="lazy" onerror="this.outerHTML='<div class=\'img-fallback\'>No image</div>'">
                 <div class="info">
                     <div class="name">${name}</div>
                     <div class="price-row">${priceHtml}</div>
