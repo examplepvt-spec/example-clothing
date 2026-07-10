@@ -1,246 +1,611 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EXAMPLE | Premium Fashion</title>
+<!DOCTYPE html>  <html>  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+<title>EXAMPLE CLOTHING — Verified Preowned Fashion</title>  <link rel="preconnect" href="https://fonts.googleapis.com">  
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>  
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">  <style>  
+:root{  
+  --ink:#161412;  
+  --ivory:#f6f3ec;  
+  --ivory-dim:#eee9dd;  
+  --brass:#9c7a3c;  
+  --brass-soft:#c7ab74;  
+  --oxblood:#5e2430;  
+  --line:#e2dccb;  
+  --white:#ffffff;  
+}  
   
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+*{  
+  margin:0;  
+  padding:0;  
+  box-sizing:border-box;  
+}  
+  
+body{  
+  background:var(--ivory);  
+  color:var(--ink);  
+  font-family:'Inter',sans-serif;  
+  overflow-x:hidden;  
+  -webkit-font-smoothing:antialiased;  
+}  
+  
+h1,h2,h3{  
+  font-family:'Libre Caslon Display',serif;  
+  font-weight:400;  
+}  
+  
+a{  
+  color:inherit;  
+}  
+  
+/* ---------- HEADER ---------- */  
+  
+.header{  
+  position:fixed;  
+  top:0;  
+  left:0;  
+  width:100%;  
+  height:68px;  
+  background:rgba(246,243,236,.92);  
+  backdrop-filter:blur(10px);  
+  display:flex;  
+  align-items:center;  
+  justify-content:space-between;  
+  padding:0 18px;  
+  z-index:1000;  
+  border-bottom:1px solid var(--line);  
+}  
+  
+.menu-btn{  
+  width:24px;  
+  height:18px;  
+  display:flex;  
+  flex-direction:column;  
+  justify-content:space-between;  
+  cursor:pointer;  
+  background:none;  
+  border:none;  
+  padding:0;  
+}  
+  
+.menu-btn span{  
+  display:block;  
+  height:2px;  
+  background:var(--ink);  
+  border-radius:2px;  
+}  
+  
+.logo-area{  
+  display:flex;  
+  align-items:center;  
+  gap:10px;  
+  flex:1;  
+  margin-left:18px;  
+}  
+  
+.logo{  
+  width:34px;  
+  height:34px;  
+  border-radius:50%;  
+  object-fit:cover;  
+}  
+  
+.logo-text{  
+  font-family:'Libre Caslon Display',serif;  
+  font-size:20px;  
+  letter-spacing:.5px;  
+}  
+  
+.header-icons{  
+  display:flex;  
+  align-items:center;  
+  gap:6px;  
+}  
+  
+.icon-link{  
+  position:relative;  
+  width:42px;  
+  height:42px;  
+  display:flex;  
+  align-items:center;  
+  justify-content:center;  
+  text-decoration:none;  
+  border-radius:50%;  
+  transition:background .2s;  
+}  
+  
+.icon-link:hover{  
+  background:var(--ivory-dim);  
+}  
+  
+.icon-link svg{  
+  width:21px;  
+  height:21px;  
+  stroke:var(--ink);  
+  fill:none;  
+  stroke-width:1.6;  
+}  
+  
+.badge{  
+  position:absolute;  
+  top:2px;  
+  right:2px;  
+  background:var(--brass);  
+  color:var(--white);  
+  min-width:16px;  
+  height:16px;  
+  padding:0 3px;  
+  border-radius:50%;  
+  font-size:10px;  
+  font-weight:700;  
+  display:flex;  
+  align-items:center;  
+  justify-content:center;  
+}  
+  
+/* ---------- SIDE MENU ---------- */  
+  
+.side-menu{  
+  position:fixed;  
+  top:0;  
+  left:-300px;  
+  width:290px;  
+  height:100%;  
+  background:var(--ink);  
+  color:var(--ivory);  
+  padding:90px 32px 32px;  
+  transition:.4s cubic-bezier(.4,0,.2,1);  
+  z-index:2000;  
+}  
+  
+.side-menu.open{  
+  left:0;  
+}  
+  
+.menu-tag{  
+  font-size:11px;  
+  letter-spacing:2px;  
+  text-transform:uppercase;  
+  color:var(--brass-soft);  
+  margin-bottom:20px;  
+  display:block;  
+}  
+  
+.side-menu a.nav-link{  
+  display:block;  
+  text-decoration:none;  
+  color:var(--ivory);  
+  font-family:'Libre Caslon Display',serif;  
+  font-size:22px;  
+  padding:13px 0;  
+  border-bottom:1px solid rgba(255,255,255,.1);  
+}  
+  
+.close-btn{  
+  position:absolute;  
+  top:24px;  
+  right:24px;  
+  background:none;  
+  border:none;  
+  color:var(--ivory);  
+  font-size:26px;  
+  cursor:pointer;  
+  line-height:1;  
+}  
+  
+.menu-overlay{  
+  display:none;  
+  position:fixed;  
+  top:0;  
+  left:0;  
+  width:100%;  
+  height:100%;  
+  background:rgba(0,0,0,.4);  
+  z-index:1500;  
+}  
+  
+.menu-overlay.open{  
+  display:block;  
+}  
+  
+/* ---------- HERO ---------- */  
+  
+.hero{  
+  height:100vh;  
+  position:relative;  
+  overflow:hidden;  
+}  
+  
+.hero video{  
+  width:100%;  
+  height:100%;  
+  object-fit:cover;  
+}  
+  
+.overlay{  
+  position:absolute;  
+  inset:0;  
+  background:linear-gradient(180deg,rgba(22,20,18,.15) 0%,rgba(22,20,18,.55) 100%);  
+  display:flex;  
+  flex-direction:column;  
+  justify-content:flex-end;  
+  padding:0 24px 70px;  
+}  
+  
+.eyebrow{  
+  color:var(--brass-soft);  
+  font-size:12px;  
+  letter-spacing:3px;  
+  text-transform:uppercase;  
+  margin-bottom:14px;  
+  font-weight:600;  
+}  
+  
+.overlay h1{  
+  color:var(--ivory);  
+  font-size:44px;  
+  line-height:1.05;  
+  max-width:320px;  
+}  
+  
+.overlay p{  
+  color:rgba(246,243,236,.8);  
+  font-size:15px;  
+  margin-top:14px;  
+  max-width:280px;  
+  line-height:1.5;  
+}  
+  
+.btn-row{  
+  display:flex;  
+  flex-direction:column;  
+  gap:12px;  
+  margin-top:28px;  
+  max-width:280px;  
+}  
+  
+.btn{  
+  padding:16px 22px;  
+  text-decoration:none;  
+  font-weight:600;  
+  font-size:14px;  
+  letter-spacing:.5px;  
+  text-align:center;  
+  border-radius:2px;  
+  border:1px solid transparent;  
+}  
+  
+.btn-primary{  
+  background:var(--ivory);  
+  color:var(--ink);  
+}  
+  
+.btn-outline{  
+  background:transparent;  
+  color:var(--ivory);  
+  border:1px solid rgba(246,243,236,.5);  
+}  
+  
+/* ---------- VERIFIED STRIP (signature element) ---------- */  
+  
+.verified-strip{  
+  background:var(--ink);  
+  color:var(--ivory);  
+  padding:16px 20px;  
+  display:flex;  
+  align-items:center;  
+  gap:14px;  
+  overflow-x:auto;  
+  white-space:nowrap;  
+}  
+  
+.tag-icon{  
+  flex-shrink:0;  
+  width:34px;  
+  height:34px;  
+}  
+  
+.verified-strip .txt{  
+  font-size:12px;  
+  letter-spacing:1px;  
+  text-transform:uppercase;  
+  color:var(--brass-soft);  
+  font-weight:600;  
+  padding-right:16px;  
+  border-right:1px solid rgba(255,255,255,.15);  
+}  
+  
+.verified-strip .txt:last-child{  
+  border-right:none;  
+}  
+  
+/* ---------- FEATURED ---------- */  
+  
+.section-head{  
+  padding:44px 22px 8px;  
+}  
+  
+.section-head .eyebrow-dark{  
+  font-size:11px;  
+  letter-spacing:2px;  
+  text-transform:uppercase;  
+  color:var(--brass);  
+  font-weight:700;  
+}  
+  
+.section-head h2{  
+  font-size:28px;  
+  margin-top:8px;  
+}  
+  
+.featured-card{  
+  margin:20px 22px 0;  
+  background:var(--white);  
+  border:1px solid var(--line);  
+  position:relative;  
+}  
+  
+.tag-badge{  
+  position:absolute;  
+  top:14px;  
+  left:14px;  
+  background:var(--ink);  
+  color:var(--ivory);  
+  font-size:10px;  
+  letter-spacing:1.2px;  
+  text-transform:uppercase;  
+  padding:6px 10px;  
+  font-weight:700;  
+  z-index:2;  
+  display:flex;  
+  align-items:center;  
+  gap:5px;  
+}  
+  
+.tag-badge svg{  
+  width:11px;  
+  height:11px;  
+  stroke:var(--brass-soft);  
+  fill:none;  
+  stroke-width:2;  
+}  
+  
+.featured-card video{  
+  width:100%;  
+  display:block;  
+  aspect-ratio:4/5;  
+  object-fit:cover;  
+}  
+  
+.featured-content{  
+  padding:20px;  
+}  
+  
+.featured-content h3{  
+  font-size:19px;  
+  line-height:1.3;  
+}  
+  
+.price-row{  
+  display:flex;  
+  align-items:baseline;  
+  gap:8px;  
+  margin:10px 0 18px;  
+}  
+  
+.price{  
+  font-size:22px;  
+  font-weight:700;  
+  font-family:'Libre Caslon Display',serif;  
+}  
+  
+.view-btn{  
+  display:block;  
+  text-align:center;  
+  background:var(--ink);  
+  color:var(--ivory);  
+  text-decoration:none;  
+  padding:14px;  
+  font-size:13px;  
+  font-weight:600;  
+  letter-spacing:1px;  
+  text-transform:uppercase;  
+}  
+  
+/* ---------- CATEGORIES ---------- */  
+  
+.categories{  
+  padding:40px 22px 20px;  
+  display:grid;  
+  grid-template-columns:repeat(2,1fr);  
+  gap:2px;  
+  background:var(--line);  
+  border:1px solid var(--line);  
+  margin-top:20px;  
+}  
+  
+.cat{  
+  background:var(--ivory);  
+  text-align:center;  
+  padding:32px 10px;  
+  font-weight:600;  
+  font-size:14px;  
+  letter-spacing:.5px;  
+  text-decoration:none;  
+  color:var(--ink);  
+  transition:background .2s;  
+}  
+  
+.cat:hover{  
+  background:var(--white);  
+}  
+  
+/* ---------- FOOTER ---------- */  
+  
+footer{  
+  background:var(--ink);  
+  color:var(--ivory);  
+  padding:50px 24px 30px;  
+  text-align:center;  
+  margin-top:10px;  
+}  
+  
+footer h2{  
+  font-size:24px;  
+  margin-bottom:26px;  
+  color:var(--brass-soft);  
+}  
+  
+footer p{  
+  margin:14px 0;  
+  font-size:14px;  
+  line-height:1.6;  
+  color:rgba(246,243,236,.75);  
+}  
+  
+footer p b{  
+  color:var(--ivory);  
+  display:block;  
+  font-weight:600;  
+  margin-bottom:3px;  
+}  
+  
+footer hr{  
+  margin:28px 0;  
+  border:none;  
+  border-top:1px solid rgba(255,255,255,.12);  
+}  
+  
+.copyright{  
+  color:rgba(246,243,236,.4);  
+  font-size:12px;  
+  letter-spacing:.5px;  
+}  
+</style>  </head>  <body>  <div class="menu-overlay" id="menuOverlay"></div>  <div class="header">    <button class="menu-btn" id="menuBtn" aria-label="Open menu">  
+    <span></span><span></span><span></span>  
+  </button>    <div class="logo-area">  
+    <img src="logo.png" class="logo" alt="EXAMPLE CLOTHING">  
+    <span class="logo-text">EXAMPLE</span>  
+  </div>    <div class="header-icons">  <a href="login.html" id="accountBtn" class="icon-link" aria-label="Account">  
+  <svg viewBox="0 0 24 24"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z"/><path d="M4.5 20.5c1.4-3.6 4.3-5.5 7.5-5.5s6.1 1.9 7.5 5.5"/></svg>  
+</a>  
 
-  <style>
-    /* Reset & Base Styles */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      background-color: #0c0a09;
-      color: #f5f5f4;
-      font-family: 'Montserrat', sans-serif;
-      overflow-x: hidden;
-      min-height: 100vh;
-    }
+<a href="wishlist.html" class="icon-link" aria-label="Wishlist">  
+  <svg viewBox="0 0 24 24"><path d="M12 20.2s-7.6-4.5-9.9-9C.6 8 2 4.5 5.4 3.7c2-.5 3.9.3 5 2 .3.4.5.9.6 1.3.1-.4.3-.9.6-1.3 1.1-1.7 3-2.5 5-2 3.4.8 4.8 4.3 3.3 7.5-2.3 4.5-9.9 9-9.9 9Z"/></svg>  
+</a>  
 
-    /* ==========================================
-       1. PRELOADER STYLING (FIXED VERSION)
-       ========================================== */
-    .preloader {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: #0c0a09; /* Matches background */
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      opacity: 1;
-      visibility: visible;
-      transition: opacity 0.8s ease, visibility 0.8s ease;
-    }
+<a href="cart.html" class="icon-link" aria-label="Cart">  
+  <svg viewBox="0 0 24 24"><path d="M4 7h16l-1.4 10.3a2 2 0 0 1-2 1.7H7.4a2 2 0 0 1-2-1.7L4 7Z"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/></svg>  
+  <span class="badge" id="cartCount">0</span>  
+</a>
 
-    /* Fixed class: ensures clickability passes through and hides elements */
-    .preloader.done {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none; /* Prevents preloader from blocking touch/click actions */
-    }
-
-    /* Preloader Content matching your screenshot */
-    .preloader-content {
-      text-align: center;
-    }
-    
-    .preloader-title {
-      font-family: 'Cinzel', serif;
-      font-size: 2.5rem;
-      color: #ffffff;
-      letter-spacing: 0.4em;
-      text-transform: uppercase;
-      margin-bottom: 20px;
-      padding-left: 0.4em; /* Offsets letter-spacing to center properly */
-    }
-
-    .preloader-divider {
-      width: 120px;
-      height: 1px;
-      background-color: #c5a880; /* Gold/Bronze divider line */
-      margin: 0 auto 20px auto;
-    }
-
-    .preloader-subtitle {
-      font-size: 0.75rem;
-      color: #c5a880; /* Gold/Bronze subtitle */
-      letter-spacing: 0.5em;
-      text-transform: uppercase;
-      padding-left: 0.5em;
-    }
-
-    /* ==========================================
-       2. WEBSITE HEADER & NAVIGATION
-       ========================================== */
-    header {
-      padding: 30px 5%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid rgba(197, 168, 128, 0.1);
-    }
-
-    .logo {
-      font-family: 'Cinzel', serif;
-      font-size: 1.5rem;
-      color: #ffffff;
-      text-decoration: none;
-      letter-spacing: 0.2em;
-    }
-
-    nav {
-      display: flex;
-      gap: 30px;
-    }
-
-    nav a {
-      color: #d6d3d1;
-      text-decoration: none;
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      transition: color 0.3s ease;
-    }
-
-    nav a:hover {
-      color: #c5a880;
-    }
-
-    /* ==========================================
-       3. HERO SECTION
-       ========================================== */
-    .hero {
-      min-height: calc(100vh - 100px);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 40px;
-    }
-
-    .hero h1 {
-      font-family: 'Cinzel', serif;
-      font-size: 3rem;
-      letter-spacing: 0.2em;
-      margin-bottom: 20px;
-    }
-
-    .hero p {
-      font-size: 1rem;
-      color: #a8a29e;
-      max-width: 600px;
-      margin-bottom: 40px;
-      line-height: 1.6;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 15px 40px;
-      border: 1px solid #c5a880;
-      color: #c5a880;
-      text-decoration: none;
-      text-transform: uppercase;
-      font-size: 0.8rem;
-      letter-spacing: 0.2em;
-      transition: all 0.3s ease;
-    }
-
-    .btn:hover {
-      background-color: #c5a880;
-      color: #0c0a09;
-    }
-
-    /* Responsive styles */
-    @media (max-width: 768px) {
-      .preloader-title {
-        font-size: 1.8rem;
-      }
-      .hero h1 {
-        font-size: 2rem;
-      }
-      nav {
-        display: none; /* Can be expanded to a mobile menu later */
-      }
-    }
-  </style>
-</head>
-<body>
-
-  <!-- FIXED PRELOADER ELEMENT -->
-  <div class="preloader" id="preloader">
-    <div class="preloader-content">
-      <h1 class="preloader-title">Example</h1>
-      <div class="preloader-divider"></div>
-      <p class="preloader-subtitle">Premium Fashion</p>
-    </div>
-  </div>
-
-  <!-- WEBSITE CONTENT -->
-  <header>
-    <a href="#" class="logo">E X A M P L E</a>
-    <nav>
-      <a href="#">Home</a>
-      <a href="#">Collection</a>
-      <a href="#">About</a>
-      <a href="#">Contact</a>
-    </nav>
-  </header>
-
-  <main>
-    <section class="hero">
-      <h1>NEW COLLECTION</h1>
-      <p>Minimalist, premium craftsmanship designed for modern elegance. Explore our curated high-fashion silhouettes.</p>
-      <a href="#" class="btn">Explore Now</a>
-    </section>
-  </main>
-
-  <!-- ==========================================
-       4. ROBUST PRELOADER CONTROLLER SCRIPT
-       ========================================== */ -->
-  <script>
-    (function() {
-      const preloader = document.getElementById("preloader");
-      if (!preloader) return;
-
-      let isPreloaderHidden = false;
-
-      // Function to trigger fade out safely
-      const hidePreloader = () => {
-        if (isPreloaderHidden) return;
-        isPreloaderHidden = true;
-        preloader.classList.add("done");
-        
-        // Fully remove preloader element from layout after the animation ends
-        setTimeout(() => {
-          preloader.style.display = "none";
-        }, 800); // matches transition time
-      };
-
-      // 1. Hide as soon as HTML is loaded (much faster than waiting for images)
-      document.addEventListener("DOMContentLoaded", hidePreloader);
-
-      // 2. Hide when all assets are loaded (fallback)
-      window.addEventListener("load", hidePreloader);
-
-      // 3. Absolute fail-safe fallback: Force preloader to hide after 2.5 seconds
-      // regardless of asset issues, script errors, or slow internet
-      setTimeout(hidePreloader, 2500);
-    })();
-  </script>
-
-</body>
+  </div>  </div>  <div class="side-menu" id="menu">  
+  <button class="close-btn" id="closeMenuBtn" aria-label="Close menu">✕</button>  
+  <span class="menu-tag">Browse</span>  
+  <a href="men.html" class="nav-link">Men</a>  
+  <a href="women.html" class="nav-link">Women</a>  
+  <a href="kids.html" class="nav-link">Kids</a>  
+  <a href="sale.html" class="nav-link">Sale</a>  
+  <a href="accessories.html" class="nav-link">Accessories</a>  
+  <a href="footwear.html" class="nav-link">Footwear</a>  
+  <a href="login.html" class="nav-link">Login</a>   
+</div>  <section class="hero">  
+  <video autoplay muted loop playsinline>  
+    <source src="homepage-video.mp4" type="video/mp4">  
+  </video>  
+  <div class="overlay">  
+    <span class="eyebrow">Verified Preowned · Since 2011</span>  
+    <h1>Worn once by someone else. New to you.</h1>  
+    <p>Every jacket is inspected, authenticated, and tagged before it reaches you.</p>  
+    <div class="btn-row">  
+      <a href="categories.html" class="btn btn-primary">Shop the collection</a>  
+      <a href="https://wa.me/919656003555" class="btn btn-outline">Order on WhatsApp</a>  
+    </div>  
+  </div>  
+</section>  <div class="verified-strip">  
+  <svg class="tag-icon" viewBox="0 0 24 24" fill="none" stroke="#c7ab74" stroke-width="1.4"><path d="M14 3 21 10 11 20a2 2 0 0 1-2.8 0L3.5 15.3a2 2 0 0 1 0-2.8L14 3Z"/><circle cx="16.5" cy="7.5" r="1.4"/></svg>  
+  <span class="txt">Authenticity Checked</span>  
+  <span class="txt">Quality Inspected</span>  
+  <span class="txt">Calicut, Kerala</span>  
+</div>  <div class="section-head">  
+  <span class="eyebrow-dark">Featured</span>  
+  <h2>This Week's Picks</h2>  
+</div>  <div class="featured-card">  
+  <span class="tag-badge">  
+    <svg viewBox="0 0 24 24"><path d="M14 3 21 10 11 20a2 2 0 0 1-2.8 0L3.5 15.3a2 2 0 0 1 0-2.8L14 3Z"/></svg>  
+    Verified  
+  </span>  
+  <video autoplay muted loop playsinline>  
+    <source src="crocs-feature.mp4" type="video/mp4">  
+  </video>  
+  <div class="featured-content">  
+    <h3>Classic All Terrain Marbled Clog</h3>  
+    <div class="price-row">  
+      <span class="price">₹2,697</span>  
+    </div>  
+    <a href="crs8652.html" class="view-btn">View Product</a>  
+  </div>  
+</div>  <div class="featured-card" style="margin-top:24px;">  
+  <span class="tag-badge">  
+    <svg viewBox="0 0 24 24"><path d="M14 3 21 10 11 20a2 2 0 0 1-2.8 0L3.5 15.3a2 2 0 0 1 0-2.8L14 3Z"/></svg>  
+    Verified  
+  </span>  
+  <video autoplay muted loop playsinline>  
+    <source src="crocs-hiker.mp4" type="video/mp4">  
+  </video>  
+  <div class="featured-content">  
+    <h3>Classic Hiker Ikat Clog</h3>  
+    <div class="price-row">  
+      <span class="price">₹3,177</span>  
+    </div>  
+    <a href="crs6107.html" class="view-btn">View Product</a>  
+  </div>  
+</div>  <div class="section-head">  
+  <span class="eyebrow-dark">Explore</span>  
+  <h2>Shop by Category</h2>  
+</div>  <section class="categories">  
+  <a href="men.html" class="cat">Men</a>  
+  <a href="women.html" class="cat">Women</a>  
+  <a href="kids.html" class="cat">Kids</a>  
+  <a href="sale.html" class="cat">Sale</a>  
+  <a href="accessories.html" class="cat">Accessories</a>  
+  <a href="footwear.html" class="cat">Footwear</a>  
+</section>  <footer>  
+  <h2>Customer Care</h2>    <p><b>Store Time</b>11:00 AM – 10:00 PM</p>  
+  <p><b>WhatsApp</b>+91 9656003555</p>  
+  <p><b>Email</b>examplepvt@gmail.com</p>  
+  <p><b>Address</b>Calicut, Kerala, India</p>    <hr>    <p class="copyright">© 2026 EXAMPLE CLOTHING</p>  
+</footer>  <script>  
+const menu = document.getElementById("menu");  
+const overlay = document.getElementById("menuOverlay");  
+  
+function openMenu(){  
+  menu.classList.add("open");  
+  overlay.classList.add("open");  
+}  
+  
+function closeMenu(){  
+  menu.classList.remove("open");  
+  overlay.classList.remove("open");  
+}  
+  
+document.getElementById("menuBtn").addEventListener("click", openMenu);  
+document.getElementById("closeMenuBtn").addEventListener("click", closeMenu);  
+overlay.addEventListener("click", closeMenu);  
+  
+let cart = JSON.parse(localStorage.getItem("cart")) || [];  
+let totalQty = 0;  
+cart.forEach(item => { totalQty += item.qty || 1; });  
+document.getElementById("cartCount").innerText = totalQty;  
+</script>  <script type="module">  
+import { checkUser } from "./auth.js";  
+  
+checkUser((user) => {  
+  const accountBtn = document.getElementById("accountBtn");  
+  if(user){  
+    accountBtn.href = "profile.html";  
+  }  
+});  
+</script>  </body>  
 </html>
