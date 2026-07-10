@@ -187,7 +187,6 @@ input.invalid{
   font-size:12.5px;
   line-height:1.5;
   margin:-6px 0 14px;
-  min-height:0;
   display:none;
 }
 
@@ -279,6 +278,9 @@ button.btn:hover::after{
 .links{
   text-align:center;
   margin-top:18px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
 }
 
 .links a{
@@ -304,8 +306,8 @@ button.btn:hover::after{
   <div class="brand">EXAMPLE</div>
   <span class="brand-tag">Premium Fashion</span>
 
-  <h1>Welcome Back</h1>
-  <p class="sub">Log in to continue to EXAMPLE CLOTHING.</p>
+  <h1>Login</h1>
+  <p class="sub">Welcome back to EXAMPLE CLOTHING.</p>
 
   <div class="field">
     <input type="email" id="email" placeholder="Email Address" autocomplete="email">
@@ -331,9 +333,6 @@ button.btn:hover::after{
 
   <div class="links">
     <a href="forgot-password.html">Forgot Password?</a>
-  </div>
-
-  <div class="links">
     <a href="index.html">← Back to Home</a>
   </div>
 
@@ -369,53 +368,48 @@ function friendlyError(error){
     case "auth/invalid-credential":
     case "auth/wrong-password":
     case "auth/user-not-found":
-      return "Incorrect email or password.";
+      return "Incorrect email or password. Please try again.";
     case "auth/invalid-email":
       return "Please enter a valid email address.";
-    case "auth/too-many-requests":
-      return "Too many attempts. Please wait a moment and try again.";
+    case "auth/user-disabled":
+      return "This account has been disabled. Contact support.";
     case "auth/network-request-failed":
       return "Network error. Check your connection and try again.";
+    case "auth/too-many-requests":
+      return "Too many attempts. Please wait a moment and try again.";
     default:
       return (error && error.message) ? error.message : "Something went wrong. Please try again.";
   }
 }
 
-/* ---- validation ---- */
-function validate(){
+/* ---- submit ---- */
+async function submit(){
+  clearMsg();
+
   const email = emailEl.value.trim();
   const password = passEl.value;
 
   [emailEl, passEl].forEach(el => el.classList.remove("invalid"));
 
-  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  if(!emailOk){
+  if(!email){
     emailEl.classList.add("invalid");
-    showMsg("Please enter a valid email address.", "error");
-    return null;
+    showMsg("Please enter your email address.", "error");
+    return;
   }
 
   if(!password){
     passEl.classList.add("invalid");
     showMsg("Please enter your password.", "error");
-    return null;
+    return;
   }
-
-  return { email, password };
-}
-
-/* ---- submit ---- */
-async function submit(){
-  clearMsg();
-  const data = validate();
-  if(!data) return;
 
   loginBtn.disabled = true;
   loginBtn.classList.add("loading");
 
   try{
-    await login(data.email, data.password);
-    window.location.href = "index.html";
+    await login(email, password);
+    showMsg("Login successful! Redirecting…", "ok");
+    setTimeout(() => { window.location.href = "index.html"; }, 800);
   }
   catch(error){
     console.error(error);
@@ -427,7 +421,7 @@ async function submit(){
 
 loginBtn.addEventListener("click", submit);
 
-/* Enter key submits from either field */
+/* Enter key submits */
 [emailEl, passEl].forEach(el => {
   el.addEventListener("keydown", (e) => {
     if(e.key === "Enter") submit();
