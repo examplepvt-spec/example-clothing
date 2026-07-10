@@ -533,4 +533,315 @@ a{
     </a>
 
     <a href="wishlist.html" class="icon-link" aria-label="Wishlist">
-      <svg viewBox="0 0 24 24"><path d="M12 20.2s-7.6-4.5
+      <svg viewBox="0 0 24 24"><path d="M12 20.2s-7.6-4.5-9.9-9C.6 8 2 4.5 5.4 3.7c2-.5 3.9.3 5 2 .3.4.5.9.6 1.3.1-.4.3-.9.6-1.3 1.1-1.7 3-2.5 5-2 3.4.8 4.8 4.3 3.3 7.5-2.3 4.5-9.9 9-9.9 9Z"/></svg>
+    </a>
+
+    <a href="cart.html" class="icon-link" aria-label="Cart">
+      <svg viewBox="0 0 24 24"><path d="M4 7h16l-1.4 10.3a2 2 0 0 1-2 1.7H7.4a2 2 0 0 1-2-1.7L4 7Z"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/></svg>
+      <span class="badge" id="cartCount">0</span>
+    </a>
+
+  </div>
+
+</div>
+
+<div class="side-menu" id="menu">
+  <button class="close-btn" id="closeMenuBtn" aria-label="Close menu">✕</button>
+  <span class="menu-tag">Browse</span>
+  <a href="men.html" class="nav-link">Men</a>
+  <a href="women.html" class="nav-link">Women</a>
+  <a href="kids.html" class="nav-link">Kids</a>
+  <a href="sale.html" class="nav-link">Sale</a>
+  <a href="accessories.html" class="nav-link">Accessories</a>
+  <a href="footwear.html" class="nav-link">Footwear</a>
+  <a href="login.html" class="nav-link" id="menuLoginLink">Login</a>
+</div>
+
+<div class="page-head">
+  <div>
+    <span class="eyebrow-dark">Account</span>
+    <h1>Saved Addresses</h1>
+  </div>
+  <button id="addAddressBtn" class="add-trigger-btn">Add New</button>
+</div>
+
+<!-- Add/Edit Inline Form Panel -->
+<div id="addressFormPanel" class="form-panel">
+  <h3 id="formTitle">Add New Address</h3>
+  <form id="addressForm" class="form-grid">
+    <div class="field-wrap">
+      <label for="fullName">Full Name</label>
+      <input type="text" id="fullName" required placeholder="Enter recipient's name">
+    </div>
+    <div class="field-wrap">
+      <label for="addressLine1">Address Line 1</label>
+      <input type="text" id="addressLine1" required placeholder="Street address, P.O. box, company name">
+    </div>
+    <div class="field-wrap">
+      <label for="addressLine2">Address Line 2 (Optional)</label>
+      <input type="text" id="addressLine2" placeholder="Apartment, suite, unit, building, floor">
+    </div>
+    <div class="row-2">
+      <div class="field-wrap">
+        <label for="city">City</label>
+        <input type="text" id="city" required placeholder="City">
+      </div>
+      <div class="field-wrap">
+        <label for="state">State</label>
+        <input type="text" id="state" required placeholder="State">
+      </div>
+    </div>
+    <div class="row-2">
+      <div class="field-wrap">
+        <label for="zipCode">ZIP / Postal Code</label>
+        <input type="text" id="zipCode" required placeholder="123456">
+      </div>
+      <div class="field-wrap">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" required placeholder="10-digit number">
+      </div>
+    </div>
+    <div class="field-wrap">
+      <label class="checkbox-wrap">
+        <input type="checkbox" id="isDefault">
+        <span>Set as Default Address</span>
+      </label>
+    </div>
+    <div class="button-row">
+      <button type="button" id="cancelFormBtn" class="btn btn-secondary">Cancel</button>
+      <button type="submit" id="saveFormBtn" class="btn btn-primary">Save Address</button>
+    </div>
+  </form>
+</div>
+
+<!-- Saved Addresses List Container -->
+<div id="addressList" class="address-grid"></div>
+
+<a href="profile.html" class="back">
+  <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg>
+  Back to Profile
+</a>
+
+<script type="module">
+
+import { db, auth } from "./firebase.js";
+import { 
+    onAuthStateChanged 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { 
+    collection, 
+    doc, 
+    getDocs, 
+    addDoc, 
+    updateDoc, 
+    deleteDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const stateOverlay = document.getElementById("stateOverlay");
+const addressList = document.getElementById("addressList");
+const addressFormPanel = document.getElementById("addressFormPanel");
+const addressForm = document.getElementById("addressForm");
+const formTitle = document.getElementById("formTitle");
+
+const addAddressBtn = document.getElementById("addAddressBtn");
+const cancelFormBtn = document.getElementById("cancelFormBtn");
+const saveFormBtn = document.getElementById("saveFormBtn");
+
+const fullNameInput = document.getElementById("fullName");
+const addressLine1Input = document.getElementById("addressLine1");
+const addressLine2Input = document.getElementById("addressLine2");
+const cityInput = document.getElementById("city");
+const stateInput = document.getElementById("state");
+const zipCodeInput = document.getElementById("zipCode");
+const phoneInput = document.getElementById("phone");
+const isDefaultInput = document.getElementById("isDefault");
+
+let currentUser = null;
+let allAddresses = [];
+let editAddressId = null; // null for add, holds ID for edit
+
+onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+        window.location.href = "login.html";
+        return;
+    }
+    currentUser = user;
+    await fetchAddresses(user.uid);
+    stateOverlay.style.display = "none";
+});
+
+function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.innerText = str ?? "";
+    return div.innerHTML;
+}
+
+function showState(message) {
+    addressList.innerHTML = `<div class="state-msg">${message}</div>`;
+}
+
+async function fetchAddresses(uid) {
+    showState("Loading your addresses...");
+    try {
+        const addressRef = collection(db, "customers", uid, "addresses");
+        const querySnapshot = await getDocs(addressRef);
+
+        allAddresses = [];
+        querySnapshot.forEach((doc) => {
+            allAddresses.push({ id: doc.id, ...doc.data() });
+        });
+
+        // Sort default address to the top of the display list
+        allAddresses.sort((a, b) => (b.isDefault || false) - (a.isDefault || false));
+
+        renderAddresses();
+    } catch (err) {
+        console.error(err);
+        showState("Could not load addresses. Please refresh and try again.");
+    }
+}
+
+function renderAddresses() {
+    if (allAddresses.length === 0) {
+        showState("You have no saved addresses yet.");
+        return;
+    }
+
+    const html = allAddresses.map((addr) => {
+        const name = escapeHtml(addr.fullName);
+        const line1 = escapeHtml(addr.addressLine1);
+        const line2 = addr.addressLine2 ? escapeHtml(addr.addressLine2) : "";
+        const city = escapeHtml(addr.city);
+        const state = escapeHtml(addr.state);
+        const zip = escapeHtml(addr.zipCode);
+        const phone = escapeHtml(addr.phone);
+        const isDefault = addr.isDefault === true;
+
+        const defaultTag = isDefault ? `<span class="tag-default">Default</span>` : "";
+        const defaultAction = !isDefault 
+            ? `<button class="action-btn" onclick="window.setDefaultAddress('${addr.id}')">Set as Default</button>` 
+            : "";
+
+        return `
+            <div class="address-card">
+                <div class="address-header">
+                    <span class="address-name">${name}</span>
+                    ${defaultTag}
+                </div>
+                <div class="address-body">
+                    ${line1}${line2 ? ", " + line2 : ""}<br>
+                    ${city}, ${state} - ${zip}
+                </div>
+                <div class="address-phone">Phone: ${phone}</div>
+                <div class="address-actions">
+                    <button class="action-btn" onclick="window.editAddress('${addr.id}')">Edit</button>
+                    ${defaultAction}
+                    <button class="action-btn delete-btn" onclick="window.deleteAddress('${addr.id}')">Delete</button>
+                </div>
+            </div>
+        `;
+    }).join("");
+
+    addressList.innerHTML = html;
+}
+
+// Open Form to Add
+addAddressBtn.addEventListener("click", () => {
+    editAddressId = null;
+    formTitle.innerText = "Add New Address";
+    addressForm.reset();
+    isDefaultInput.checked = false;
+    addressFormPanel.classList.add("open");
+    addressFormPanel.scrollIntoView({ behavior: "smooth" });
+});
+
+// Cancel Form Action
+cancelFormBtn.addEventListener("click", () => {
+    addressFormPanel.classList.remove("open");
+});
+
+// Set default address logic
+async function handleDefaultStatus(uid, newDefaultId) {
+    const addressRef = collection(db, "customers", uid, "addresses");
+    const querySnapshot = await getDocs(addressRef);
+    
+    // Updates all existing default addresses to false, ensuring only one default address is selected [1]
+    for (const docSnap of querySnapshot.docs) {
+        if (docSnap.id !== newDefaultId && docSnap.data().isDefault === true) {
+            await updateDoc(doc(db, "customers", uid, "addresses", docSnap.id), {
+                isDefault: false
+            });
+        }
+    }
+}
+
+// Form Submit Handler
+addressForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!currentUser) return;
+
+    saveFormBtn.innerText = "Saving...";
+    saveFormBtn.disabled = true;
+
+    const isDefault = isDefaultInput.checked;
+    const addrData = {
+        fullName: fullNameInput.value.trim(),
+        addressLine1: addressLine1Input.value.trim(),
+        addressLine2: addressLine2Input.value.trim(),
+        city: cityInput.value.trim(),
+        state: stateInput.value.trim(),
+        zipCode: zipCodeInput.value.trim(),
+        phone: phoneInput.value.trim(),
+        isDefault: isDefault
+    };
+
+    try {
+        if (editAddressId) {
+            // Edit Address
+            const addrDocRef = doc(db, "customers", currentUser.uid, "addresses", editAddressId);
+            await updateDoc(addrDocRef, addrData);
+            if (isDefault) {
+                await handleDefaultStatus(currentUser.uid, editAddressId);
+            }
+        } else {
+            // Add Address
+            const collectionRef = collection(db, "customers", currentUser.uid, "addresses");
+            const newDoc = await addDoc(collectionRef, addrData);
+            if (isDefault) {
+                await handleDefaultStatus(currentUser.uid, newDoc.id);
+            }
+        }
+
+        addressFormPanel.classList.remove("open");
+        await fetchAddresses(currentUser.uid);
+    } catch (err) {
+        console.error(err);
+        alert("Failed to save address. Please try again.");
+    } finally {
+        saveFormBtn.innerText = "Save Address";
+        saveFormBtn.disabled = false;
+    }
+});
+
+// Bind globally accessible triggers for inline dynamic items
+window.editAddress = function(id) {
+    const target = allAddresses.find(a => a.id === id);
+    if (!target) return;
+
+    editAddressId = id;
+    formTitle.innerText = "Edit Address";
+
+    fullNameInput.value = target.fullName || "";
+    addressLine1Input.value = target.addressLine1 || "";
+    addressLine2Input.value = target.addressLine2 || "";
+    cityInput.value = target.city || "";
+    stateInput.value = target.state || "";
+    zipCodeInput.value = target.zipCode || "";
+    phoneInput.value = target.phone || "";
+    isDefaultInput.checked = target.isDefault === true;
+
+    addressFormPanel.classList.add("open");
+    addressFormPanel.scrollIntoView({ behavior: "smooth" });
+};
+
+window.setDefaultAddress = async function(id) {
