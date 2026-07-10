@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saved Addresses — EXAMPLE CLOTHING</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --ink:#161412;
+  --ivory:#f6f3ec;
+  --ivory-dim:#eee9dd;
+  --brass:#9c7a3c;
+  --brass-soft:#c7ab74;
+  --line:#e2dccb;
+  --white:#ffffff;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  background:var(--ivory);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+
+h1, h2, h3{
+  font-family:'Libre Caslon Display',serif;
+  font-weight:400;
+}
+
+a{
+  color:inherit;
+}
+
+/* ---------- HEADER (shared) ---------- */
+
+.header{
+  position:sticky;
+  top:0;
+  width:100%;
+  height:68px;
+  background:rgba(246,243,236,.95);
+  backdrop-filter:blur(10px);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 18px;
+  z-index:1000;
+  border-bottom:1px solid var(--line);
+}
+
+.menu-btn{
+  width:24px;
+  height:18px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  cursor:pointer;
+  background:none;
+  border:none;
+  padding:0;
+}
+
+.menu-btn span{
+  display:block;
+  height:2px;
+  background:var(--ink);
+  border-radius:2px;
+}
+
+.logo-area{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex:1;
+  margin-left:18px;
+}
+
+.logo{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+.logo-text{
+  font-family:'Libre Caslon Display',serif;
+  font-size:17px;
+  letter-spacing:.3px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.header-icons{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.icon-link{
+  position:relative;
+  width:42px;
+  height:42px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  border-radius:50%;
+  transition:background .2s;
+}
+
+.icon-link:hover{
+  background:var(--ivory-dim);
+}
+
+.icon-link svg{
+  width:21px;
+  height:21px;
+  stroke:var(--ink);
+  fill:none;
+  stroke-width:1.6;
+}
+
+.badge{
+  position:absolute;
+  top:2px;
+  right:2px;
+  background:var(--brass);
+  color:var(--white);
+  min-width:16px;
+  height:16px;
+  padding:0 3px;
+  border-radius:50%;
+  font-size:10px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* ---------- SIDE MENU (shared) ---------- */
+
+.side-menu{
+  position:fixed;
+  top:0;
+  left:-300px;
+  width:290px;
+  height:100%;
+  background:var(--ink);
+  color:var(--ivory);
+  padding:90px 32px 32px;
+  transition:.4s cubic-bezier(.4,0,.2,1);
+  z-index:2000;
+}
+
+.side-menu.open{
+  left:0;
+}
+
+.menu-tag{
+  font-size:11px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--brass-soft);
+  margin-bottom:20px;
+  display:block;
+}
+
+.side-menu a.nav-link{
+  display:block;
+  text-decoration:none;
+  color:var(--ivory);
+  font-family:'Libre Caslon Display',serif;
+  font-size:22px;
+  padding:13px 0;
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+.close-btn{
+  position:absolute;
+  top:24px;
+  right:24px;
+  background:none;
+  border:none;
+  color:var(--ivory);
+  font-size:26px;
+  cursor:pointer;
+  line-height:1;
+}
+
+.menu-overlay{
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,.4);
+  z-index:1500;
+}
+
+.menu-overlay.open{
+  display:block;
+}
+
+/* ---------- PAGE HEAD ---------- */
+
+.page-head{
+  padding:28px 22px 10px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+}
+
+.eyebrow-dark{
+  font-size:11px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--brass);
+  font-weight:700;
+}
+
+.page-head h1{
+  font-size:28px;
+  margin-top:6px;
+}
+
+.add-trigger-btn{
+  background:var(--ink);
+  color:var(--white);
+  border:none;
+  padding:10px 16px;
+  border-radius:6px;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  cursor:pointer;
+  transition:background .2s;
+}
+
+.add-trigger-btn:hover{
+  background:var(--brass);
+}
+
+/* ---------- ADDRESS FORM PANEL ---------- */
+
+.form-panel {
+  display: none;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  margin: 10px 22px 24px;
+  padding: 24px 20px;
+}
+
+.form-panel.open {
+  display: block;
+}
+
+.form-panel h3 {
+  font-size: 20px;
+  margin-bottom: 18px;
+}
+
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-wrap label {
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--brass);
+  font-weight: 700;
+}
+
+.field-wrap input, .field-wrap select {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  background: var(--white);
+  color: var(--ink);
+}
+
+.field-wrap input:focus, .field-wrap select:focus {
+  outline: none;
+  border-color: var(--brass);
+}
+
+.row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.checkbox-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  margin-top: 6px;
+}
+
+.checkbox-wrap input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--brass);
+  cursor: pointer;
+}
+
+.checkbox-wrap span {
+  font-size: 13px;
+  font-weight: 500;
+  user-select: none;
+}
+
+.button-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.btn {
+  padding: 14px 20px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-align: center;
+  transition: all .2s;
+}
+
+.btn-primary {
+  background: var(--ink);
+  color: var(--white);
+  border: none;
+}
+
+.btn-primary:hover {
+  background: var(--brass);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+
+.btn-secondary:hover {
+  background: var(--ivory-dim);
+}
+
+/* ---------- ADDRESS CARDS GRID ---------- */
+
+.address-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 22px 30px;
+}
+
+.address-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.address-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.address-name {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.tag-default {
+  background: var(--ivory-dim);
+  border: 1px solid var(--brass-soft);
+  color: var(--brass);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.address-body {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.5;
+}
+
+.address-phone {
+  font-size: 13px;
+  color: #777;
+}
+
+.address-actions {
+  display: flex;
+  gap: 14px;
+  margin-top: 8px;
+  border-top: 1px solid var(--ivory-dim);
+  padding-top: 12px;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  transition: color .2s;
+}
+
+.action-btn:hover {
+  color: var(--brass);
+}
+
+.action-btn.delete-btn {
+  color: #c92a2a;
+  margin-left: auto;
+}
+
+.action-btn.delete-btn:hover {
+  color: #e03131;
+}
+
+/* ---------- STATES ---------- */
+
+.state-msg {
+  text-align: center;
+  padding: 40px 20px;
+  color: #8a8578;
+  font-size: 14px;
+}
+
+.state-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--ivory);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+  font-size: 15px;
+  color: #8a8578;
+}
+
+/* ---------- BACK LINK ---------- */
+
+.back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  padding: 10px 22px 40px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.back svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--ink);
+  fill: none;
+  stroke-width: 2;
+}
+</style>
+</head>
+
+<body>
+
+<div id="stateOverlay" class="state-overlay">Loading addresses...</div>
+
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<div class="header">
+
+  <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="logo-area">
+    <img src="logo.png" class="logo" alt="EXAMPLE CLOTHING">
+    <span class="logo-text">EXAMPLE CLOTHING</span>
+  </div>
+
+  <div class="header-icons">
+
+    <a href="profile.html" id="accountBtn" class="icon-link" aria-label="Account">
+      <svg viewBox="0 0 24 24"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z"/><path d="M4.5 20.5c1.4-3.6 4.3-5.5 7.5-5.5s6.1 1.9 7.5 5.5"/></svg>
+    </a>
+
+    <a href="wishlist.html" class="icon-link" aria-label="Wishlist">
+      <svg viewBox="0 0 24 24"><path d="M12 20.2s-7.6-4.5
