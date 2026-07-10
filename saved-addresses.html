@@ -658,17 +658,42 @@ const isDefaultInput = document.getElementById("isDefault");
 
 let currentUser = null;
 let allAddresses = [];
-let editAddressId = null; // null for add, holds ID for edit
+let editAddressId = null;
 
-onAuthStateChanged(auth, async (user) => {
-    if (!user) {
-        window.location.href = "login.html";
-        return;
+// SAFETY TIMEOUT: Force hides the loading overlay after 3.5 seconds [1]
+// This guarantees that the page will never remain permanently stuck on a loading screen.
+setTimeout(() => {
+    if (stateOverlay && stateOverlay.style.display !== "none") {
+        console.warn("Safety Timeout: Hiding stuck loading overlay.");
+        stateOverlay.style.display = "none";
     }
-    currentUser = user;
-    await fetchAddresses(user.uid);
-    stateOverlay.style.display = "none";
-});
+}, 3500);
+
+// DEFENSIVE EXECUTIONS: Wrapping Auth initialization to isolate issues
+try {
+    onAuthStateChanged(auth, async (user) => {
+        try {
+            if (!user) {
+                window.location.href = "login.html";
+                return;
+            }
+            currentUser = user;
+            await fetchAddresses(user.uid);
+        } catch (err) {
+            console.error("Auth status change execution error:", err);
+            showState("An error occurred loading address files.");
+        } finally {
+            if (stateOverlay) {
+                stateOverlay.style.display = "none";
+            }
+        }
+    });
+} catch (authErr) {
+    console.error("Authentication listener failed to initialize:", authErr);
+    if (stateOverlay) {
+        stateOverlay.style.display = "none";
+    }
+}
 
 function escapeHtml(str) {
     const div = document.createElement("div");
@@ -691,13 +716,11 @@ async function fetchAddresses(uid) {
             allAddresses.push({ id: doc.id, ...doc.data() });
         });
 
-        // Sort default address to the top of the display list
         allAddresses.sort((a, b) => (b.isDefault || false) - (a.isDefault || false));
-
         renderAddresses();
     } catch (err) {
-        console.error(err);
-        showState("Could not load addresses. Please refresh and try again.");
+        console.error("fetchAddresses error:", err);
+        showState("Could not load addresses. Please try again.");
     }
 }
 
@@ -745,103 +768,76 @@ function renderAddresses() {
     addressList.innerHTML = html;
 }
 
-// Open Form to Add
-addAddressBtn.addEventListener("click", () => {
-    editAddressId = null;
-    formTitle.innerText = "Add New Address";
-    addressForm.reset();
-    isDefaultInput.checked = false;
-    addressFormPanel.classList.add("open");
-    addressFormPanel.scrollIntoView({ behavior: "smooth" });
-});
+// Form Opening Actions
+if (addAddressBtn) {
+    addAddressBtn.addEventListener("click", () => {
+        editAddressId = null;
+        formTitle.innerText = "Add New Address";
+        addressForm.reset();
+        isDefaultInput.checked = false;
+        addressFormPanel.classList.add("open");
+        addressFormPanel.scrollIntoView({ behavior: "smooth" });
+    });
+}
 
-// Cancel Form Action
-cancelFormBtn.addEventListener("click", () => {
-    addressFormPanel.classList.remove("open");
-});
+if (cancelFormBtn) {
+    cancelFormBtn.addEventListener("click", () => {
+        addressFormPanel.classList.remove("open");
+    });
+}
 
-// Set default address logic
+// Set default status cleanup
 async function handleDefaultStatus(uid, newDefaultId) {
-    const addressRef = collection(db, "customers", uid, "addresses");
-    const querySnapshot = await getDocs(addressRef);
-    
-    // Updates all existing default addresses to false, ensuring only one default address is selected [1]
-    for (const docSnap of querySnapshot.docs) {
-        if (docSnap.id !== newDefaultId && docSnap.data().isDefault === true) {
-            await updateDoc(doc(db, "customers", uid, "addresses", docSnap.id), {
-                isDefault: false
-            });
+    try {
+        const addressRef = collection(db, "customers", uid, "addresses");
+        const querySnapshot = await getDocs(addressRef);
+        
+        for (const docSnap of querySnapshot.docs) {
+            if (docSnap.id !== newDefaultId && docSnap.data().isDefault === true) {
+                await updateDoc(doc(db, "customers", uid, "addresses", docSnap.id), {
+                    isDefault: false
+                });
+            }
         }
+    } catch (e) {
+        console.error("Error setting default values:", e);
     }
 }
 
-// Form Submit Handler
-addressForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    if (!currentUser) return;
+// Form Submission handling
+if (addressForm) {
+    addressForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (!currentUser) return;
 
-    saveFormBtn.innerText = "Saving...";
-    saveFormBtn.disabled = true;
+        saveFormBtn.innerText = "Saving...";
+        saveFormBtn.disabled = true;
 
-    const isDefault = isDefaultInput.checked;
-    const addrData = {
-        fullName: fullNameInput.value.trim(),
-        addressLine1: addressLine1Input.value.trim(),
-        addressLine2: addressLine2Input.value.trim(),
-        city: cityInput.value.trim(),
-        state: stateInput.value.trim(),
-        zipCode: zipCodeInput.value.trim(),
-        phone: phoneInput.value.trim(),
-        isDefault: isDefault
-    };
+        const isDefault = isDefaultInput.checked;
+        const addrData = {
+            fullName: fullNameInput.value.trim(),
+            addressLine1: addressLine1Input.value.trim(),
+            addressLine2: addressLine2Input.value.trim(),
+            city: cityInput.value.trim(),
+            state: stateInput.value.trim(),
+            zipCode: zipCodeInput.value.trim(),
+            phone: phoneInput.value.trim(),
+            isDefault: isDefault
+        };
 
-    try {
-        if (editAddressId) {
-            // Edit Address
-            const addrDocRef = doc(db, "customers", currentUser.uid, "addresses", editAddressId);
-            await updateDoc(addrDocRef, addrData);
-            if (isDefault) {
-                await handleDefaultStatus(currentUser.uid, editAddressId);
+        try {
+            if (editAddressId) {
+                const addrDocRef = doc(db, "customers", currentUser.uid, "addresses", editAddressId);
+                await updateDoc(addrDocRef, addrData);
+                if (isDefault) {
+                    await handleDefaultStatus(currentUser.uid, editAddressId);
+                }
+            } else {
+                const collectionRef = collection(db, "customers", currentUser.uid, "addresses");
+                const newDoc = await addDoc(collectionRef, addrData);
+                if (isDefault) {
+                    await handleDefaultStatus(currentUser.uid, newDoc.id);
+                }
             }
-        } else {
-            // Add Address
-            const collectionRef = collection(db, "customers", currentUser.uid, "addresses");
-            const newDoc = await addDoc(collectionRef, addrData);
-            if (isDefault) {
-                await handleDefaultStatus(currentUser.uid, newDoc.id);
-            }
-        }
 
-        addressFormPanel.classList.remove("open");
-        await fetchAddresses(currentUser.uid);
-    } catch (err) {
-        console.error(err);
-        alert("Failed to save address. Please try again.");
-    } finally {
-        saveFormBtn.innerText = "Save Address";
-        saveFormBtn.disabled = false;
-    }
-});
-
-// Bind globally accessible triggers for inline dynamic items
-window.editAddress = function(id) {
-    const target = allAddresses.find(a => a.id === id);
-    if (!target) return;
-
-    editAddressId = id;
-    formTitle.innerText = "Edit Address";
-
-    fullNameInput.value = target.fullName || "";
-    addressLine1Input.value = target.addressLine1 || "";
-    addressLine2Input.value = target.addressLine2 || "";
-    cityInput.value = target.city || "";
-    stateInput.value = target.state || "";
-    zipCodeInput.value = target.zipCode || "";
-    phoneInput.value = target.phone || "";
-    isDefaultInput.checked = target.isDefault === true;
-
-    addressFormPanel.classList.add("open");
-    addressFormPanel.scrollIntoView({ behavior: "smooth" });
-};
-
-window.setDefaultAddress = async function(id) {
+            addressFormPanel.classList.remove("open");
