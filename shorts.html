@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jeans & Pants Collection — EXAMPLE CLOTHING</title>
+<title>Shorts Collection — EXAMPLE CLOTHING</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -410,11 +410,11 @@ a{
 
 <div class="page-head">
   <span class="eyebrow-dark">Men</span>
-  <h1>Jeans & Pants Collection</h1>
+  <h1>Shorts Collection</h1>
 </div>
 
 <div class="search-wrap">
-  <input type="text" id="search" placeholder="Search jeans & pants...">
+  <input type="text" id="search" placeholder="Search shorts...">
 </div>
 
 <div id="products"></div>
@@ -449,7 +449,7 @@ function showState(message){
 }
 
 async function loadProducts(){
-    showState("Loading jeans & pants...");
+    showState("Loading shorts...");
 
     try{
         const querySnapshot = await getDocs(collection(db, "products"));
@@ -469,8 +469,8 @@ async function loadProducts(){
 function displayProducts(searchText = ""){
 
     const filtered = allProducts.filter((product) => {
-        // Matches the 'jeans' category from your original file
-        if((product.category || "").toLowerCase() !== "jeans"){
+        // Matches the 'shorts' category in Firestore
+        if((product.category || "").toLowerCase() !== "shorts"){
             return false;
         }
         if(searchText){
@@ -483,7 +483,7 @@ function displayProducts(searchText = ""){
     });
 
     if(filtered.length === 0){
-        showState(searchText ? "No jeans or pants match your search." : "No jeans or pants available right now.");
+        showState(searchText ? "No shorts match your search." : "No shorts available right now.");
         return;
     }
 
