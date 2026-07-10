@@ -1,76 +1,560 @@
-<!DOCTYPE html>
+Cb<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kids Collection</title>
+<title>Women Jackets Collection — EXAMPLE CLOTHING</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
+:root{
+  --ink:#161412;
+  --ivory:#f6f3ec;
+  --ivory-dim:#eee9dd;
+  --brass:#9c7a3c;
+  --brass-soft:#c7ab74;
+  --line:#e2dccb;
+  --white:#ffffff;
+}
+
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
 body{
-background:#ffffff;
-color:#111;
+  background:var(--ivory);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  -webkit-font-smoothing:antialiased;
 }
+
+h1{
+  font-family:'Libre Caslon Display',serif;
+  font-weight:400;
+}
+
+a{
+  color:inherit;
+}
+
+/* ---------- HEADER (shared) ---------- */
 
 .header{
-padding:30px;
-text-align:center;
-font-size:32px;
-font-weight:bold;
+  position:sticky;
+  top:0;
+  width:100%;
+  height:68px;
+  background:rgba(246,243,236,.95);
+  backdrop-filter:blur(10px);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 18px;
+  z-index:1000;
+  border-bottom:1px solid var(--line);
 }
+
+.menu-btn{
+  width:24px;
+  height:18px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  cursor:pointer;
+  background:none;
+  border:none;
+  padding:0;
+}
+
+.menu-btn span{
+  display:block;
+  height:2px;
+  background:var(--ink);
+  border-radius:2px;
+}
+
+.logo-area{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex:1;
+  margin-left:18px;
+}
+
+.logo{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+.logo-text{
+  font-family:'Libre Caslon Display',serif;
+  font-size:17px;
+  letter-spacing:.3px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.header-icons{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.icon-link{
+  position:relative;
+  width:42px;
+  height:42px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  border-radius:50%;
+  transition:background .2s;
+}
+
+.icon-link:hover{
+  background:var(--ivory-dim);
+}
+
+.icon-link svg{
+  width:21px;
+  height:21px;
+  stroke:var(--ink);
+  fill:none;
+  stroke-width:1.6;
+}
+
+.badge{
+  position:absolute;
+  top:2px;
+  right:2px;
+  background:var(--brass);
+  color:var(--white);
+  min-width:16px;
+  height:16px;
+  padding:0 3px;
+  border-radius:50%;
+  font-size:10px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* ---------- SIDE MENU (shared) ---------- */
+
+.side-menu{
+  position:fixed;
+  top:0;
+  left:-300px;
+  width:290px;
+  height:100%;
+  background:var(--ink);
+  color:var(--ivory);
+  padding:90px 32px 32px;
+  transition:.4s cubic-bezier(.4,0,.2,1);
+  z-index:2000;
+}
+
+.side-menu.open{
+  left:0;
+}
+
+.menu-tag{
+  font-size:11px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--brass-soft);
+  margin-bottom:20px;
+  display:block;
+}
+
+.side-menu a.nav-link{
+  display:block;
+  text-decoration:none;
+  color:var(--ivory);
+  font-family:'Libre Caslon Display',serif;
+  font-size:22px;
+  padding:13px 0;
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+.close-btn{
+  position:absolute;
+  top:24px;
+  right:24px;
+  background:none;
+  border:none;
+  color:var(--ivory);
+  font-size:26px;
+  cursor:pointer;
+  line-height:1;
+}
+
+.menu-overlay{
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,.4);
+  z-index:1500;
+}
+
+.menu-overlay.open{
+  display:block;
+}
+
+/* ---------- PAGE HEAD + SEARCH ---------- */
+
+.page-head{
+  padding:28px 22px 4px;
+}
+
+.eyebrow-dark{
+  font-size:11px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--brass);
+  font-weight:700;
+}
+
+.page-head h1{
+  font-size:28px;
+  margin-top:6px;
+}
+
+.search-wrap{
+  padding:16px 22px 4px;
+}
+
+.search-wrap input{
+  width:100%;
+  padding:13px 16px;
+  border:1px solid var(--line);
+  border-radius:6px;
+  font-size:15px;
+  font-family:'Inter',sans-serif;
+  background:var(--white);
+  color:var(--ink);
+}
+
+.search-wrap input:focus{
+  outline:none;
+  border-color:var(--brass);
+}
+
+/* ---------- STATES ---------- */
+
+.state-msg{
+  text-align:center;
+  padding:60px 20px;
+  color:#8a8578;
+  font-size:15px;
+}
+
+/* ---------- GRID ---------- */
 
 .grid{
-display:grid;
-grid-template-columns:1fr;
-padding:20px;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+  padding:18px 22px 40px;
 }
 
-.cat{
-background:#ffffff;
-border:1px solid #e5e5e5;
-padding:40px;
-border-radius:12px;
-text-align:center;
-text-decoration:none;
-color:#111;
-font-size:22px;
-font-weight:bold;
+.card{
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:6px;
+  overflow:hidden;
+  text-decoration:none;
+  color:var(--ink);
+  display:block;
 }
+
+.card img{
+  width:100%;
+  height:220px;
+  object-fit:contain;
+  background:var(--ivory-dim);
+  display:block;
+}
+
+.card .img-fallback{
+  width:100%;
+  height:220px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--ivory-dim);
+  color:var(--brass);
+  font-size:13px;
+}
+
+.info{
+  padding:14px;
+}
+
+.name{
+  font-size:14px;
+  font-weight:600;
+  margin-bottom:8px;
+  line-height:1.35;
+  min-height:38px;
+}
+
+.price-row{
+  display:flex;
+  align-items:baseline;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.price{
+  font-size:17px;
+  font-weight:700;
+  font-family:'Libre Caslon Display',serif;
+}
+
+.old-price{
+  font-size:12px;
+  color:#999;
+  text-decoration:line-through;
+}
+
+.size{
+  font-size:12px;
+  color:#8a8578;
+  margin-top:6px;
+  font-weight:500;
+}
+
+/* ---------- BACK LINK ---------- */
 
 .back{
-display:block;
-text-align:center;
-padding:30px;
-color:#111;
-text-decoration:none;
-font-size:18px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  justify-content:center;
+  padding:6px 22px 40px;
+  text-decoration:none;
+  font-weight:600;
+  font-size:14px;
+  color:var(--ink);
+}
+
+.back svg{
+  width:16px;
+  height:16px;
+  stroke:var(--ink);
+  fill:none;
+  stroke-width:2;
 }
 </style>
 </head>
 
 <body>
 
+<div class="menu-overlay" id="menuOverlay"></div>
+
 <div class="header">
-KIDS COLLECTION
+
+  <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="logo-area">
+    <img src="logo.png" class="logo" alt="EXAMPLE CLOTHING">
+    <span class="logo-text">EXAMPLE CLOTHING</span>
+  </div>
+
+  <div class="header-icons">
+
+    <a href="login.html" id="accountBtn" class="icon-link" aria-label="Account">
+      <svg viewBox="0 0 24 24"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z"/><path d="M4.5 20.5c1.4-3.6 4.3-5.5 7.5-5.5s6.1 1.9 7.5 5.5"/></svg>
+    </a>
+
+    <a href="wishlist.html" class="icon-link" aria-label="Wishlist">
+      <svg viewBox="0 0 24 24"><path d="M12 20.2s-7.6-4.5-9.9-9C.6 8 2 4.5 5.4 3.7c2-.5 3.9.3 5 2 .3.4.5.9.6 1.3.1-.4.3-.9.6-1.3 1.1-1.7 3-2.5 5-2 3.4.8 4.8 4.3 3.3 7.5-2.3 4.5-9.9 9-9.9 9Z"/></svg>
+    </a>
+
+    <a href="cart.html" class="icon-link" aria-label="Cart">
+      <svg viewBox="0 0 24 24"><path d="M4 7h16l-1.4 10.3a2 2 0 0 1-2 1.7H7.4a2 2 0 0 1-2-1.7L4 7Z"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/></svg>
+      <span class="badge" id="cartCount">0</span>
+    </a>
+
+  </div>
+
 </div>
 
-<div class="grid">
-
-<a href="kids-jackets.html" class="cat">
-JACKETS
-</a>
-
+<div class="side-menu" id="menu">
+  <button class="close-btn" id="closeMenuBtn" aria-label="Close menu">✕</button>
+  <span class="menu-tag">Browse</span>
+  <a href="men.html" class="nav-link">Men</a>
+  <a href="women.html" class="nav-link">Women</a>
+  <a href="kids.html" class="nav-link">Kids</a>
+  <a href="sale.html" class="nav-link">Sale</a>
+  <a href="accessories.html" class="nav-link">Accessories</a>
+  <a href="footwear.html" class="nav-link">Footwear</a>
+  <a href="login.html" class="nav-link" id="menuLoginLink">Login</a>
 </div>
 
-<a href="categories.html" class="back">
-← Back
+<div class="page-head">
+  <span class="eyebrow-dark">Women</span>
+  <h1>Jackets Collection</h1>
+</div>
+
+<div class="search-wrap">
+  <input type="text" id="search" placeholder="Search jackets...">
+</div>
+
+<div id="products"></div>
+
+<a href="women.html" class="back">
+  <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg>
+  Back to Women's Collection
 </a>
+
+<script type="module">
+
+import { db } from "./firebase.js";
+import {
+    collection,
+    getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const productsDiv = document.getElementById("products");
+const searchInput = document.getElementById("search");
+
+let allProducts = [];
+let debounceTimer = null;
+
+function escapeHtml(str){
+    const div = document.createElement("div");
+    div.innerText = str ?? "";
+    return div.innerHTML;
+}
+
+function showState(message){
+    productsDiv.innerHTML = `<div class="state-msg">${message}</div>`;
+}
+
+async function loadProducts(){
+    showState("Loading jackets...");
+
+    try{
+        const querySnapshot = await getDocs(collection(db, "products"));
+
+        allProducts = [];
+        querySnapshot.forEach((doc) => {
+            allProducts.push({ id: doc.id, ...doc.data() });
+        });
+
+        displayProducts();
+    } catch(err){
+        console.error(err);
+        showState("Could not load products. Please check your connection and try again.");
+    }
+}
+
+function displayProducts(searchText = ""){
+
+    const filtered = allProducts.filter((product) => {
+        // Matches the 'women jackets' category in the database
+        if((product.category || "").toLowerCase() !== "women jackets"){
+            return false;
+        }
+        if(searchText){
+            const name = (product.name || "").toLowerCase();
+            if(!name.includes(searchText.toLowerCase())){
+                return false;
+            }
+        }
+        return true;
+    });
+
+    if(filtered.length === 0){
+        showState(searchText ? "No jackets match your search." : "No jackets available right now.");
+        return;
+    }
+
+    const html = filtered.map((product) => {
+        const name = escapeHtml(product.name);
+        const image = escapeHtml(product.image);
+        const size = escapeHtml(product.size) || "-";
+        const hasOffer = !!product.offerPrice;
+
+        const priceHtml = hasOffer
+            ? `<span class="old-price">₹${escapeHtml(String(product.price))}</span><span class="price">₹${escapeHtml(String(product.offerPrice))}</span>`
+            : `<span class="price">₹${escapeHtml(String(product.price))}</span>`;
+
+        return `
+            <a href="product.html?id=${encodeURIComponent(product.id)}" class="card">
+                <img src="${image}" alt="${name}" loading="lazy" onerror="this.outerHTML='&lt;div class=&quot;img-fallback&quot;&gt;No image&lt;/div&gt;'">
+                <div class="info">
+                    <div class="name">${name}</div>
+                    <div class="price-row">${priceHtml}</div>
+                    <div class="size">Size: ${size}</div>
+                </div>
+            </a>
+        `;
+    }).join("");
+
+    productsDiv.innerHTML = `<div class="grid">${html}</div>`;
+}
+
+searchInput.addEventListener("input", () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+        displayProducts(searchInput.value.trim());
+    }, 250);
+});
+
+loadProducts();
+
+const menu = document.getElementById("menu");
+const overlay = document.getElementById("menuOverlay");
+
+function openMenu(){
+    menu.classList.add("open");
+    overlay.classList.add("open");
+}
+
+function closeMenu(){
+    menu.classList.remove("open");
+    overlay.classList.remove("open");
+}
+
+document.getElementById("menuBtn").addEventListener("click", openMenu);
+document.getElementById("closeMenuBtn").addEventListener("click", closeMenu);
+overlay.addEventListener("click", closeMenu);
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let totalQty = 0;
+cart.forEach(item => { totalQty += item.qty || 1; });
+document.getElementById("cartCount").innerText = totalQty;
+
+import("./auth.js").then(({ checkUser }) => {
+    checkUser((user) => {
+        const accountBtn = document.getElementById("accountBtn");
+        const menuLoginLink = document.getElementById("menuLoginLink");
+        if(user){
+            accountBtn.href = "profile.html";
+            if(menuLoginLink) menuLoginLink.style.display = "none";
+        }
+    });
+});
+
+</script>
 
 </body>
 </html>
