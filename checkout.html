@@ -459,14 +459,12 @@ changeAddrBtn.onclick = () => {
   window.location.href = "addresses.html";
 };
 
-// Initialize Page
-document.addEventListener("DOMContentLoaded", () => {
-  if (cart.length === 0) {
-    alert("Your cart is empty. Redirecting to cart page...");
-    window.location.href = "cart.html";
-    return;
-  }
-
+// Initialize Page immediately on Module Load
+// (Since script type="module" automatically defers, the HTML structure is already built and safe to interact with)
+if (cart.length === 0) {
+  alert("Your cart is empty. Redirecting to cart page...");
+  window.location.href = "cart.html";
+} else {
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       await loadDefaultAddress(user.uid);
@@ -477,7 +475,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   renderSummary();
-});
+}
 
 // Fetch default address from Firestore: customers/{uid}/addresses
 async function loadDefaultAddress(uid) {
