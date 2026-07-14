@@ -551,6 +551,14 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "cart.html";
     return;
   }
+  while (!currentUser) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+    }
+
+    displayAddress();
+    renderSummary();
+
+});
   displayAddress();
   renderSummary();
 });
