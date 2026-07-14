@@ -423,18 +423,7 @@ a{ color:inherit; }
       <button class="change-btn" onclick="showAddressForm()">Change Address</button>
     </div>
 
-    <!-- Edit Address Form -->
-    <div id="addressForm" class="address-form">
-      <input type="text" id="inputName" placeholder="Full Name" required>
-      <input type="tel" id="inputPhone" placeholder="Mobile Number" required>
-      <textarea id="inputDetails" placeholder="Area, Street, House Name/No." rows="3" required></textarea>
-      <input type="text" id="inputPincode" placeholder="Pincode" required>
-      <div class="form-btns">
-        <button class="save-addr-btn" onclick="saveAddress()">Save Address</button>
-        <button class="cancel-addr-btn" onclick="hideAddressForm()">Cancel</button>
-      </div>
-    </div>
-  </div>
+  
 
   <!-- Cart Items Review Section -->
   <div class="section-title">Review Items</div>
@@ -509,7 +498,9 @@ import {
 
 import {
   collection,
-  getDocs
+  getDocs,
+  addDoc,
+  serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 // Default Mock Address Details
 let userAddress = null;
@@ -573,8 +564,8 @@ function displayAddress() {
 
 // Show Edit Form
 function showAddressForm() {
-  document.getElementById("addressDisplay").style.display = "none";
-  document.getElementById("addressForm").style.display = "flex";
+    window.location.href = "saved-addresses.html";
+}
   
   // Fill values in form inputs
   document.getElementById("inputName").value = userAddress.name;
