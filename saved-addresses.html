@@ -622,6 +622,62 @@ a{
   Back to Profile
 </a>
 
+<!-- SCRIPT BLOCK 1: Handles loading screen fallback, menu events, and cart count.
+     Runs independently of modules to ensure the loading overlay is cleared no matter what. -->
+<script>
+// Safety Timeout: Force-hides loading screen if anything stalls [1]
+setTimeout(function() {
+    var overlay = document.getElementById("stateOverlay");
+    if (overlay && overlay.style.display !== "none") {
+        console.warn("Failsafe: Force-hiding loading screen.");
+        overlay.style.display = "none";
+    }
+}, 1500);
+
+// Basic UI Controls
+var menu = document.getElementById("menu");
+var menuOverlay = document.getElementById("menuOverlay");
+var menuBtn = document.getElementById("menuBtn");
+var closeMenuBtn = document.getElementById("closeMenuBtn");
+
+function openMenu(){
+    if (menu && menuOverlay) {
+        menu.classList.add("open");
+        menuOverlay.classList.add("open");
+    }
+}
+
+function closeMenu(){
+    if (menu && menuOverlay) {
+        menu.classList.remove("open");
+        menuOverlay.classList.remove("open");
+    }
+}
+
+if (menuBtn) menuBtn.addEventListener("click", openMenu);
+if (closeMenuBtn) closeMenuBtn.addEventListener("click", closeMenu);
+if (menuOverlay) menuOverlay.addEventListener("click", closeMenu);
+
+// Cart badge rendering
+var cartCount = document.getElementById("cartCount");
+if (cartCount) {
+    try {
+        var cart = JSON.parse(localStorage.getItem("cart")) || [];
+        var totalQty = 0;
+        cart.forEach(function(item) { totalQty += item.qty || 1; });
+        cartCount.innerText = totalQty;
+    } catch(e) {
+        console.error(e);
+    }
+}
+
+var menuLoginLink = document.getElementById("menuLoginLink");
+if (menuLoginLink) {
+    menuLoginLink.style.display = "none";
+}
+</script>
+
+<!-- SCRIPT BLOCK 2: Handles Firestore Database interaction and Auth checking -->
 <script type="module">
 
 import { db, auth } from "./firebase.js";
@@ -660,16 +716,6 @@ let currentUser = null;
 let allAddresses = [];
 let editAddressId = null;
 
-// SAFETY TIMEOUT: Force hides the loading overlay after 3.5 seconds [1]
-// This guarantees that the page will never remain permanently stuck on a loading screen.
-setTimeout(() => {
-    if (stateOverlay && stateOverlay.style.display !== "none") {
-        console.warn("Safety Timeout: Hiding stuck loading overlay.");
-        stateOverlay.style.display = "none";
-    }
-}, 3500);
-
-// DEFENSIVE EXECUTIONS: Wrapping Auth initialization to isolate issues
 try {
     onAuthStateChanged(auth, async (user) => {
         try {
@@ -680,8 +726,8 @@ try {
             currentUser = user;
             await fetchAddresses(user.uid);
         } catch (err) {
-            console.error("Auth status change execution error:", err);
-            showState("An error occurred loading address files.");
+            console.error("Auth initialization error:", err);
+            showState("An error occurred loading saved address elements.");
         } finally {
             if (stateOverlay) {
                 stateOverlay.style.display = "none";
@@ -689,7 +735,7 @@ try {
         }
     });
 } catch (authErr) {
-    console.error("Authentication listener failed to initialize:", authErr);
+    console.error("Failed to bind Auth listener:", authErr);
     if (stateOverlay) {
         stateOverlay.style.display = "none";
     }
@@ -707,9 +753,13 @@ function showState(message) {
 
 async function fetchAddresses(uid) {
     showState("Loading your addresses...");
+    const TIMEOUT_MS = 10000;
     try {
         const addressRef = collection(db, "customers", uid, "addresses");
-        const querySnapshot = await getDocs(addressRef);
+        const querySnapshot = await Promise.race([
+            getDocs(addressRef),
+            new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), TIMEOUT_MS))
+        ]);
 
         allAddresses = [];
         querySnapshot.forEach((doc) => {
@@ -720,9 +770,19 @@ async function fetchAddresses(uid) {
         renderAddresses();
     } catch (err) {
         console.error("fetchAddresses error:", err);
-        showState("Could not load addresses. Please try again.");
+        const timedOut = err && err.message === "timeout";
+        showState(
+            (timedOut
+                ? "This is taking longer than expected. Check your connection and try again."
+                : "Could not load addresses. Please try again.") +
+            '<br><button class="action-btn" style="margin-top:10px" onclick="window.retryFetchAddresses()">Retry</button>'
+        );
     }
 }
+
+window.retryFetchAddresses = function () {
+    if (currentUser) fetchAddresses(currentUser.uid);
+};
 
 function renderAddresses() {
     if (allAddresses.length === 0) {
@@ -768,7 +828,6 @@ function renderAddresses() {
     addressList.innerHTML = html;
 }
 
-// Form Opening Actions
 if (addAddressBtn) {
     addAddressBtn.addEventListener("click", () => {
         editAddressId = null;
@@ -786,58 +845,7 @@ if (cancelFormBtn) {
     });
 }
 
-// Set default status cleanup
 async function handleDefaultStatus(uid, newDefaultId) {
     try {
         const addressRef = collection(db, "customers", uid, "addresses");
-        const querySnapshot = await getDocs(addressRef);
-        
-        for (const docSnap of querySnapshot.docs) {
-            if (docSnap.id !== newDefaultId && docSnap.data().isDefault === true) {
-                await updateDoc(doc(db, "customers", uid, "addresses", docSnap.id), {
-                    isDefault: false
-                });
-            }
-        }
-    } catch (e) {
-        console.error("Error setting default values:", e);
-    }
-}
-
-// Form Submission handling
-if (addressForm) {
-    addressForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        if (!currentUser) return;
-
-        saveFormBtn.innerText = "Saving...";
-        saveFormBtn.disabled = true;
-
-        const isDefault = isDefaultInput.checked;
-        const addrData = {
-            fullName: fullNameInput.value.trim(),
-            addressLine1: addressLine1Input.value.trim(),
-            addressLine2: addressLine2Input.value.trim(),
-            city: cityInput.value.trim(),
-            state: stateInput.value.trim(),
-            zipCode: zipCodeInput.value.trim(),
-            phone: phoneInput.value.trim(),
-            isDefault: isDefault
-        };
-
-        try {
-            if (editAddressId) {
-                const addrDocRef = doc(db, "customers", currentUser.uid, "addresses", editAddressId);
-                await updateDoc(addrDocRef, addrData);
-                if (isDefault) {
-                    await handleDefaultStatus(currentUser.uid, editAddressId);
-                }
-            } else {
-                const collectionRef = collection(db, "customers", currentUser.uid, "addresses");
-                const newDoc = await addDoc(collectionRef, addrData);
-                if (isDefault) {
-                    await handleDefaultStatus(currentUser.uid, newDoc.id);
-                }
-            }
-
-            addressFormPanel.classList.remove("open");
+        con
