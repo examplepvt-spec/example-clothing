@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout — EXAMPLE CLOTHING</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --ink:#161412;
+  --ivory:#f6f3ec;
+  --ivory-dim:#eee9dd;
+  --brass:#9c7a3c;
+  --brass-soft:#c7ab74;
+  --oxblood:#5e2430;
+  --line:#e2dccb;
+  --white:#ffffff;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  background:var(--ivory);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  padding-bottom:120px;
+  -webkit-font-smoothing:antialiased;
+}
+
+a{ color:inherit; }
+
+.header{
+  background:rgba(246,243,236,.95);
+  backdrop-filter:blur(10px);
+  padding:0 18px;
+  height:64px;
+  display:flex;
+  align-items:center;
+  border-bottom:1px solid var(--line);
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.back-btn{
+  width:36px;
+  height:36px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  text-decoration:none;
+}
+
+.back-btn:hover{ background:var(--ivory-dim); }
+
+.back-btn svg{
+  width:19px;
+  height:19px;
+  stroke:var(--ink);
+  fill:none;
+  stroke-width:1.8;
+}
+
+.header-title{
+  font-family:'Libre Caslon Display',serif;
+  font-size:20px;
+  flex:1;
+  text-align:center;
+  margin-right:36px;
+}
+
+.container{
+  padding:16px;
+  max-width:600px;
+  margin:0 auto;
+}
+
+.section-title{
+  font-size:14px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  margin-bottom:12px;
+  margin-top:24px;
+  color:var(--ink);
+  opacity: 0.8;
+}
+
+/* Address Card styles */
+.card {
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:16px;
+  margin-bottom:16px;
+}
+
+.address-display p {
+  font-size:14px;
+  line-height:1.5;
+  color:#444;
+}
+
+.address-display .name {
+  font-weight:600;
+  font-size:15px;
+  color:var(--ink);
+  margin-bottom:4px;
+}
+
+.change-btn {
+  background:none;
+  border:none;
+  color:var(--brass);
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  margin-top:12px;
+  padding:0;
+  text-decoration:underline;
+}
+
+/* Address Edit Form */
+.address-form {
+  display:none;
+  flex-direction:column;
+  gap:10px;
+  margin-top:10px;
+}
+
+.address-form input, .address-form textarea {
+  width:100%;
+  padding:10px;
+  border:1px solid var(--line);
+  border-radius:6px;
+  font-family:inherit;
+  font-size:14px;
+  background:var(--ivory);
+}
+
+.address-form input:focus, .address-form textarea:focus {
+  outline:1px solid var(--brass);
+}
+
+.form-btns {
+  display:flex;
+  gap:10px;
+  margin-top:6px;
+}
+
+.form-btns button {
+  padding:8px 16px;
+  border-radius:4px;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.save-addr-btn {
+  background:var(--ink);
+  color:var(--white);
+  border:none;
+}
+
+.cancel-addr-btn {
+  background:transparent;
+  border:1px solid var(--line);
+  color:var(--ink);
+}
+
+/* Cart Items Summary */
+.checkout-item {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 0;
+  border-bottom:1px solid var(--ivory-dim);
+}
+
+.checkout-item:last-child {
+  border-bottom:none;
+}
+
+.item-thumb {
+  width:50px;
+  height:62px;
+  object-fit:cover;
+  border-radius:4px;
+  background:var(--ivory-dim);
+}
+
+.item-info {
+  flex:1;
+  min-width:0;
+}
+
+.item-name {
+  font-size:14px;
+  font-weight:600;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.item-meta {
+  font-size:12px;
+  color:#666;
+  margin-top:2px;
+}
+
+.item-price {
+  font-size:14px;
+  font-weight:600;
+  font-family:'Libre Caslon Display',serif;
+}
+
+/* Payment Method Styles */
+.payment-option {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px;
+  border:1px solid var(--line);
+  border-radius:6px;
+  margin-bottom:10px;
+  cursor:pointer;
+  background:var(--white);
+  transition: border-color 0.2s;
+}
+
+.payment-option:hover {
+  border-color:var(--brass-soft);
+}
+
+.payment-option input[type="radio"] {
+  accent-color:var(--ink);
+  width:18px;
+  height:18px;
+}
+
+.payment-label {
+  font-size:14px;
+  font-weight:600;
+}
+
+/* Price Summary Details */
+.summary-row {
+  display:flex;
+  justify-content:between;
+  justify-content: space-between;
+  font-size:14px;
+  margin-bottom:10px;
+}
+
+.summary-row.total-row {
+  border-top:1px dashed var(--line);
+  padding-top:12px;
+  margin-top:12px;
+  font-weight:700;
+  font-size:16px;
+}
+
+.free-delivery-badge {
+  font-size:11px;
+  background:#e2f0d9;
+  color:#385723;
+  padding:4px 8px;
+  border-radius:4px;
+  display:inline-block;
+  margin-top:6px;
+  font-weight:600;
+}
+
+.delivery-warning {
+  font-size:11px;
+  color:var(--oxblood);
+  margin-top:4px;
+}
+
+/* Bottom Bar */
+.bottom-bar{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  background:var(--white);
+  padding:14px 16px;
+  box-shadow:0 -2px 14px rgba(0,0,0,.08);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-top:1px solid var(--line);
+  z-index:90;
+}
+
+.total-box h3{
+  font-size:12px;
+  color:#666;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  font-weight:600;
+}
+
+.total-box h2{
+  font-family:'Libre Caslon Display',serif;
+  font-size:24px;
+  margin-top:2px;
+}
+
+.place-order-btn{
+  background:var(--ink);
+  color:var(--ivory);
+  padding:15px 26px;
+  border-radius:6px;
+  text-decoration:none;
+  font-size:15px;
+  font-weight:600;
+  letter-spacing:.3px;
+  border:none;
+  cursor:pointer;
+}
+
+/* Success Modal Overlay */
+.modal-overlay {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(5px);
+  z-index:200;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.success-modal {
+  background:var(--ivory);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:32px 24px;
+  max-width:400px;
+  width:100%;
+  text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,0.15);
+}
+
+.success-icon {
+  width:64px;
+  height:64px;
+  background:#e2f0d9;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 16px;
+}
+
+.success-icon svg {
+  width:32px;
+  height:32px;
+  stroke:#385723;
+  fill:none;
+  stroke-width:2.5;
+}
+
+.success-modal h2 {
+  font-family:'Libre Caslon Display',serif;
+  font-size:24px;
+  margin-bottom:8px;
+}
+
+.success-modal p {
+  font-size:14px;
+  color:#666;
+  line-height:1.5;
+  margin-bottom:24px;
+}
+
+.home-btn {
+  display:inline-block;
+  background:var(--ink);
+  color:var(--ivory);
+  padding:12px 24px;
+  border-radius:6px;
+  text-decoration:none;
+  font-weight:600;
+  font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <a href="cart.html" class="back-btn" aria-label="Back">
+    <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg>
+  </a>
+  <span class="header-title">Checkout</span>
+</div>
+
+<div class="container">
+
+  <!-- Delivery Address Section -->
+  <div class="section-title">Delivery Address</div>
+  <div class="card">
+    <div id="addressDisplay" class="address-display">
+      <p id="addrName" class="name">Rahul K.</p>
+      <p id="addrPhone" style="font-weight: 500; margin-bottom: 4px;">+91 98765 43210</p>
+      <p id="addrDetails">Apartment 4B, Emerald Heights, MG Road, Kochi, Kerala</p>
+      <p id="addrPincode" style="margin-top: 2px;">Pincode: 682016</p>
+      <button class="change-btn" onclick="showAddressForm()">Change Address</button>
+    </div>
+
+    <!-- Edit Address Form -->
+    <div id="addressForm" class="address-form">
+      <input type="text" id="inputName" placeholder="Full Name" required>
+      <input type="tel" id="inputPhone" placeholder="Mobile Number" required>
+      <textarea id="inputDetails" placeholder="Area, Street, House Name/No." rows="3" required></textarea>
+      <input type="text" id="inputPincode" placeholder="Pincode" required>
+      <div class="form-btns">
+        <button class="save-addr-btn" onclick="saveAddress()">Save Address</button>
+        <button class="cancel-addr-btn" onclick="hideAddressForm()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Items Review Section -->
+  <div class="section-title">Review Items</div>
+  <div class="card" id="itemsSummary">
+    <!-- Cart Items will be inserted here dynamically -->
+  </div>
+
+  <!-- Payment Method Section -->
+  <div class="section-title">Payment Method</div>
+  <div>
+    <label class="payment-option">
+      <input type="radio" name="payment" value="Razorpay" checked>
+      <div class="payment-label">Razorpay (Card/Netbanking)</div>
+    </label>
+    <label class="payment-option">
+      <input type="radio" name="payment" value="UPI">
+      <div class="payment-label">UPI (Google Pay/PhonePe)</div>
+    </label>
+  </div>
+
+  <!-- Price Summary Section -->
+  <div class="section-title">Price Details</div>
+  <div class="card">
+    <div class="summary-row">
+      <span>Subtotal</span>
+      <span id="subtotalPrice">₹0</span>
+    </div>
+    <div class="summary-row">
+      <span>Delivery Charge</span>
+      <span id="deliveryCharge">₹0</span>
+    </div>
+    <div id="freeDeliveryNotice" style="text-align: right;">
+      <!-- Free delivery message or warning will show here -->
+    </div>
+    <div class="summary-row total-row">
+      <span>Total Amount</span>
+      <span id="totalPrice" style="font-family:'Libre Caslon Display',serif; font-size:20px;">₹0</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- Bottom bar for Quick Place Order -->
+<div class="bottom-bar">
+  <div class="total-box">
+    <h3>Total</h3>
+    <h2 id="bottomTotal">₹0</h2>
+  </div>
+  <button class="place-order-btn" id="placeOrderBtn" onclick="placeOrder()">Place Order</button>
+</div>
+
+<!-- Order Success Modal Overlay -->
+<div class="modal-overlay" id="successOverlay">
+  <div class="success-modal">
+    <div class="success-icon">
+      <svg viewBox="0 0 24 24">
+        <path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h2>Order Placed!</h2>
+    <p>Thank you for shopping with us. Your order details and tracking link have been sent to your registered contact number.</p>
+    <a href="categories.html" class="home-btn" onclick="clearCart()">Continue Shopping</a>
+  </div>
+</div>
+
+<script>
+// Default Mock Address Details
+const defaultAddress = {
+  name: "Rahul K.",
+  phone: "+91 98765 43210",
+  details: "Apartment 4B, Emerald Heights, MG Road, Kochi, Kerala",
+  pincode: "682016"
+};
+
+// Retrieve Address & Cart from LocalStorage
+let userAddress = JSON.parse(localStorage.getItem("checkoutAddress")) || defaultAddress;
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+// Initialize Page
+document.addEventListener("DOMContentLoaded", () => {
+  if (cart.length === 0) {
+    alert("Your cart is empty. Redirecting to cart page...");
+    window.location.href = "cart.html";
+    return;
+  }
+  displayAddress();
+  renderSummary();
+});
+
+// Display Address UI
+function displayAddress() {
+  document.getElementById("addrName").innerText = userAddress.name;
+  document.getElementById("addrPhone").innerText = userAddress.phone;
+  document.getElementById("addrDetails").innerText = userAddress.details;
+  document.getElementById("addrPincode").innerText = "Pincode: " + userAddress.pincode;
+}
+
+// Show Edit Form
+function showAddressForm() {
+  document.getElementById("addressDisplay").style.display = "none";
+  document.getElementById("addressForm").style.display = "flex";
+  
+  // Fill values in form inputs
+  document.getElementById("inputName").value = userAddress.name;
+  document.getElementById("inputPhone").value = userAddress.phone;
+  document.getElementById("inputDetails").value = userAddress.details;
+  document.getElementById("inputPincode").value = userAddress.pincode;
+}
+
+// Hide Edit Form
+function hideAddressForm() {
+  document.getElementById("addressDisplay").style.display = "block";
+  document.getElementById("addressForm").style.display = "none";
+}
+
+// Save Updated Address to LocalStorage (No Firestore)
+function saveAddress() {
+  const name = document.getElementById("inputName").value.trim();
+  const phone = document.getElementById("inputPhone").value.trim();
+  const details = document.getElementById("inputDetails").value.trim();
+  const pincode = document.getElementById("inputPincode").value.trim();
+
+  if(!name || !phone || !details || !pincode) {
+    alert("Please fill in all address fields.");
+    return;
+  }
+
+  userAddress = { name, phone, details, pincode };
+  localStorage.setItem("checkoutAddress", JSON.stringify(userAddress));
+  
+  displayAddress();
+  hideAddressForm();
+}
+
+// Render Order Summary & calculate Delivery Charges
+function renderSummary() {
+  const itemsContainer = document.getElementById("itemsSummary");
+  itemsContainer.innerHTML = "";
+  
+  let subtotal = 0;
+
+  cart.forEach(item => {
+    const qty = item.qty || 1;
+    const unitPrice = Number(item.offerPrice || item.price) || 0;
+    const lineTotal = unitPrice * qty;
+    subtotal += lineTotal;
+
+    const div = document.createElement("div");
+    div.className = "checkout-item";
+    div.innerHTML = `
+      <img src="${item.image || ""}" class="item-thumb" alt="${item.name || "Item"}" onerror="this.style.visibility='hidden'">
+      <div class="item-info">
+        <div class="item-name">${item.name || "Product"}</div>
+        <div class="item-meta">Qty: ${qty} ${item.size ? `| Size: ${item.size}` : ""}</div>
+      </div>
+      <div class="item-price">₹${lineTotal}</div>
+    `;
+    itemsContainer.appendChild(div);
+  });
+
+  // Delivery calculation logic (Free Delivery on ₹3500+)
+  const deliveryThreshold = 3500;
+  let deliveryCharge = 100; // Default delivery charge
+  const noticeContainer = document.getElementById("freeDeliveryNotice");
+
+  if (subtotal >= deliveryThreshold) {
+    deliveryCharge = 0;
+    noticeContainer.innerHTML = `<span class="free-delivery-badge">Free Delivery Applied! 🎉</span>`;
+  } else {
+    const balanceNeeded = deliveryThreshold - subtotal;
+    noticeContainer.innerHTML = `<span class="delivery-warning">Add ₹${balanceNeeded} more to get FREE Delivery</span>`;
+  }
+
+  const finalTotal = subtotal + deliveryCharge;
+
+  document.getElementById("subtotalPrice").innerText = "₹" + subtotal;
+  document.getElementById("deliveryCharge").innerText = deliveryCharge === 0 ? "FREE" : "₹" + deliveryCharge;
+  document.getElementById("totalPrice").innerText = "₹" + finalTotal;
+  document.getElementById("bottomTotal").innerText = "₹" + finalTotal;
+}
+
+// Simulate Placing Order (No Firestore Save)
+function placeOrder() {
+  const selectedPayment = document.querySelector('input[name="payment"]:checked').value;
+  console.log("Processing order offline. Payment via: " + selectedPayment);
+  
+  // Display success overlay modal
+  document.getElementById("successOverlay").style.display = "flex";
+}
+
+// Clear Cart upon checkout success
+function clearCart() {
+  localStorage.removeItem("cart");
+}
+</script>
+
+</body>
+</html>
