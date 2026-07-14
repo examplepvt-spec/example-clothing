@@ -129,54 +129,6 @@ a{ color:inherit; }
   text-decoration:underline;
 }
 
-/* Address Edit Form */
-.address-form {
-  display:none;
-  flex-direction:column;
-  gap:10px;
-  margin-top:10px;
-}
-
-.address-form input, .address-form textarea {
-  width:100%;
-  padding:10px;
-  border:1px solid var(--line);
-  border-radius:6px;
-  font-family:inherit;
-  font-size:14px;
-  background:var(--ivory);
-}
-
-.address-form input:focus, .address-form textarea:focus {
-  outline:1px solid var(--brass);
-}
-
-.form-btns {
-  display:flex;
-  gap:10px;
-  margin-top:6px;
-}
-
-.form-btns button {
-  padding:8px 16px;
-  border-radius:4px;
-  font-size:13px;
-  font-weight:600;
-  cursor:pointer;
-}
-
-.save-addr-btn {
-  background:var(--ink);
-  color:var(--white);
-  border:none;
-}
-
-.cancel-addr-btn {
-  background:transparent;
-  border:1px solid var(--line);
-  color:var(--ink);
-}
-
 /* Cart Items Summary */
 .checkout-item {
   display:flex;
@@ -255,8 +207,7 @@ a{ color:inherit; }
 /* Price Summary Details */
 .summary-row {
   display:flex;
-  justify-content:between;
-  justify-content: space-between;
+  justify-content:space-between;
   font-size:14px;
   margin-bottom:10px;
 }
@@ -416,14 +367,13 @@ a{ color:inherit; }
   <div class="section-title">Delivery Address</div>
   <div class="card">
     <div id="addressDisplay" class="address-display">
-      <p id="addrName" class="name">Rahul K.</p>
-      <p id="addrPhone" style="font-weight: 500; margin-bottom: 4px;">+91 98765 43210</p>
-      <p id="addrDetails">Apartment 4B, Emerald Heights, MG Road, Kochi, Kerala</p>
-      <p id="addrPincode" style="margin-top: 2px;">Pincode: 682016</p>
-      <button class="change-btn" onclick="showAddressForm()">Change Address</button>
+      <p id="addrName" class="name">Loading Address...</p>
+      <p id="addrPhone" style="font-weight: 500; margin-bottom: 4px;"></p>
+      <p id="addrDetails"></p>
+      <p id="addrPincode" style="margin-top: 2px;"></p>
+      <button class="change-btn" id="changeAddrBtn">Change Address</button>
     </div>
-
-  
+  </div>
 
   <!-- Cart Items Review Section -->
   <div class="section-title">Review Items</div>
@@ -435,11 +385,7 @@ a{ color:inherit; }
   <div class="section-title">Payment Method</div>
   <div>
     <label class="payment-option">
-      <input type="radio" name="payment" value="Razorpay" checked>
-      <div class="payment-label">Razorpay (Card/Netbanking)</div>
-    </label>
-    <label class="payment-option">
-      <input type="radio" name="payment" value="UPI">
+      <input type="radio" name="payment" value="UPI" checked>
       <div class="payment-label">UPI (Google Pay/PhonePe)</div>
     </label>
   </div>
@@ -490,51 +436,29 @@ a{ color:inherit; }
 </div>
 
 <script type="module">
-import { db, auth } from "./firebase.js";
+// Firestore integration imports
+import { db, auth } from "./firebase-config.js"; 
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-import {
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-import {
-  collection,
-  getDocs,
-  addDoc,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-// Default Mock Address Details
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 let userAddress = null;
 
-let currentUser = null;
+const itemsContainer = document.getElementById("itemsSummary");
+const subtotalPriceEl = document.getElementById("subtotalPrice");
+const deliveryChargeEl = document.getElementById("deliveryCharge");
+const freeDeliveryNoticeEl = document.getElementById("freeDeliveryNotice");
+const totalPriceEl = document.getElementById("totalPrice");
+const bottomTotalEl = document.getElementById("bottomTotal");
+const placeOrderBtn = document.getElementById("placeOrderBtn");
+const successOverlay = document.getElementById("successOverlay");
+const changeAddrBtn = document.getElementById("changeAddrBtn");
 
-onAuthStateChanged(auth, async (user) => {
-    if (!user) {
-        window.location.href = "login.html";
-        return;
-    }
+// Set up the Change Address action
+changeAddrBtn.onclick = () => {
+  window.location.href = "addresses.html";
+};
 
-    currentUser = user;
-    await loadDefaultAddress();
-});
-
-async function loadDefaultAddress() {
-    const addressRef = collection(db, "customers", currentUser.uid, "addresses");
-    const snapshot = await getDocs(addressRef);
-
-    snapshot.forEach((doc) => {
-        const data = doc.data();
-
-        if (data.isDefault) {
-            userAddress = {
-                name: data.fullName,
-                phone: data.phone,
-                details: `${data.addressLine1} ${data.addressLine2 || ""}, ${data.city}, ${data.state}`,
-                pincode: data.zipCode
-            };
-        }
-    });
-}
-  
 // Initialize Page
 document.addEventListener("DOMContentLoaded", () => {
   if (cart.length === 0) {
@@ -542,68 +466,69 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "cart.html";
     return;
   }
-  while (!currentUser) {
-        await new Promise(resolve => setTimeout(resolve, 100));
+
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      await loadDefaultAddress(user.uid);
+    } else {
+      alert("Please log in to proceed to checkout.");
+      window.location.href = "login.html"; 
     }
+  });
 
-    displayAddress();
-    renderSummary();
-
-});
-  displayAddress();
   renderSummary();
 });
 
-// Display Address UI
-function displayAddress() {
-  document.getElementById("addrName").innerText = userAddress.name;
-  document.getElementById("addrPhone").innerText = userAddress.phone;
-  document.getElementById("addrDetails").innerText = userAddress.details;
-  document.getElementById("addrPincode").innerText = "Pincode: " + userAddress.pincode;
-}
+// Fetch default address from Firestore: customers/{uid}/addresses
+async function loadDefaultAddress(uid) {
+  try {
+    const addrRef = collection(db, "customers", uid, "addresses");
+    const querySnapshot = await getDocs(addrRef);
+    
+    let defaultAddrDoc = null;
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      if (data.isDefault === true) {
+        defaultAddrDoc = data;
+      }
+    });
 
-// Show Edit Form
-function showAddressForm() {
-    window.location.href = "saved-addresses.html";
-}
-  
-  // Fill values in form inputs
-  document.getElementById("inputName").value = userAddress.name;
-  document.getElementById("inputPhone").value = userAddress.phone;
-  document.getElementById("inputDetails").value = userAddress.details;
-  document.getElementById("inputPincode").value = userAddress.pincode;
-}
-
-// Hide Edit Form
-function hideAddressForm() {
-  document.getElementById("addressDisplay").style.display = "block";
-  document.getElementById("addressForm").style.display = "none";
-}
-
-// Save Updated Address to LocalStorage (No Firestore)
-function saveAddress() {
-  const name = document.getElementById("inputName").value.trim();
-  const phone = document.getElementById("inputPhone").value.trim();
-  const details = document.getElementById("inputDetails").value.trim();
-  const pincode = document.getElementById("inputPincode").value.trim();
-
-  if(!name || !phone || !details || !pincode) {
-    alert("Please fill in all address fields.");
-    return;
+    if (defaultAddrDoc) {
+      userAddress = defaultAddrDoc;
+      displayAddress();
+    } else {
+      document.getElementById("addressDisplay").innerHTML = `
+        <p style="color: var(--oxblood); font-weight: 600; font-size:14px;">No default address found.</p>
+        <button class="change-btn" onclick="window.location.href='addresses.html'">Add Address</button>
+      `;
+    }
+  } catch (error) {
+    console.error("Error loading address: ", error);
+    document.getElementById("addressDisplay").innerHTML = `
+      <p style="color: var(--oxblood); font-size:14px;">Error loading address. Please try again.</p>
+    `;
   }
-
-  userAddress = { name, phone, details, pincode };
-  localStorage.setItem("checkoutAddress", JSON.stringify(userAddress));
-  
-  displayAddress();
-  hideAddressForm();
 }
 
-// Render Order Summary & calculate Delivery Charges
-function renderSummary() {
-  const itemsContainer = document.getElementById("itemsSummary");
-  itemsContainer.innerHTML = "";
+// Render Address UI
+function displayAddress() {
+  if (!userAddress) return;
   
+  document.getElementById("addrName").innerText = userAddress.fullName || "";
+  document.getElementById("addrPhone").innerText = userAddress.phone || "";
+  
+  const line1 = userAddress.addressLine1 || "";
+  const line2 = userAddress.addressLine2 ? ", " + userAddress.addressLine2 : "";
+  const city = userAddress.city ? ", " + userAddress.city : "";
+  const state = userAddress.state ? ", " + userAddress.state : "";
+  
+  document.getElementById("addrDetails").innerText = `${line1}${line2}${city}${state}`;
+  document.getElementById("addrPincode").innerText = "Pincode: " + (userAddress.zipCode || "");
+}
+
+// Render Order Summary
+function renderSummary() {
+  itemsContainer.innerHTML = "";
   let subtotal = 0;
 
   cart.forEach(item => {
@@ -625,38 +550,33 @@ function renderSummary() {
     itemsContainer.appendChild(div);
   });
 
-  // Delivery calculation logic (Free Delivery on ₹3500+)
   const deliveryThreshold = 3500;
-  let deliveryCharge = 100; // Default delivery charge
-  const noticeContainer = document.getElementById("freeDeliveryNotice");
+  let deliveryCharge = 100;
 
   if (subtotal >= deliveryThreshold) {
     deliveryCharge = 0;
-    noticeContainer.innerHTML = `<span class="free-delivery-badge">Free Delivery Applied! 🎉</span>`;
+    freeDeliveryNoticeEl.innerHTML = `<span class="free-delivery-badge">Free Delivery Applied! 🎉</span>`;
   } else {
     const balanceNeeded = deliveryThreshold - subtotal;
-    noticeContainer.innerHTML = `<span class="delivery-warning">Add ₹${balanceNeeded} more to get FREE Delivery</span>`;
+    freeDeliveryNoticeEl.innerHTML = `<span class="delivery-warning">Add ₹${balanceNeeded} more to get FREE Delivery</span>`;
   }
 
   const finalTotal = subtotal + deliveryCharge;
 
-  document.getElementById("subtotalPrice").innerText = "₹" + subtotal;
-  document.getElementById("deliveryCharge").innerText = deliveryCharge === 0 ? "FREE" : "₹" + deliveryCharge;
-  document.getElementById("totalPrice").innerText = "₹" + finalTotal;
-  document.getElementById("bottomTotal").innerText = "₹" + finalTotal;
+  subtotalPriceEl.innerText = "₹" + subtotal;
+  deliveryChargeEl.innerText = deliveryCharge === 0 ? "FREE" : "₹" + deliveryCharge;
+  totalPriceEl.innerText = "₹" + finalTotal;
+  bottomTotalEl.innerText = "₹" + finalTotal;
 }
 
-// Simulate Placing Order (No Firestore Save)
-function placeOrder() {
+// Bind to window to maintain onclick handlers in HTML
+window.placeOrder = function() {
   const selectedPayment = document.querySelector('input[name="payment"]:checked').value;
   console.log("Processing order offline. Payment via: " + selectedPayment);
-  
-  // Display success overlay modal
-  document.getElementById("successOverlay").style.display = "flex";
+  successOverlay.style.display = "flex";
 }
 
-// Clear Cart upon checkout success
-function clearCart() {
+window.clearCart = function() {
   localStorage.removeItem("cart");
 }
 </script>
