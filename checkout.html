@@ -836,7 +836,7 @@ function showNoAddress() {
   // Re-attach click handler
   setTimeout(() => {
     const btn = document.getElementById("addAddrBtn");
-    if(btn) btn.addEventListener("click", function(){ window.location.href = "addresses.html"; });
+    if(btn) btn.addEventListener("click", function(){ toggleAddressForm(); });
   }, 0);
     </div>
   `;
