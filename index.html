@@ -46,7 +46,10 @@ h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:500;}
 a{color:inherit;text-decoration:none;-webkit-touch-callout:none;}
 ::selection{background:var(--gold);color:var(--white);}
 
-/* ========== CUSTOM CURSOR (Desktop Only) ========== */
+/* ============================================
+   CUSTOM CURSOR — Works on ALL devices
+   On mobile: smaller, less intrusive
+   ============================================ */
 .cursor-dot,.cursor-outline{
   position:fixed;top:0;left:0;
   transform:translate(-50%,-50%);
@@ -54,12 +57,17 @@ a{color:inherit;text-decoration:none;-webkit-touch-callout:none;}
   pointer-events:none;mix-blend-mode:difference;
   will-change:transform;
 }
-.cursor-dot{width:8px;height:8px;background:var(--gold-soft);}
-.cursor-outline{width:40px;height:40px;border:1px solid var(--gold-soft);transition:width .3s,height .3s,border-color .3s,background .3s;}
-.cursor-outline.hover{width:60px;height:60px;border-color:var(--gold);background:rgba(176,141,62,0.1);}
-@media(pointer:coarse),(max-width:768px){.cursor-dot,.cursor-outline{display:none!important;}}
+.cursor-dot{width:6px;height:6px;background:var(--gold-soft);}
+.cursor-outline{width:32px;height:32px;border:1px solid var(--gold-soft);transition:width .3s,height .3s,border-color .3s,background .3s;}
+.cursor-outline.hover{width:50px;height:50px;border-color:var(--gold);background:rgba(176,141,62,0.1);}
+@media(pointer:coarse){
+  .cursor-dot{width:4px;height:4px;opacity:0.6;}
+  .cursor-outline{width:24px;height:24px;opacity:0.6;}
+}
 
-/* ========== PRELOADER ========== */
+/* ============================================
+   PRELOADER — Same on all devices
+   ============================================ */
 .preloader{
   position:fixed;inset:0;background:var(--ink);z-index:9999;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
@@ -77,7 +85,9 @@ a{color:inherit;text-decoration:none;-webkit-touch-callout:none;}
 .pl-counter{position:absolute;bottom:60px;font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:3px;color:rgba(247,244,238,.3);}
 .pl-counter span{color:var(--gold-soft);font-weight:600;}
 
-/* ========== HEADER ========== */
+/* ============================================
+   HEADER — Same hover/active behavior
+   ============================================ */
 .header{
   position:fixed;top:0;left:0;width:100%;height:72px;
   display:flex;align-items:center;justify-content:space-between;padding:0 22px;z-index:1000;
@@ -90,26 +100,40 @@ a{color:inherit;text-decoration:none;-webkit-touch-callout:none;}
 .header.on-hero .logo-text{color:var(--ivory);}
 .header.on-hero .icon-link svg{stroke:var(--ivory);}
 .header.on-hero .menu-btn span{background:var(--ivory);}
+
 .menu-btn{width:48px;height:48px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:6px;cursor:pointer;background:none;border:none;padding:0 12px;position:relative;transition:transform .3s;-webkit-tap-highlight-color:transparent;}
 .menu-btn:active{transform:scale(0.95);}
 .menu-btn span{display:block;height:1.5px;background:var(--ink);border-radius:2px;transition:width .4s,background .4s,transform .4s;transform-origin:center;}
 .menu-btn span:nth-child(1){width:24px;}
 .menu-btn span:nth-child(2){width:16px;}
 .menu-btn span:nth-child(3){width:20px;}
+/* Hover for desktop, active for mobile */
+.menu-btn:hover span,.menu-btn:active span{width:24px;}
 .menu-btn.active span:nth-child(1){transform:translateY(7.5px) rotate(45deg);width:24px;}
 .menu-btn.active span:nth-child(2){opacity:0;transform:scaleX(0);}
 .menu-btn.active span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg);width:24px;}
+
 .logo-area{display:flex;align-items:center;gap:12px;flex:1;margin-left:16px;position:relative;}
 .logo{width:36px;height:36px;border-radius:50%;object-fit:cover;transition:transform .5s;}
+.logo-area:hover .logo,.logo-area:active .logo{transform:rotate(15deg) scale(1.1);}
 .logo-text{font-family:'Cormorant Garamond',serif;font-size:22px;letter-spacing:5px;font-weight:500;transition:color .4s;position:relative;}
+.logo-text::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold);transition:width .5s;}
+.logo-area:hover .logo-text::after,.logo-area:active .logo-text::after{width:100%;}
+
 .header-icons{display:flex;align-items:center;gap:6px;}
 .icon-link{position:relative;width:44px;height:44px;display:flex;align-items:center;justify-content:center;text-decoration:none;border-radius:50%;transition:background .3s,transform .3s;overflow:hidden;-webkit-tap-highlight-color:transparent;}
-.icon-link:active{transform:scale(0.9);background:rgba(176,141,62,.15);}
+.icon-link::before{content:'';position:absolute;inset:0;background:var(--gold-glow);border-radius:50%;transform:scale(0);transition:transform .4s;}
+.icon-link:hover::before,.icon-link:active::before{transform:scale(1);}
+.icon-link:hover,.icon-link:active{transform:translateY(-2px);}
+.icon-link:active{transform:scale(0.9);}
 .icon-link svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:1.5;transition:stroke .4s,transform .3s;position:relative;z-index:1;}
+.icon-link:hover svg,.icon-link:active svg{transform:scale(1.1);}
 .badge{position:absolute;top:2px;right:2px;background:var(--gold);color:var(--white);min-width:18px;height:18px;padding:0 4px;border-radius:50%;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;animation:badgePop .4s var(--ease-spring);box-shadow:0 2px 8px rgba(176,141,62,.3);}
 @keyframes badgePop{from{transform:scale(0);}to{transform:scale(1);}}
 
-/* ========== SIDE MENU ========== */
+/* ============================================
+   SIDE MENU — Same animations
+   ============================================ */
 .side-menu{position:fixed;top:0;left:0;width:min(380px,90%);height:100%;background:var(--ink);color:var(--ivory);padding:100px 40px 40px;transform:translateX(-102%);transition:transform .7s var(--ease);z-index:2000;display:flex;flex-direction:column;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 .side-menu.open{transform:translateX(0);}
 .menu-tag{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold-soft);margin-bottom:28px;display:block;opacity:0;transform:translateY(20px);transition:opacity .6s .3s,transform .6s .3s;}
@@ -123,15 +147,19 @@ a{color:inherit;text-decoration:none;-webkit-touch-callout:none;}
 .side-menu.open a.nav-link:nth-of-type(5){transition-delay:.43s;}
 .side-menu.open a.nav-link:nth-of-type(6){transition-delay:.50s;}
 .side-menu.open a.nav-link:nth-of-type(7){transition-delay:.57s;}
-.side-menu a.nav-link:active{color:var(--gold-soft);padding-left:8px;}
+.side-menu a.nav-link::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%) scaleX(0);width:4px;height:60%;background:var(--gold);border-radius:2px;transition:transform .4s;transform-origin:left;}
+.side-menu a.nav-link:hover,.side-menu a.nav-link:active{padding-left:16px;color:var(--gold-soft);}
+.side-menu a.nav-link:hover::before,.side-menu a.nav-link:active::before{transform:translateY(-50%) scaleX(1);}
 .menu-foot{margin-top:auto;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(247,244,238,.35);padding-top:40px;border-top:1px solid var(--line-dark);opacity:0;transition:opacity .6s .8s;}
 .side-menu.open .menu-foot{opacity:1;}
 .close-btn{position:absolute;top:24px;right:24px;width:48px;height:48px;background:none;border:1px solid var(--line-dark);border-radius:50%;color:var(--ivory);font-size:20px;cursor:pointer;line-height:1;transition:background .3s,transform .5s,border-color .3s;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;}
-.close-btn:active{background:rgba(255,255,255,.12);}
+.close-btn:hover,.close-btn:active{background:rgba(255,255,255,.08);transform:rotate(90deg);border-color:var(--gold-soft);}
 .menu-overlay{position:fixed;inset:0;background:rgba(10,9,8,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:1500;opacity:0;visibility:hidden;transition:opacity .6s,visibility .6s;}
 .menu-overlay.open{opacity:1;visibility:visible;}
 
-/* ========== HERO SECTION ========== */
+/* ============================================
+   HERO — Same cinematic animation everywhere
+   ============================================ */
 .hero{height:100svh;height:100vh;height:-webkit-fill-available;position:relative;overflow:hidden;background:var(--ink);display:flex;align-items:center;justify-content:center;}
 .hero-bg{position:absolute;inset:0;z-index:0;}
 .hero-bg video{width:100%;height:100%;object-fit:cover;transform:scale(1.15);animation:heroZoom 10s var(--ease) forwards;filter:brightness(0.7) contrast(1.1);}
@@ -158,12 +186,14 @@ a{color:inherit;text-decoration:none;-webkit-touch-callout:none;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
 .hero-cta-row{display:flex;flex-direction:column;gap:14px;margin-top:40px;opacity:0;animation:fadeUp 1.2s 2.7s forwards;}
 
-/* ========== BUTTONS ========== */
+/* ============================================
+   BUTTONS — IDENTICAL hover/active behavior
+   ============================================ */
 .btn{position:relative;padding:18px 36px;text-decoration:none;font-weight:600;font-size:11px;letter-spacing:3px;text-transform:uppercase;text-align:center;border:1px solid transparent;overflow:hidden;transition:all .5s;z-index:1;display:inline-flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;min-width:240px;-webkit-tap-highlight-color:transparent;}
-.btn:active{transform:scale(0.97)!important;}
 .btn::before{content:'';position:absolute;inset:0;z-index:-1;transition:transform .6s;}
 .btn-primary{background:var(--ivory);color:var(--ink);box-shadow:0 4px 20px rgba(247,244,238,.15);}
 .btn-primary::before{background:var(--gold);transform:translateY(101%);}
+/* BOTH hover AND active trigger the same animation */
 .btn-primary:hover,.btn-primary:active{color:var(--white);box-shadow:0 8px 30px rgba(176,141,62,.25);transform:translateY(-2px);}
 .btn-primary:hover::before,.btn-primary:active::before{transform:translateY(0);}
 .btn-outline{background:transparent;color:var(--ivory);border:1px solid rgba(247,244,238,.35);}
@@ -173,65 +203,80 @@ a{color:inherit;text-decoration:none;-webkit-touch-callout:none;}
 .btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;transition:transform .3s;}
 .btn:hover svg,.btn:active svg{transform:translateX(4px);}
 
-/* ========== SCROLL INDICATOR ========== */
+/* ============================================
+   SCROLL INDICATOR
+   ============================================ */
 .scroll-indicator{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);z-index:4;display:flex;flex-direction:column;align-items:center;gap:12px;opacity:0;animation:fadeUp 1s 3.5s forwards;}
 .scroll-indicator span{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:rgba(247,244,238,.4);}
 .scroll-line{width:1px;height:50px;background:rgba(247,244,238,.15);position:relative;overflow:hidden;}
 .scroll-line::after{content:'';position:absolute;top:-50px;left:0;width:100%;height:50px;background:var(--gold-soft);animation:scrollDrop 2s infinite;}
 @keyframes scrollDrop{0%{top:-50px;}60%,100%{top:50px;}}
 
-/* ========== PARTICLES ========== */
+/* ============================================
+   PARTICLES — Same on all devices
+   ============================================ */
 .particles{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden;}
 .particle{position:absolute;width:3px;height:3px;background:var(--gold-soft);border-radius:50%;opacity:0.3;animation:float 15s infinite linear;}
 @keyframes float{0%{transform:translateY(100vh) rotate(0deg);opacity:0;}10%{opacity:0.3;}90%{opacity:0.3;}100%{transform:translateY(-10vh) rotate(720deg);opacity:0;}}
 
-/* ========== MARQUEE ========== */
+/* ============================================
+   MARQUEE
+   ============================================ */
 .marquee-strip{background:var(--ink);color:var(--ivory);padding:20px 0;overflow:hidden;position:relative;border-top:1px solid rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.05);}
 .marquee-track{display:flex;width:max-content;animation:marquee 25s linear infinite;}
 @keyframes marquee{to{transform:translateX(-50%);}}
 .marquee-item{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold-soft);font-weight:600;padding:0 36px;display:flex;align-items:center;gap:36px;white-space:nowrap;}
 .marquee-item::after{content:'◆';font-size:8px;color:rgba(247,244,238,.25);}
 
-/* ========== REVEAL ANIMATIONS ========== */
+/* ============================================
+   REVEAL ANIMATIONS
+   ============================================ */
 .reveal{opacity:0;transform:translateY(50px);transition:opacity 1s,transform 1s;}
 .reveal.in{opacity:1;transform:translateY(0);}
 .reveal-scale{opacity:0;transform:scale(0.95);transition:opacity 1.2s,transform 1.2s;}
 .reveal-scale.in{opacity:1;transform:scale(1);}
 
-/* ========== SECTION HEAD ========== */
+/* ============================================
+   SECTION HEAD
+   ============================================ */
 .section-head{padding:80px 26px 16px;text-align:center;}
 .section-head .eyebrow-dark{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);font-weight:700;display:inline-flex;align-items:center;gap:14px;}
 .section-head .eyebrow-dark::before,.section-head .eyebrow-dark::after{content:'';width:30px;height:1px;background:var(--gold);opacity:.4;}
 .section-head h2{font-size:clamp(32px,6vw,48px);margin-top:16px;font-weight:500;line-height:1.1;}
 .section-head .lede{margin-top:14px;font-size:15px;color:rgba(14,13,11,.5);font-weight:300;max-width:340px;margin-left:auto;margin-right:auto;line-height:1.7;}
 
-/* ========== FEATURED PRODUCTS ========== */
+/* ============================================
+   FEATURED PRODUCTS — IDENTICAL hover/active
+   ============================================ */
 .featured-section{padding:0 22px;max-width:1200px;margin:0 auto;}
 .featured-card{margin:32px 0 0;background:var(--white);border:1px solid var(--line);position:relative;overflow:hidden;transition:transform .5s,box-shadow .5s;}
-.featured-card:active{transform:scale(0.98);}
-.featured-card:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,.08);}
+/* Touch shows same animation as hover */
+.featured-card:hover,.featured-card:active{transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,.08);}
 .tag-badge{position:absolute;top:18px;left:18px;background:rgba(10,9,8,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--ivory);font-size:9px;letter-spacing:3px;text-transform:uppercase;padding:10px 14px;font-weight:700;z-index:3;display:flex;align-items:center;gap:8px;border-radius:2px;}
 .tag-badge svg{width:12px;height:12px;stroke:var(--gold-soft);fill:none;stroke-width:2;}
 .media-wrap{overflow:hidden;position:relative;}
 .media-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(10,9,8,.15) 100%);pointer-events:none;z-index:1;}
 .featured-card video{width:100%;display:block;aspect-ratio:4/5;object-fit:cover;transition:transform 1.5s,filter .5s;filter:brightness(0.95);}
-.featured-card:hover video{transform:scale(1.08);filter:brightness(1);}
+.featured-card:hover video,.featured-card:active video{transform:scale(1.08);filter:brightness(1);}
 .featured-content{padding:28px 24px 24px;text-align:center;position:relative;z-index:2;background:var(--white);}
 .featured-content h3{font-size:26px;line-height:1.2;font-weight:500;transition:color .3s;}
-.featured-card:hover .featured-content h3{color:var(--gold);}
+.featured-card:hover .featured-content h3,.featured-card:active .featured-content h3{color:var(--gold);}
 .price-row{display:flex;align-items:baseline;justify-content:center;gap:10px;margin:12px 0 24px;}
 .price{font-size:24px;font-weight:600;font-family:'Cormorant Garamond',serif;letter-spacing:1px;color:var(--ink);}
 .view-btn{position:relative;display:block;text-align:center;background:var(--ink);color:var(--ivory);text-decoration:none;padding:18px;font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;overflow:hidden;z-index:1;transition:letter-spacing .4s;-webkit-tap-highlight-color:transparent;}
 .view-btn::after{content:'';position:absolute;inset:0;background:var(--gold);z-index:-1;transform:translateY(101%);transition:transform .5s;}
-.view-btn:active{letter-spacing:4px;}
-.view-btn:active::after{transform:translateY(0);}
+.view-btn:hover,.view-btn:active{letter-spacing:4px;}
+.view-btn:hover::after,.view-btn:active::after{transform:translateY(0);}
 .quick-add{position:absolute;bottom:20px;right:20px;width:48px;height:48px;background:var(--white);border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:4;box-shadow:0 4px 20px rgba(0,0,0,.15);transform:translateY(20px);opacity:0;transition:all .4s;-webkit-tap-highlight-color:transparent;}
-.featured-card:hover .quick-add,.featured-card:active .quick-add{transform:translateY(0);opacity:1;}
-.quick-add:active{background:var(--gold);transform:translateY(0) scale(1.1);}
+/* Show on hover (desktop) AND on active/touch (mobile) */
+.featured-card:hover .quick-add,.featured-card:active .quick-add,.featured-card.touched .quick-add{transform:translateY(0);opacity:1;}
+.quick-add:hover,.quick-add:active{background:var(--gold);transform:translateY(0) scale(1.1);}
 .quick-add svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:2;transition:stroke .3s;}
-.quick-add:active svg{stroke:var(--white);}
+.quick-add:hover svg,.quick-add:active svg{stroke:var(--white);}
 
-/* ========== CRAFT / VALUES ========== */
+/* ============================================
+   CRAFT / VALUES — IDENTICAL hover/active
+   ============================================ */
 .craft{margin-top:90px;background:var(--ink);color:var(--ivory);padding:90px 30px 80px;text-align:center;position:relative;overflow:hidden;}
 .craft::before{content:'E';position:absolute;font-family:'Cormorant Garamond',serif;font-size:500px;line-height:1;color:rgba(255,255,255,.02);top:-80px;right:-60px;pointer-events:none;user-select:none;}
 .craft .eyebrow-dark{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold-soft);font-weight:700;position:relative;z-index:1;}
@@ -246,7 +291,9 @@ a{color:inherit;text-decoration:none;-webkit-touch-callout:none;}
 .craft-item h3{font-size:24px;margin-top:10px;}
 .craft-item p{margin-top:10px;font-size:14px;line-height:1.8;color:rgba(247,244,238,.55);font-weight:300;max-width:280px;margin-left:auto;margin-right:auto;}
 
-/* ========== CATEGORIES ========== */
+/* ============================================
+   CATEGORIES — IDENTICAL hover/active
+   ============================================ */
 .categories{padding:0 22px;display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:32px;max-width:1200px;margin-left:auto;margin-right:auto;}
 .cat{position:relative;background:var(--white);border:1px solid var(--line);text-align:center;padding:48px 14px;font-family:'Cormorant Garamond',serif;font-size:22px;letter-spacing:1px;text-decoration:none;color:var(--ink);transition:all .5s;overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent;}
 .cat::before{content:'';position:absolute;inset:0;background:var(--ink);transform:translateY(101%);transition:transform .6s;z-index:0;}
@@ -259,7 +306,9 @@ a{color:inherit;text-decoration:none;-webkit-touch-callout:none;}
 .cat:hover .cat-arrow,.cat:active .cat-arrow{opacity:1;transform:translateX(0);border-color:rgba(255,255,255,.2);}
 .cat-arrow svg{width:14px;height:14px;stroke:var(--ivory);fill:none;stroke-width:2;}
 
-/* ========== TRUST STRIP ========== */
+/* ============================================
+   TRUST STRIP
+   ============================================ */
 .trust-strip{background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:40px 22px;margin-top:80px;}
 .trust-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;max-width:800px;margin:0 auto;text-align:center;}
 .trust-item{padding:16px;}
@@ -267,7 +316,9 @@ a{color:inherit;text-decoration:none;-webkit-touch-callout:none;}
 .trust-item h4{font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-bottom:4px;}
 .trust-item p{font-size:12px;color:rgba(14,13,11,.5);font-weight:300;}
 
-/* ========== CTA BANNER ========== */
+/* ============================================
+   CTA BANNER
+   ============================================ */
 .cta-banner{background:var(--ink);color:var(--ivory);padding:80px 26px;text-align:center;margin-top:80px;position:relative;overflow:hidden;}
 .cta-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(176,141,62,.08) 0%,transparent 70%);pointer-events:none;}
 .cta-banner h2{font-size:clamp(28px,5vw,40px);position:relative;z-index:1;line-height:1.2;}
@@ -275,7 +326,9 @@ a{color:inherit;text-decoration:none;-webkit-touch-callout:none;}
 .cta-banner p{margin-top:16px;font-size:15px;color:rgba(247,244,238,.6);font-weight:300;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.7;position:relative;z-index:1;}
 .cta-banner .btn-primary{margin-top:32px;position:relative;z-index:1;display:inline-flex;}
 
-/* ========== FOOTER ========== */
+/* ============================================
+   FOOTER
+   ============================================ */
 footer{background:var(--ink);color:var(--ivory);padding:80px 26px 40px;text-align:center;position:relative;}
 footer::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:60px;height:1px;background:var(--gold);opacity:.5;}
 .foot-logo{font-family:'Cormorant Garamond',serif;font-size:28px;letter-spacing:8px;text-indent:8px;font-weight:500;}
@@ -286,23 +339,29 @@ footer p b{color:var(--gold-soft);display:block;font-weight:600;font-size:10px;l
 footer hr{margin:40px 0 30px;border:none;border-top:1px solid var(--line-dark);max-width:200px;margin-left:auto;margin-right:auto;}
 .social-links{display:flex;justify-content:center;gap:16px;margin:30px 0;}
 .social-links a{width:44px;height:44px;border:1px solid var(--line-dark);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .4s;-webkit-tap-highlight-color:transparent;}
-.social-links a:active{background:var(--gold);border-color:var(--gold);transform:translateY(-3px);}
+.social-links a:hover,.social-links a:active{background:var(--gold);border-color:var(--gold);transform:translateY(-3px);}
 .social-links a svg{width:18px;height:18px;stroke:var(--ivory);fill:none;stroke-width:1.5;}
-.social-links a:active svg{stroke:var(--white);}
+.social-links a:hover svg,.social-links a:active svg{stroke:var(--white);}
 .copyright{color:rgba(247,244,238,.3);font-size:11px;letter-spacing:1px;}
 
-/* ========== WHATSAPP FLOAT ========== */
+/* ============================================
+   WHATSAPP FLOAT
+   ============================================ */
 .whatsapp-float{position:fixed;bottom:24px;right:24px;width:56px;height:56px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:900;box-shadow:0 4px 20px rgba(37,211,102,.3);transition:all .4s;animation:whatsappPulse 2s infinite;-webkit-tap-highlight-color:transparent;}
-.whatsapp-float:active{transform:scale(0.9);}
+.whatsapp-float:hover,.whatsapp-float:active{transform:scale(1.1) translateY(-4px);box-shadow:0 8px 30px rgba(37,211,102,.4);}
 .whatsapp-float svg{width:28px;height:28px;fill:var(--white);}
 @keyframes whatsappPulse{0%,100%{box-shadow:0 4px 20px rgba(37,211,102,.3);}50%{box-shadow:0 4px 30px rgba(37,211,102,.5);}}
 
-/* ========== TOAST ========== */
+/* ============================================
+   TOAST
+   ============================================ */
 .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--ink);color:var(--ivory);padding:16px 28px;border-radius:4px;font-size:13px;font-weight:500;letter-spacing:1px;z-index:3000;opacity:0;transition:all .5s;box-shadow:0 10px 40px rgba(0,0,0,.2);border:1px solid var(--line-dark);display:flex;align-items:center;gap:12px;}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
 .toast svg{width:18px;height:18px;stroke:var(--gold-soft);fill:none;stroke-width:2;}
 
-/* ========== RESPONSIVE ========== */
+/* ============================================
+   RESPONSIVE
+   ============================================ */
 @media(min-width:768px){
   .header{padding:0 40px;height:80px;}
   .hero{padding:0 40px;}
@@ -324,14 +383,13 @@ footer hr{margin:40px 0 30px;border:none;border-top:1px solid var(--line-dark);m
 }
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}
-  .cursor-dot,.cursor-outline{display:none!important;}
 }
 </style>
 <base target="_blank">
 </head>
 <body>
 
-<!-- CUSTOM CURSOR (Desktop Only) -->
+<!-- CUSTOM CURSOR -->
 <div class="cursor-dot" id="cursorDot"></div>
 <div class="cursor-outline" id="cursorOutline"></div>
 
@@ -637,58 +695,87 @@ footer hr{margin:40px 0 30px;border:none;border-top:1px solid var(--line-dark);m
 (function() {
   'use strict';
 
-  // ========== DEVICE DETECTION ==========
-  const isTouchDevice = window.matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window;
-  const isMobile = window.innerWidth <= 768 || isTouchDevice;
-
-  // ========== CUSTOM CURSOR (Desktop Only) ==========
+  // ============================================
+  // UNIVERSAL CURSOR — Works on ALL devices
+  // Smaller on mobile, same smooth follow
+  // ============================================
   const cursorDot = document.getElementById('cursorDot');
   const cursorOutline = document.getElementById('cursorOutline');
+  let mouseX = 0, mouseY = 0, outlineX = 0, outlineY = 0;
+  let cursorActive = false;
+  let cursorRAF = null;
 
-  if (!isTouchDevice && cursorDot && cursorOutline) {
-    let mouseX = 0, mouseY = 0, outlineX = 0, outlineY = 0;
-    let cursorActive = false;
-    let cursorRAF = null;
-
-    function updateCursor(e) {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      cursorDot.style.left = mouseX + 'px';
-      cursorDot.style.top = mouseY + 'px';
-      if (!cursorActive) {
-        cursorActive = true;
-        animateCursor();
-      }
+  function updateCursorPos(x, y) {
+    mouseX = x;
+    mouseY = y;
+    if (cursorDot) {
+      cursorDot.style.left = x + 'px';
+      cursorDot.style.top = y + 'px';
     }
-
-    function animateCursor() {
-      if (!cursorActive) return;
-      outlineX += (mouseX - outlineX) * 0.15;
-      outlineY += (mouseY - outlineY) * 0.15;
-      cursorOutline.style.left = outlineX + 'px';
-      cursorOutline.style.top = outlineY + 'px';
-      cursorRAF = requestAnimationFrame(animateCursor);
+    if (!cursorActive) {
+      cursorActive = true;
+      animateCursor();
     }
-
-    document.addEventListener('mousemove', updateCursor, { passive: true });
-
-    // Hover effects on interactive elements
-    const hoverElements = document.querySelectorAll('a, button, .cat, .featured-card, .view-btn, .quick-add');
-    hoverElements.forEach(el => {
-      el.addEventListener('mouseenter', () => cursorOutline.classList.add('hover'));
-      el.addEventListener('mouseleave', () => cursorOutline.classList.remove('hover'));
-    });
-
-    // Stop cursor when tab hidden
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        cursorActive = false;
-        if (cursorRAF) cancelAnimationFrame(cursorRAF);
-      }
-    });
   }
 
-  // ========== PRELOADER ==========
+  function animateCursor() {
+    if (!cursorActive) return;
+    outlineX += (mouseX - outlineX) * 0.15;
+    outlineY += (mouseY - outlineY) * 0.15;
+    if (cursorOutline) {
+      cursorOutline.style.left = outlineX + 'px';
+      cursorOutline.style.top = outlineY + 'px';
+    }
+    cursorRAF = requestAnimationFrame(animateCursor);
+  }
+
+  // Mouse (desktop)
+  document.addEventListener('mousemove', function(e) {
+    updateCursorPos(e.clientX, e.clientY);
+  }, { passive: true });
+
+  // Touch (mobile) — cursor follows finger
+  document.addEventListener('touchmove', function(e) {
+    if (e.touches && e.touches[0]) {
+      updateCursorPos(e.touches[0].clientX, e.touches[0].clientY);
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchstart', function(e) {
+    if (e.touches && e.touches[0]) {
+      updateCursorPos(e.touches[0].clientX, e.touches[0].clientY);
+    }
+  }, { passive: true });
+
+  // Hover effects on ALL interactive elements
+  const hoverElements = document.querySelectorAll('a, button, .cat, .featured-card, .view-btn, .quick-add, .menu-btn, .close-btn, .icon-link');
+  hoverElements.forEach(function(el) {
+    el.addEventListener('mouseenter', function() {
+      if (cursorOutline) cursorOutline.classList.add('hover');
+    });
+    el.addEventListener('mouseleave', function() {
+      if (cursorOutline) cursorOutline.classList.remove('hover');
+    });
+    // Touch equivalent
+    el.addEventListener('touchstart', function() {
+      if (cursorOutline) cursorOutline.classList.add('hover');
+    }, { passive: true });
+    el.addEventListener('touchend', function() {
+      if (cursorOutline) cursorOutline.classList.remove('hover');
+    }, { passive: true });
+  });
+
+  // Stop cursor when tab hidden
+  document.addEventListener('visibilitychange', function() {
+    if (document.hidden) {
+      cursorActive = false;
+      if (cursorRAF) cancelAnimationFrame(cursorRAF);
+    }
+  });
+
+  // ============================================
+  // PRELOADER — Same on all devices
+  // ============================================
   const preloader = document.getElementById('preloader');
   const loadCounter = document.getElementById('loadCounter');
   let count = 0;
@@ -698,13 +785,12 @@ footer hr{margin:40px 0 30px;border:none;border-top:1px solid var(--line-dark);m
     if (preloaderDone) return;
     preloaderDone = true;
     if (loadCounter) loadCounter.textContent = '100';
-    setTimeout(() => {
+    setTimeout(function() {
       if (preloader) preloader.classList.add('done');
     }, 400);
   }
 
-  // Counter animation
-  const counterInterval = setInterval(() => {
+  var counterInterval = setInterval(function() {
     count += Math.floor(Math.random() * 12) + 8;
     if (count >= 100) {
       count = 100;
@@ -713,22 +799,20 @@ footer hr{margin:40px 0 30px;border:none;border-top:1px solid var(--line-dark);m
     if (loadCounter) loadCounter.textContent = count;
   }, 80);
 
-  // Finish on load
   if (document.readyState === 'complete') {
     finishPreloader();
   } else {
     window.addEventListener('load', finishPreloader, { once: true });
   }
-
-  // Safety timeout
   setTimeout(finishPreloader, 4500);
 
-  // ========== FLOATING PARTICLES ==========
+  // ============================================
+  // FLOATING PARTICLES — Same count everywhere
+  // ============================================
   const particlesContainer = document.getElementById('particles');
   if (particlesContainer) {
-    const particleCount = isMobile ? 8 : 15;
-    for (let i = 0; i < particleCount; i++) {
-      const p = document.createElement('div');
+    for (var i = 0; i < 15; i++) {
+      var p = document.createElement('div');
       p.className = 'particle';
       p.style.left = Math.random() * 100 + '%';
       p.style.animationDelay = Math.random() * 15 + 's';
@@ -739,7 +823,9 @@ footer hr{margin:40px 0 30px;border:none;border-top:1px solid var(--line-dark);m
     }
   }
 
-  // ========== MENU SYSTEM ==========
+  // ============================================
+  // MENU SYSTEM
+  // ============================================
   const menu = document.getElementById('menu');
   const overlay = document.getElementById('menuOverlay');
   const menuBtn = document.getElementById('menuBtn');
@@ -767,32 +853,32 @@ footer hr{margin:40px 0 30px;border:none;border-top:1px solid var(--line-dark);m
   if (closeMenuBtn) closeMenuBtn.addEventListener('click', closeMenu);
   if (overlay) overlay.addEventListener('click', closeMenu);
 
-  // Close on Escape key
-  document.addEventListener('keydown', (e) => {
+  document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeMenu();
   });
 
   // Touch swipe to close menu
-  let touchStartX = 0;
+  var touchStartX = 0;
   if (menu) {
-    menu.addEventListener('touchstart', (e) => {
+    menu.addEventListener('touchstart', function(e) {
       touchStartX = e.touches[0].clientX;
     }, { passive: true });
-    menu.addEventListener('touchend', (e) => {
-      const touchEndX = e.changedTouches[0].clientX;
+    menu.addEventListener('touchend', function(e) {
+      var touchEndX = e.changedTouches[0].clientX;
       if (touchEndX - touchStartX < -80) closeMenu();
     }, { passive: true });
   }
 
-  // ========== HEADER SCROLL BEHAVIOR ==========
+  // ============================================
+  // HEADER SCROLL BEHAVIOR
+  // ============================================
   const header = document.getElementById('header');
-  let lastY = 0;
-  let ticking = false;
+  var lastY = 0;
+  var ticking = false;
 
   function updateHeader() {
-    const y = window.scrollY || window.pageYOffset;
-    const heroH = window.innerHeight - 80;
-
+    var y = window.scrollY || window.pageYOffset;
+    var heroH = window.innerHeight - 80;
     if (header) {
       if (y > heroH) {
         header.classList.add('solid');
@@ -801,7 +887,6 @@ footer hr{margin:40px 0 30px;border:none;border-top:1px solid var(--line-dark);m
         header.classList.remove('solid');
         header.classList.add('on-hero');
       }
-
       if (y > lastY && y > heroH + 100) {
         header.classList.add('hide');
       } else {
@@ -812,19 +897,21 @@ footer hr{margin:40px 0 30px;border:none;border-top:1px solid var(--line-dark);m
     ticking = false;
   }
 
-  window.addEventListener('scroll', () => {
+  window.addEventListener('scroll', function() {
     if (!ticking) {
       requestAnimationFrame(updateHeader);
       ticking = true;
     }
   }, { passive: true });
 
-  // ========== REVEAL ON SCROLL ==========
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
+  // ============================================
+  // REVEAL ON SCROLL
+  // ============================================
+  var revealObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
       if (entry.isIntersecting) {
-        const delay = entry.target.dataset.revealDelay || 0;
-        setTimeout(() => {
+        var delay = entry.target.dataset.revealDelay || 0;
+        setTimeout(function() {
           entry.target.classList.add('in');
         }, parseInt(delay));
         revealObserver.unobserve(entry.target);
@@ -832,18 +919,20 @@ footer hr{margin:40px 0 30px;border:none;border-top:1px solid var(--line-dark);m
     });
   }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
 
-  document.querySelectorAll('.reveal, .reveal-scale').forEach(el => {
+  document.querySelectorAll('.reveal, .reveal-scale').forEach(function(el) {
     revealObserver.observe(el);
   });
 
-  // ========== PARALLAX HERO ==========
-  const heroVideo = document.querySelector('.hero-bg video');
+  // ============================================
+  // PARALLAX HERO — Same on all devices
+  // ============================================
+  var heroVideo = document.querySelector('.hero-bg video');
   if (heroVideo) {
-    let parallaxTicking = false;
-    window.addEventListener('scroll', () => {
+    var parallaxTicking = false;
+    window.addEventListener('scroll', function() {
       if (!parallaxTicking) {
-        requestAnimationFrame(() => {
-          const scrollY = window.scrollY || window.pageYOffset;
+        requestAnimationFrame(function() {
+          var scrollY = window.scrollY || window.pageYOffset;
           if (scrollY < window.innerHeight) {
             heroVideo.style.transform = 'scale(1) translateY(' + (scrollY * 0.3) + 'px)';
           }
@@ -854,33 +943,66 @@ footer hr{margin:40px 0 30px;border:none;border-top:1px solid var(--line-dark);m
     }, { passive: true });
   }
 
-  // ========== MAGNETIC BUTTON EFFECT (Desktop Only) ==========
-  if (!isTouchDevice) {
-    const magneticBtns = document.querySelectorAll('.btn, .icon-link');
-    magneticBtns.forEach(btn => {
-      btn.addEventListener('mousemove', (e) => {
-        const rect = btn.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-        btn.style.transform = 'translate(' + (x * 0.2) + 'px, ' + (y * 0.2) + 'px)';
-      });
-      btn.addEventListener('mouseleave', () => {
-        btn.style.transform = '';
-      });
+  // ============================================
+  // MAGNETIC BUTTON EFFECT — Universal
+  // Works with mouse AND touch
+  // ============================================
+  var magneticBtns = document.querySelectorAll('.btn, .icon-link');
+  magneticBtns.forEach(function(btn) {
+    // Mouse
+    btn.addEventListener('mousemove', function(e) {
+      var rect = btn.getBoundingClientRect();
+      var x = e.clientX - rect.left - rect.width / 2;
+      var y = e.clientY - rect.top - rect.height / 2;
+      btn.style.transform = 'translate(' + (x * 0.2) + 'px, ' + (y * 0.2) + 'px)';
     });
-  }
+    btn.addEventListener('mouseleave', function() {
+      btn.style.transform = '';
+    });
+    // Touch — same magnetic effect
+    btn.addEventListener('touchmove', function(e) {
+      if (e.touches && e.touches[0]) {
+        var rect = btn.getBoundingClientRect();
+        var touch = e.touches[0];
+        var x = touch.clientX - rect.left - rect.width / 2;
+        var y = touch.clientY - rect.top - rect.height / 2;
+        btn.style.transform = 'translate(' + (x * 0.2) + 'px, ' + (y * 0.2) + 'px)';
+      }
+    }, { passive: true });
+    btn.addEventListener('touchend', function() {
+      btn.style.transform = '';
+    }, { passive: true });
+  });
 
-  // ========== CART FUNCTIONALITY ==========
-  let cart = [];
+  // ============================================
+  // TOUCH FEEDBACK — Add .touched class for CSS
+  // This makes :active animations work better
+  // ============================================
+  var allInteractive = document.querySelectorAll('.featured-card, .cat, .craft-item, .btn, .view-btn, .quick-add');
+  allInteractive.forEach(function(el) {
+    el.addEventListener('touchstart', function() {
+      el.classList.add('touched');
+    }, { passive: true });
+    el.addEventListener('touchend', function() {
+      setTimeout(function() {
+        el.classList.remove('touched');
+      }, 300);
+    }, { passive: true });
+  });
+
+  // ============================================
+  // CART FUNCTIONALITY
+  // ============================================
+  var cart = [];
   try {
-    const stored = JSON.parse(localStorage.getItem('cart'));
+    var stored = JSON.parse(localStorage.getItem('cart'));
     if (Array.isArray(stored)) cart = stored;
   } catch (e) {}
 
   function updateCartCount() {
-    let totalQty = 0;
-    cart.forEach(item => { totalQty += item.qty || 1; });
-    const badge = document.getElementById('cartCount');
+    var totalQty = 0;
+    cart.forEach(function(item) { totalQty += item.qty || 1; });
+    var badge = document.getElementById('cartCount');
     if (badge) {
       badge.innerText = totalQty;
       badge.style.display = totalQty > 0 ? 'flex' : 'none';
@@ -889,7 +1011,7 @@ footer hr{margin:40px 0 30px;border:none;border-top:1px solid var(--line-dark);m
   updateCartCount();
 
   window.addToCart = function(name, price) {
-    const existing = cart.find(item => item.name === name);
+    var existing = cart.find(function(item) { return item.name === name; });
     if (existing) {
       existing.qty = (existing.qty || 1) + 1;
     } else {
@@ -900,66 +1022,56 @@ footer hr{margin:40px 0 30px;border:none;border-top:1px solid var(--line-dark);m
     showToast(name + ' added to cart');
   };
 
-  // ========== TOAST NOTIFICATION ==========
-  const toast = document.getElementById('toast');
-  const toastMsg = document.getElementById('toastMsg');
-  let toastTimeout = null;
+  // ============================================
+  // TOAST NOTIFICATION
+  // ============================================
+  var toast = document.getElementById('toast');
+  var toastMsg = document.getElementById('toastMsg');
+  var toastTimeout = null;
 
   window.showToast = function(msg) {
     if (!toast || !toastMsg) return;
     toastMsg.textContent = msg;
     toast.classList.add('show');
     if (toastTimeout) clearTimeout(toastTimeout);
-    toastTimeout = setTimeout(() => {
+    toastTimeout = setTimeout(function() {
       toast.classList.remove('show');
     }, 3000);
   };
 
-  // ========== SMOOTH SCROLL ==========
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  // ============================================
+  // SMOOTH SCROLL
+  // ============================================
+  document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
     anchor.addEventListener('click', function(e) {
-      const href = this.getAttribute('href');
+      var href = this.getAttribute('href');
       if (href === '#') return;
       e.preventDefault();
-      const target = document.querySelector(href);
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth' });
-      }
+      var target = document.querySelector(href);
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
     });
   });
 
-  // ========== HERO CTA TOUCH FEEDBACK ==========
-  const heroShopBtn = document.getElementById('heroShopBtn');
-  const heroWhatsappBtn = document.getElementById('heroWhatsappBtn');
-
-  [heroShopBtn, heroWhatsappBtn].forEach(btn => {
-    if (!btn) return;
-    btn.addEventListener('touchstart', () => {
-      btn.style.transform = 'scale(0.97)';
-    }, { passive: true });
-    btn.addEventListener('touchend', () => {
-      btn.style.transform = '';
-    }, { passive: true });
-  });
-
-  // ========== AUTH CHECK (preserved from original) ==========
+  // ============================================
+  // AUTH CHECK (preserved from original)
+  // ============================================
   if (typeof checkUser === 'function') {
-    checkUser((user) => {
-      const accountBtn = document.getElementById('accountBtn');
-      if (user && accountBtn) {
-        accountBtn.href = 'profile.html';
-      }
+    checkUser(function(user) {
+      var accountBtn = document.getElementById('accountBtn');
+      if (user && accountBtn) accountBtn.href = 'profile.html';
     });
   }
 
-  // ========== VISIBILITY API - Pause animations when tab hidden ==========
-  document.addEventListener('visibilitychange', () => {
-    const videos = document.querySelectorAll('video');
-    videos.forEach(video => {
+  // ============================================
+  // VISIBILITY API — Pause videos when hidden
+  // ============================================
+  document.addEventListener('visibilitychange', function() {
+    var videos = document.querySelectorAll('video');
+    videos.forEach(function(video) {
       if (document.hidden) {
         video.pause();
       } else {
-        video.play().catch(() => {});
+        video.play().catch(function() {});
       }
     });
   });
