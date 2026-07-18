@@ -42,8 +42,6 @@ a{
   color:inherit;
 }
 
-/* ---------- HEADER (shared) ---------- */
-
 .header{
   position:sticky;
   top:0;
@@ -149,8 +147,6 @@ a{
   justify-content:center;
 }
 
-/* ---------- SIDE MENU (shared) ---------- */
-
 .side-menu{
   position:fixed;
   top:0;
@@ -214,8 +210,6 @@ a{
   display:block;
 }
 
-/* ---------- PAGE HEAD ---------- */
-
 .page-head{
   padding:28px 22px 10px;
   display:flex;
@@ -253,8 +247,6 @@ a{
 .add-trigger-btn:hover{
   background:var(--brass);
 }
-
-/* ---------- ADDRESS FORM PANEL ---------- */
 
 .form-panel {
   display: none;
@@ -294,7 +286,7 @@ a{
   font-weight: 700;
 }
 
-.field-wrap input, .field-wrap select {
+.field-wrap input {
   width: 100%;
   padding: 13px 16px;
   border: 1px solid var(--line);
@@ -305,7 +297,7 @@ a{
   color: var(--ink);
 }
 
-.field-wrap input:focus, .field-wrap select:focus {
+.field-wrap input:focus {
   outline: none;
   border-color: var(--brass);
 }
@@ -376,8 +368,6 @@ a{
   background: var(--ivory-dim);
 }
 
-/* ---------- ADDRESS CARDS GRID ---------- */
-
 .address-grid {
   display: flex;
   flex-direction: column;
@@ -390,7 +380,6 @@ a{
   border: 1px solid var(--line);
   border-radius: 6px;
   padding: 20px;
-  position: relative;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -461,31 +450,12 @@ a{
   color: #e03131;
 }
 
-/* ---------- STATES ---------- */
-
 .state-msg {
   text-align: center;
   padding: 40px 20px;
   color: #8a8578;
   font-size: 14px;
 }
-
-.state-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--ivory);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 3000;
-  font-size: 15px;
-  color: #8a8578;
-}
-
-/* ---------- BACK LINK ---------- */
 
 .back {
   display: flex;
@@ -506,17 +476,15 @@ a{
   fill: none;
   stroke-width: 2;
 }
+
 </style>
 </head>
 
 <body>
 
-<div id="stateOverlay" class="state-overlay">Loading addresses...</div>
-
 <div class="menu-overlay" id="menuOverlay"></div>
 
 <div class="header">
-
   <button class="menu-btn" id="menuBtn" aria-label="Open menu">
     <span></span><span></span><span></span>
   </button>
@@ -527,8 +495,7 @@ a{
   </div>
 
   <div class="header-icons">
-
-    <a href="profile.html" id="accountBtn" class="icon-link" aria-label="Account">
+    <a href="profile.html" class="icon-link" aria-label="Account">
       <svg viewBox="0 0 24 24"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z"/><path d="M4.5 20.5c1.4-3.6 4.3-5.5 7.5-5.5s6.1 1.9 7.5 5.5"/></svg>
     </a>
 
@@ -540,13 +507,11 @@ a{
       <svg viewBox="0 0 24 24"><path d="M4 7h16l-1.4 10.3a2 2 0 0 1-2 1.7H7.4a2 2 0 0 1-2-1.7L4 7Z"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/></svg>
       <span class="badge" id="cartCount">0</span>
     </a>
-
   </div>
-
 </div>
 
 <div class="side-menu" id="menu">
-  <button class="close-btn" id="closeMenuBtn" aria-label="Close menu">✕</button>
+  <button class="close-btn" id="closeMenuBtn">✕</button>
   <span class="menu-tag">Browse</span>
   <a href="men.html" class="nav-link">Men</a>
   <a href="women.html" class="nav-link">Women</a>
@@ -554,7 +519,6 @@ a{
   <a href="sale.html" class="nav-link">Sale</a>
   <a href="accessories.html" class="nav-link">Accessories</a>
   <a href="footwear.html" class="nav-link">Footwear</a>
-  <a href="login.html" class="nav-link" id="menuLoginLink">Login</a>
 </div>
 
 <div class="page-head">
@@ -565,7 +529,6 @@ a{
   <button id="addAddressBtn" class="add-trigger-btn">Add New</button>
 </div>
 
-<!-- Add/Edit Inline Form Panel -->
 <div id="addressFormPanel" class="form-panel">
   <h3 id="formTitle">Add New Address</h3>
   <form id="addressForm" class="form-grid">
@@ -575,11 +538,11 @@ a{
     </div>
     <div class="field-wrap">
       <label for="addressLine1">Address Line 1</label>
-      <input type="text" id="addressLine1" required placeholder="Street address, P.O. box, company name">
+      <input type="text" id="addressLine1" required placeholder="Street address">
     </div>
     <div class="field-wrap">
       <label for="addressLine2">Address Line 2 (Optional)</label>
-      <input type="text" id="addressLine2" placeholder="Apartment, suite, unit, building, floor">
+      <input type="text" id="addressLine2" placeholder="Apartment, suite, etc.">
     </div>
     <div class="row-2">
       <div class="field-wrap">
@@ -593,7 +556,7 @@ a{
     </div>
     <div class="row-2">
       <div class="field-wrap">
-        <label for="zipCode">ZIP / Postal Code</label>
+        <label for="zipCode">ZIP Code</label>
         <input type="text" id="zipCode" required placeholder="123456">
       </div>
       <div class="field-wrap">
@@ -614,7 +577,6 @@ a{
   </form>
 </div>
 
-<!-- Saved Addresses List Container -->
 <div id="addressList" class="address-grid"></div>
 
 <a href="profile.html" class="back">
@@ -622,83 +584,49 @@ a{
   Back to Profile
 </a>
 
-<!-- SCRIPT BLOCK 1: Handles loading screen fallback, menu events, and cart count.
-     Runs independently of modules to ensure the loading overlay is cleared no matter what. -->
 <script>
-// Safety Timeout: Force-hides loading screen if anything stalls [1]
-setTimeout(function() {
-    var overlay = document.getElementById("stateOverlay");
-    if (overlay && overlay.style.display !== "none") {
-        console.warn("Failsafe: Force-hiding loading screen.");
-        overlay.style.display = "none";
-    }
-}, 1500);
+// Menu controls
+const menu = document.getElementById("menu");
+const menuOverlay = document.getElementById("menuOverlay");
+const menuBtn = document.getElementById("menuBtn");
+const closeMenuBtn = document.getElementById("closeMenuBtn");
 
-// Basic UI Controls
-var menu = document.getElementById("menu");
-var menuOverlay = document.getElementById("menuOverlay");
-var menuBtn = document.getElementById("menuBtn");
-var closeMenuBtn = document.getElementById("closeMenuBtn");
-
-function openMenu(){
-    if (menu && menuOverlay) {
-        menu.classList.add("open");
-        menuOverlay.classList.add("open");
-    }
+function openMenu() {
+  if (menu && menuOverlay) {
+    menu.classList.add("open");
+    menuOverlay.classList.add("open");
+  }
 }
 
-function closeMenu(){
-    if (menu && menuOverlay) {
-        menu.classList.remove("open");
-        menuOverlay.classList.remove("open");
-    }
+function closeMenu() {
+  if (menu && menuOverlay) {
+    menu.classList.remove("open");
+    menuOverlay.classList.remove("open");
+  }
 }
 
 if (menuBtn) menuBtn.addEventListener("click", openMenu);
 if (closeMenuBtn) closeMenuBtn.addEventListener("click", closeMenu);
 if (menuOverlay) menuOverlay.addEventListener("click", closeMenu);
 
-// Cart badge rendering
-var cartCount = document.getElementById("cartCount");
+// Cart badge
+const cartCount = document.getElementById("cartCount");
 if (cartCount) {
-    try {
-        var cart = JSON.parse(localStorage.getItem("cart")) || [];
-        var totalQty = 0;
-        cart.forEach(function(item) { totalQty += item.qty || 1; });
-        cartCount.innerText = totalQty;
-    } catch(e) {
-        console.error(e);
-    }
+  try {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let totalQty = 0;
+    cart.forEach(item => { totalQty += item.qty || 1; });
+    cartCount.innerText = totalQty;
+  } catch(e) {
+    console.error(e);
+  }
 }
 
-var menuLoginLink = document.getElementById("menuLoginLink");
-if (menuLoginLink) {
-    menuLoginLink.style.display = "none";
-}
-</script>
-
-<!-- SCRIPT BLOCK 2: Handles Firestore Database interaction and Auth checking -->
-<script type="module">
-
-import { db, auth } from "./firebase.js";
-import { 
-    onAuthStateChanged 
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { 
-    collection, 
-    doc, 
-    getDocs, 
-    addDoc, 
-    updateDoc, 
-    deleteDoc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-const stateOverlay = document.getElementById("stateOverlay");
+// Address management
 const addressList = document.getElementById("addressList");
 const addressFormPanel = document.getElementById("addressFormPanel");
 const addressForm = document.getElementById("addressForm");
 const formTitle = document.getElementById("formTitle");
-
 const addAddressBtn = document.getElementById("addAddressBtn");
 const cancelFormBtn = document.getElementById("cancelFormBtn");
 const saveFormBtn = document.getElementById("saveFormBtn");
@@ -712,247 +640,183 @@ const zipCodeInput = document.getElementById("zipCode");
 const phoneInput = document.getElementById("phone");
 const isDefaultInput = document.getElementById("isDefault");
 
-let currentUser = null;
 let allAddresses = [];
 let editAddressId = null;
+const STORAGE_KEY = "_saved_addresses";
 
-try {
-    onAuthStateChanged(auth, async (user) => {
-        try {
-            if (!user) {
-                window.location.href = "login.html";
-                return;
-            }
-            currentUser = user;
-            await fetchAddresses(user.uid);
-        } catch (err) {
-            console.error("Auth initialization error:", err);
-            showState("An error occurred loading saved address elements.");
-        } finally {
-            if (stateOverlay) {
-                stateOverlay.style.display = "none";
-            }
-        }
-    });
-} catch (authErr) {
-    console.error("Failed to bind Auth listener:", authErr);
-    if (stateOverlay) {
-        stateOverlay.style.display = "none";
-    }
-}
-
-function escapeHtml(str) {
-    const div = document.createElement("div");
-    div.innerText = str ?? "";
-    return div.innerHTML;
-}
-
-function showState(message) {
-    addressList.innerHTML = `<div class="state-msg">${message}</div>`;
-}
-
-async function fetchAddresses(uid) {
-    showState("Loading your addresses...");
-    try {
-        const addressRef = collection(db, "customers", uid, "addresses");
-        const querySnapshot = await getDocs(addressRef);
-
-        allAddresses = [];
-        querySnapshot.forEach((doc) => {
-            allAddresses.push({ id: doc.id, ...doc.data() });
-        });
-
-        allAddresses.sort((a, b) => (b.isDefault || false) - (a.isDefault || false));
-        renderAddresses();
-    } catch (err) {
-        console.error("fetchAddresses error:", err);
-        showState("Could not load addresses. Please try again.");
-    }
+// Load addresses from localStorage
+function loadAddresses() {
+  try {
+    allAddresses = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    allAddresses.sort((a, b) => (b.isDefault || false) - (a.isDefault || false));
+    renderAddresses();
+  } catch (e) {
+    console.error("Error loading addresses:", e);
+    showState("Error loading addresses");
+  }
 }
 
 function renderAddresses() {
-    if (allAddresses.length === 0) {
-        showState("You have no saved addresses yet.");
-        return;
-    }
+  if (allAddresses.length === 0) {
+    showState("You have no saved addresses yet. Add one to get started!");
+    return;
+  }
 
-    const html = allAddresses.map((addr) => {
-        const name = escapeHtml(addr.fullName);
-        const line1 = escapeHtml(addr.addressLine1);
-        const line2 = addr.addressLine2 ? escapeHtml(addr.addressLine2) : "";
-        const city = escapeHtml(addr.city);
-        const state = escapeHtml(addr.state);
-        const zip = escapeHtml(addr.zipCode);
-        const phone = escapeHtml(addr.phone);
-        const isDefault = addr.isDefault === true;
+  addressList.innerHTML = allAddresses.map((addr, idx) => {
+    const name = escapeHtml(addr.fullName);
+    const line1 = escapeHtml(addr.addressLine1);
+    const line2 = addr.addressLine2 ? escapeHtml(addr.addressLine2) : "";
+    const city = escapeHtml(addr.city);
+    const state = escapeHtml(addr.state);
+    const zip = escapeHtml(addr.zipCode);
+    const phone = escapeHtml(addr.phone);
+    const isDefault = addr.isDefault === true;
 
-        const defaultTag = isDefault ? `<span class="tag-default">Default</span>` : "";
-        const defaultAction = !isDefault 
-            ? `<button class="action-btn" onclick="window.setDefaultAddress('${addr.id}')">Set as Default</button>` 
-            : "";
+    const defaultTag = isDefault ? `<span class="tag-default">Default</span>` : "";
+    const defaultAction = !isDefault 
+      ? `<button class="action-btn" type="button" onclick="setDefaultAddress(${idx})">Set as Default</button>` 
+      : "";
 
-        return `
-            <div class="address-card">
-                <div class="address-header">
-                    <span class="address-name">${name}</span>
-                    ${defaultTag}
-                </div>
-                <div class="address-body">
-                    ${line1}${line2 ? ", " + line2 : ""}<br>
-                    ${city}, ${state} - ${zip}
-                </div>
-                <div class="address-phone">Phone: ${phone}</div>
-                <div class="address-actions">
-                    <button class="action-btn" onclick="window.editAddress('${addr.id}')">Edit</button>
-                    ${defaultAction}
-                    <button class="action-btn delete-btn" onclick="window.deleteAddress('${addr.id}')">Delete</button>
-                </div>
-            </div>
-        `;
-    }).join("");
+    return `
+      <div class="address-card">
+        <div class="address-header">
+          <span class="address-name">${name}</span>
+          ${defaultTag}
+        </div>
+        <div class="address-body">
+          ${line1}${line2 ? ", " + line2 : ""}<br>
+          ${city}, ${state} - ${zip}
+        </div>
+        <div class="address-phone">Phone: ${phone}</div>
+        <div class="address-actions">
+          <button class="action-btn" type="button" onclick="editAddress(${idx})">Edit</button>
+          ${defaultAction}
+          <button class="action-btn delete-btn" type="button" onclick="deleteAddress(${idx})">Delete</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
 
-    addressList.innerHTML = html;
+function showState(message) {
+  addressList.innerHTML = `<div class="state-msg">${escapeHtml(message)}</div>`;
+}
+
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.innerText = str || "";
+  return div.innerHTML;
+}
+
+function saveAddressesToStorage() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(allAddresses));
+  } catch (e) {
+    console.error("Error saving addresses:", e);
+    alert("Failed to save address. Please try again.");
+  }
 }
 
 if (addAddressBtn) {
-    addAddressBtn.addEventListener("click", () => {
-        editAddressId = null;
-        formTitle.innerText = "Add New Address";
-        addressForm.reset();
-        isDefaultInput.checked = false;
-        addressFormPanel.classList.add("open");
-        addressFormPanel.scrollIntoView({ behavior: "smooth" });
-    });
+  addAddressBtn.addEventListener("click", () => {
+    editAddressId = null;
+    formTitle.innerText = "Add New Address";
+    addressForm.reset();
+    isDefaultInput.checked = false;
+    addressFormPanel.classList.add("open");
+    addressFormPanel.scrollIntoView({ behavior: "smooth" });
+  });
 }
 
 if (cancelFormBtn) {
-    cancelFormBtn.addEventListener("click", () => {
-        addressFormPanel.classList.remove("open");
-    });
-}
-
-async function handleDefaultStatus(uid, newDefaultId) {
-    try {
-        const addressRef = collection(db, "customers", uid, "addresses");
-        const querySnapshot = await getDocs(addressRef);
-        
-        for (const docSnap of querySnapshot.docs) {
-            if (docSnap.id !== newDefaultId && docSnap.data().isDefault === true) {
-                await updateDoc(doc(db, "customers", uid, "addresses", docSnap.id), {
-                    isDefault: false
-                });
-            }
-        }
-    } catch (e) {
-        console.error("Error setting default values:", e);
-    }
+  cancelFormBtn.addEventListener("click", () => {
+    addressFormPanel.classList.remove("open");
+  });
 }
 
 if (addressForm) {
-    addressForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        if (!currentUser) return;
+  addressForm.addEventListener("submit", (e) => {
+    e.preventDefault();
 
-        saveFormBtn.innerText = "Saving...";
-        saveFormBtn.disabled = true;
+    const isDefault = isDefaultInput.checked;
+    const addrData = {
+      fullName: fullNameInput.value.trim(),
+      addressLine1: addressLine1Input.value.trim(),
+      addressLine2: addressLine2Input.value.trim(),
+      city: cityInput.value.trim(),
+      state: stateInput.value.trim(),
+      zipCode: zipCodeInput.value.trim(),
+      phone: phoneInput.value.trim(),
+      isDefault: isDefault
+    };
 
-        const isDefault = isDefaultInput.checked;
-        const addrData = {
-            fullName: fullNameInput.value.trim(),
-            addressLine1: addressLine1Input.value.trim(),
-            addressLine2: addressLine2Input.value.trim(),
-            city: cityInput.value.trim(),
-            state: stateInput.value.trim(),
-            zipCode: zipCodeInput.value.trim(),
-            phone: phoneInput.value.trim(),
-            isDefault: isDefault
-        };
+    if (editAddressId !== null) {
+      // Update existing
+      allAddresses[editAddressId] = addrData;
+    } else {
+      // Add new
+      allAddresses.push(addrData);
+    }
 
-        try {
-            if (editAddressId) {
-                const addrDocRef = doc(db, "customers", currentUser.uid, "addresses", editAddressId);
-                await updateDoc(addrDocRef, addrData);
-                if (isDefault) {
-                    await handleDefaultStatus(currentUser.uid, editAddressId);
-                }
-            } else {
-                const collectionRef = collection(db, "customers", currentUser.uid, "addresses");
-                const newDoc = await addDoc(collectionRef, addrData);
-                if (isDefault) {
-                    await handleDefaultStatus(currentUser.uid, newDoc.id);
-                }
-            }
-
-            addressFormPanel.classList.remove("open");
-            await fetchAddresses(currentUser.uid);
-        } catch (err) {
-            console.error(err);
-            alert("Failed to save address. Please try again.");
-        } finally {
-            saveFormBtn.innerText = "Save Address";
-            saveFormBtn.disabled = false;
+    // Handle default status
+    if (isDefault) {
+      allAddresses.forEach((addr, idx) => {
+        if (idx !== editAddressId) {
+          addr.isDefault = false;
         }
-    });
+      });
+    }
+
+    saveAddressesToStorage();
+    addressFormPanel.classList.remove("open");
+    loadAddresses();
+  });
 }
 
-window.editAddress = function(id) {
-    const target = allAddresses.find(a => a.id === id);
-    if (!target) return;
+window.editAddress = function(idx) {
+  const addr = allAddresses[idx];
+  if (!addr) return;
 
-    editAddressId = id;
-    formTitle.innerText = "Edit Address";
+  editAddressId = idx;
+  formTitle.innerText = "Edit Address";
 
-    fullNameInput.value = target.fullName || "";
-    addressLine1Input.value = target.addressLine1 || "";
-    addressLine2Input.value = target.addressLine2 || "";
-    cityInput.value = target.city || "";
-    stateInput.value = target.state || "";
-    zipCodeInput.value = target.zipCode || "";
-    phoneInput.value = target.phone || "";
-    isDefaultInput.checked = target.isDefault === true;
+  fullNameInput.value = addr.fullName || "";
+  addressLine1Input.value = addr.addressLine1 || "";
+  addressLine2Input.value = addr.addressLine2 || "";
+  cityInput.value = addr.city || "";
+  stateInput.value = addr.state || "";
+  zipCodeInput.value = addr.zipCode || "";
+  phoneInput.value = addr.phone || "";
+  isDefaultInput.checked = addr.isDefault === true;
 
-    addressFormPanel.classList.add("open");
-    addressFormPanel.scrollIntoView({ behavior: "smooth" });
+  addressFormPanel.classList.add("open");
+  addressFormPanel.scrollIntoView({ behavior: "smooth" });
 };
 
-window.setDefaultAddress = async function(id) {
-    if (!currentUser) return;
-    try {
-        stateOverlay.style.display = "flex";
-        stateOverlay.innerText = "Updating default address...";
-
-        const addrDocRef = doc(db, "customers", currentUser.uid, "addresses", id);
-        await updateDoc(addrDocRef, { isDefault: true });
-        await handleDefaultStatus(currentUser.uid, id);
-
-        await fetchAddresses(currentUser.uid);
-    } catch (err) {
-        console.error(err);
-        alert("Could not update default status.");
-    } finally {
-        stateOverlay.style.display = "none";
-    }
+window.setDefaultAddress = function(idx) {
+  allAddresses.forEach((addr, i) => {
+    addr.isDefault = (i === idx);
+  });
+  
+  // Also save to checkout default address
+  if (allAddresses[idx]) {
+    localStorage.setItem("defaultAddress", JSON.stringify(allAddresses[idx]));
+  }
+  
+  saveAddressesToStorage();
+  loadAddresses();
 };
 
-window.deleteAddress = async function(id) {
-    if (!currentUser) return;
-    if (confirm("Are you sure you want to delete this address?")) {
-        try {
-            stateOverlay.style.display = "flex";
-            stateOverlay.innerText = "Deleting address...";
-
-            const addrDocRef = doc(db, "customers", currentUser.uid, "addresses", id);
-            await deleteDoc(addrDocRef);
-
-            await fetchAddresses(currentUser.uid);
-        } catch (err) {
-            console.error(err);
-            alert("Failed to delete address.");
-        } finally {
-            stateOverlay.style.display = "none";
-        }
-    }
+window.deleteAddress = function(idx) {
+  if (confirm("Are you sure you want to delete this address?")) {
+    allAddresses.splice(idx, 1);
+    saveAddressesToStorage();
+    loadAddresses();
+  }
 };
+
+// Initialize
+loadAddresses();
 
 </script>
 
