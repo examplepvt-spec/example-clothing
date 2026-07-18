@@ -436,13 +436,15 @@ a{ color:inherit; }
 </div>
 
 <script type="module">
-// Firestore integration imports
-import { db, auth } from "./firebase-config.js"; 
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 let userAddress = null;
+
+// Firebase References (asynchronously populated)
+let db = null;
+let auth = null;
+let onAuthStateChanged = null;
+let collection = null;
+let getDocs = null;
 
 const itemsContainer = document.getElementById("itemsSummary");
 const subtotalPriceEl = document.getElementById("subtotalPrice");
@@ -459,22 +461,52 @@ changeAddrBtn.onclick = () => {
   window.location.href = "addresses.html";
 };
 
-// Initialize Page immediately on Module Load
-// (Since script type="module" automatically defers, the HTML structure is already built and safe to interact with)
+// Start initial execution immediately
 if (cart.length === 0) {
   alert("Your cart is empty. Redirecting to cart page...");
   window.location.href = "cart.html";
 } else {
-  onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      await loadDefaultAddress(user.uid);
-    } else {
-      alert("Please log in to proceed to checkout.");
-      window.location.href = "login.html"; 
-    }
-  });
-
+  // First render the summary immediately
   renderSummary();
+  
+  // Try loading Firebase and Address
+  initFirebaseAndAddress();
+}
+
+// Asynchronously load Firebase config using the correct file name "firebase.js"
+async function initFirebaseAndAddress() {
+  try {
+    // Dynamically import your local config file "firebase.js"
+    const config = await import("./firebase.js");
+    db = config.db;
+    auth = config.auth;
+    
+    // Dynamically import standard Firebase SDK methods
+    const authSDK = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js");
+    onAuthStateChanged = authSDK.onAuthStateChanged;
+    
+    const firestoreSDK = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+    collection = firestoreSDK.collection;
+    getDocs = firestoreSDK.getDocs;
+    
+    // Check auth status
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        await loadDefaultAddress(user.uid);
+      } else {
+        alert("Please log in to proceed to checkout.");
+        window.location.href = "login.html"; 
+      }
+    });
+  } catch (error) {
+    console.error("Firebase config load failed:", error);
+    document.getElementById("addressDisplay").innerHTML = `
+      <p style="color: var(--oxblood); font-weight: 600; font-size:14px;">Firebase Config Not Found</p>
+      <p style="font-size:12px; color:#666; margin-top:4px; line-height:1.4;">
+        Please ensure 'firebase.js' file is present in your GitHub project root.
+      </p>
+    `;
+  }
 }
 
 // Fetch default address from Firestore: customers/{uid}/addresses
