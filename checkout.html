@@ -48,10 +48,6 @@ body{
 
 a{ color:inherit; text-decoration:none; }
 
-/*==========================
-HEADER
-==========================*/
-
 .header{
   background:rgba(246,243,236,.95);
   backdrop-filter:blur(10px);
@@ -97,10 +93,6 @@ HEADER
   margin-right:40px;
 }
 
-/*==========================
-CONTAINER
-==========================*/
-
 .container{
   padding:16px;
   max-width:600px;
@@ -117,10 +109,6 @@ CONTAINER
   color:var(--ink);
   opacity:.7;
 }
-
-/*==========================
-ADDRESS CARD
-==========================*/
 
 .card {
   background:var(--white);
@@ -154,59 +142,6 @@ ADDRESS CARD
   margin-bottom:4px;
   font-size:14px;
 }
-
-.change-btn {
-  background:none;
-  border:none;
-  color:var(--brass);
-  font-size:13px;
-  font-weight:600;
-  cursor:pointer;
-  margin-top:14px;
-  padding:0;
-  text-decoration:underline;
-  text-underline-offset:3px;
-  transition:.3s;
-}
-
-.change-btn:hover,
-.change-btn:active{
-  color:var(--ink);
-}
-
-.no-address{
-  text-align:center;
-  padding:20px 0;
-}
-
-.no-address p{
-  color:var(--oxblood);
-  font-weight:600;
-  font-size:14px;
-  margin-bottom:16px;
-}
-
-.add-address-btn{
-  display:inline-block;
-  background:var(--ink);
-  color:var(--ivory);
-  padding:10px 24px;
-  border-radius:6px;
-  font-size:13px;
-  font-weight:600;
-  border:none;
-  cursor:pointer;
-  transition:.3s;
-}
-
-.add-address-btn:hover,
-.add-address-btn:active{
-  background:var(--brass);
-}
-
-/*==========================
-CART ITEMS
-==========================*/
 
 .checkout-item {
   display:flex;
@@ -257,10 +192,6 @@ CART ITEMS
   flex-shrink:0;
 }
 
-/*==========================
-PAYMENT METHOD
-==========================*/
-
 .payment-option {
   display:flex;
   align-items:center;
@@ -300,10 +231,6 @@ PAYMENT METHOD
   margin-top:2px;
 }
 
-/*==========================
-PRICE SUMMARY
-==========================*/
-
 .summary-row {
   display:flex;
   justify-content:space-between;
@@ -338,10 +265,6 @@ PRICE SUMMARY
   margin-top:6px;
   font-weight:500;
 }
-
-/*==========================
-BOTTOM BAR
-==========================*/
 
 .bottom-bar{
   position:fixed;
@@ -414,10 +337,6 @@ BOTTOM BAR
   transform:none;
 }
 
-/*==========================
-SUCCESS MODAL
-==========================*/
-
 .modal-overlay {
   position:fixed;
   top:0;
@@ -466,7 +385,7 @@ SUCCESS MODAL
   align-items:center;
   justify-content:center;
   margin:0 auto 20px;
-  animation:successPop .5s var(--ease);
+  animation:successPop .5s ease;
 }
 
 @keyframes successPop{
@@ -516,10 +435,6 @@ SUCCESS MODAL
   transform:translateY(-2px);
 }
 
-/*==========================
-TOAST
-==========================*/
-
 .toast{
   position:fixed;
   bottom:100px;
@@ -544,35 +459,6 @@ TOAST
   transform:translateX(-50%) translateY(0);
 }
 
-/*==========================
-SKELETON LOADING
-==========================*/
-
-.skeleton{
-  background:linear-gradient(90deg, #eee 25%, #f5f5f5 50%, #eee 75%);
-  background-size:200% 100%;
-  animation:skeleton 1.5s infinite;
-  border-radius:4px;
-}
-
-@keyframes skeleton{
-  0%{ background-position:200% 0; }
-  100%{ background-position:-200% 0; }
-}
-
-.skeleton-text{
-  height:14px;
-  margin-bottom:8px;
-}
-
-.skeleton-text.short{
-  width:60%;
-}
-
-/*==========================
-RESPONSIVE
-==========================*/
-
 @media(max-width:480px){
   .container{
     padding:12px;
@@ -586,20 +472,11 @@ RESPONSIVE
   }
 }
 
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{
-    animation-duration:0.01ms !important;
-    transition-duration:0.01ms !important;
-  }
-}
-
 </style>
-<base target="_blank">
 </head>
 
 <body>
 
-<!-- HEADER -->
 <div class="header">
   <a href="cart.html" class="back-btn" aria-label="Back to cart">
     <svg viewBox="0 0 24 24"><path d="M19 12H5" stroke-linecap="round"/><path d="M11 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -609,24 +486,19 @@ RESPONSIVE
 
 <div class="container">
 
-  <!-- Delivery Address Section -->
   <div class="section-title">Delivery Address</div>
   <div class="card" id="addressCard">
     <div id="addressDisplay" class="address-display">
-      <div class="skeleton skeleton-text" style="width:120px; height:18px;"></div>
-      <div class="skeleton skeleton-text short"></div>
-      <div class="skeleton skeleton-text"></div>
-      <div class="skeleton skeleton-text short" style="width:100px;"></div>
+      <p class="name">Guest User</p>
+      <p class="phone">+91 9656003555</p>
+      <p>123 Sample Street, Near City Center</p>
+      <p>Calicut, Kerala — 673001</p>
     </div>
   </div>
 
-  <!-- Cart Items Review Section -->
   <div class="section-title">Review Items</div>
-  <div class="card" id="itemsSummary">
-    <!-- Cart Items will be inserted here dynamically -->
-  </div>
+  <div class="card" id="itemsSummary"></div>
 
-  <!-- Payment Method Section -->
   <div class="section-title">Payment Method</div>
   <div>
     <label class="payment-option">
@@ -636,10 +508,8 @@ RESPONSIVE
         <div class="payment-desc">Pay securely using any UPI app</div>
       </div>
     </label>
-
   </div>
 
-  <!-- Price Summary Section -->
   <div class="section-title">Price Details</div>
   <div class="card">
     <div class="summary-row">
@@ -650,9 +520,7 @@ RESPONSIVE
       <span>Delivery Charge</span>
       <span id="deliveryCharge">₹0</span>
     </div>
-    <div id="freeDeliveryNotice" style="text-align:right;">
-      <!-- Free delivery message or warning will show here -->
-    </div>
+    <div id="freeDeliveryNotice" style="text-align:right;"></div>
     <div class="summary-row total-row">
       <span>Total Amount</span>
       <span id="totalPrice" style="font-family:'Libre Caslon Display',serif; font-size:20px; font-weight:700;">₹0</span>
@@ -661,7 +529,6 @@ RESPONSIVE
 
 </div>
 
-<!-- Bottom bar for Quick Place Order -->
 <div class="bottom-bar">
   <div class="total-box">
     <h3>Total</h3>
@@ -670,7 +537,6 @@ RESPONSIVE
   <button class="place-order-btn" id="placeOrderBtn" onclick="placeOrder()">Place Order</button>
 </div>
 
-<!-- Order Success Modal Overlay -->
 <div class="modal-overlay" id="successOverlay">
   <div class="success-modal">
     <div class="success-icon">
@@ -684,45 +550,24 @@ RESPONSIVE
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
 
-/*==========================
-FIREBASE CONFIG (INLINE)
-==========================*/
-const firebaseConfig = {
-  apiKey: "AIzaSyB-EXAMPLE-KEY",
-  authDomain: "example-clothing.firebaseapp.com",
-  projectId: "example-clothing",
-  storageBucket: "example-clothing.appspot.com",
-  messagingSenderId: "123456789",
-  appId: "1:123456789:web:abcdef123456"
+// Fallback address for when Firebase is not available
+const fallbackAddress = {
+  fullName: "Guest User",
+  phone: "+91 9656003555",
+  addressLine1: "123 Sample Street",
+  addressLine2: "Near City Center",
+  city: "Calicut",
+  state: "Kerala",
+  zipCode: "673001",
+  isDefault: true
 };
 
-/*==========================
-FALLBACK ADDRESS DATA
-==========================*/
-const fallbackAddresses = [
-  {
-    fullName: "Guest User",
-    phone: "+91 9656003555",
-    addressLine1: "123 Sample Street",
-    addressLine2: "Near City Center",
-    city: "Calicut",
-    state: "Kerala",
-    zipCode: "673001",
-    isDefault: true
-  }
-];
-
-/*==========================
-STATE
-==========================*/
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 let userAddress = null;
-let firebaseLoaded = false;
 
 const itemsContainer = document.getElementById("itemsSummary");
 const subtotalPriceEl = document.getElementById("subtotalPrice");
@@ -734,11 +579,7 @@ const placeOrderBtn = document.getElementById("placeOrderBtn");
 const successOverlay = document.getElementById("successOverlay");
 const addressDisplay = document.getElementById("addressDisplay");
 
-/*==========================
-INIT
-==========================*/
-
-// Check cart first
+// Initialize
 if (cart.length === 0) {
   showToast("Your cart is empty. Redirecting...");
   setTimeout(() => { window.location.href = "cart.html"; }, 1500);
@@ -747,12 +588,8 @@ if (cart.length === 0) {
   loadAddress();
 }
 
-/*==========================
-ADDRESS LOADING
-==========================*/
-
-async function loadAddress() {
-  // Try to load from localStorage first (for offline/no-firebase use)
+function loadAddress() {
+  // Try localStorage first
   const savedAddress = localStorage.getItem("defaultAddress");
   if (savedAddress) {
     try {
@@ -760,52 +597,13 @@ async function loadAddress() {
       displayAddress();
       return;
     } catch(e) {
-      console.log("Saved address parse error, trying Firebase...");
+      console.log("Saved address error, using fallback");
     }
   }
-
-  // Try Firebase if available
-  try {
-    if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0) {
-      const auth = firebase.auth();
-      const db = firebase.firestore();
-
-      auth.onAuthStateChanged(async (user) => {
-        if (user) {
-          const addrRef = db.collection("customers").doc(user.uid).collection("addresses");
-          const snapshot = await addrRef.get();
-
-          let defaultAddr = null;
-          snapshot.forEach((doc) => {
-            const data = doc.data();
-            if (data.isDefault === true) {
-              defaultAddr = data;
-            }
-          });
-
-          if (defaultAddr) {
-            userAddress = defaultAddr;
-            localStorage.setItem("defaultAddress", JSON.stringify(defaultAddr));
-            displayAddress();
-          } else {
-            showNoAddress();
-          }
-        } else {
-          // Not logged in - use fallback
-          userAddress = fallbackAddresses[0];
-          displayAddress();
-        }
-      });
-    } else {
-      // Firebase not available - use fallback
-      userAddress = fallbackAddresses[0];
-      displayAddress();
-    }
-  } catch (error) {
-    console.error("Error loading address:", error);
-    userAddress = fallbackAddresses[0];
-    displayAddress();
-  }
+  
+  // Use fallback
+  userAddress = fallbackAddress;
+  displayAddress();
 }
 
 function displayAddress() {
@@ -813,7 +611,7 @@ function displayAddress() {
 
   const line1 = userAddress.addressLine1 || "";
   const line2 = userAddress.addressLine2 ? ", " + userAddress.addressLine2 : "";
-  const city = userAddress.city ? userAddress.city : "";
+  const city = userAddress.city || "";
   const state = userAddress.state ? ", " + userAddress.state : "";
 
   addressDisplay.innerHTML = `
@@ -821,30 +619,8 @@ function displayAddress() {
     <p class="phone">${userAddress.phone || ""}</p>
     <p>${line1}${line2}</p>
     <p>${city}${state} — ${userAddress.zipCode || ""}</p>
-
   `;
 }
-
-function showNoAddress() {
-  addressDisplay.innerHTML = `
-    <div class="no-address">
-      <p>No default address found.</p>
-      <button class="add-address-btn" id="addAddrBtn">Add Address</button>
-    <p style="font-size:12px; color:#888; margin-top:8px;">Please add an address in your profile</p>
-  `;
-
-  // Re-attach click handler
-  setTimeout(() => {
-    const btn = document.getElementById("addAddrBtn");
-    if(btn) btn.addEventListener("click", function(){ window.location.href = "saved-addresses.html"; });
-  }, 0);
-    </div>
-  `;
-}
-
-/*==========================
-CART SUMMARY
-==========================*/
 
 function renderSummary() {
   itemsContainer.innerHTML = "";
@@ -865,8 +641,7 @@ function renderSummary() {
     const div = document.createElement("div");
     div.className = "checkout-item";
     div.innerHTML = `
-      <img src="${item.image || ""}" class="item-thumb" alt="${item.name || "Item"}" onerror="this.style.visibility='hidden'; this.parentElement.querySelector('.item-thumb-fallback').style.display='flex';">
-      <div class="item-thumb-fallback" style="display:none; width:56px; height:70px; background:var(--ivory-dim); border-radius:6px; align-items:center; justify-content:center; font-size:10px; color:#aaa; flex-shrink:0;">IMG</div>
+      <img src="${item.image || ""}" class="item-thumb" alt="${item.name || "Item"}" onerror="this.style.visibility='hidden';">
       <div class="item-info">
         <div class="item-name">${item.name || "Product"}</div>
         <div class="item-meta">Qty: ${qty}${item.size ? " | Size: " + item.size : ""}</div>
@@ -898,10 +673,6 @@ function updateTotals(subtotal, delivery, total) {
   bottomTotalEl.innerText = "₹" + total;
 }
 
-/*==========================
-PLACE ORDER
-==========================*/
-
 function placeOrder() {
   if (cart.length === 0) {
     showToast("Your cart is empty");
@@ -911,10 +682,8 @@ function placeOrder() {
   placeOrderBtn.disabled = true;
   placeOrderBtn.innerText = "Processing...";
 
-  // Simulate order processing
   setTimeout(() => {
     successOverlay.style.display = "flex";
-    // Trigger animation
     requestAnimationFrame(() => {
       successOverlay.classList.add("show");
     });
@@ -928,20 +697,12 @@ function clearCart() {
   cart = [];
 }
 
-/*==========================
-TOAST
-==========================*/
-
 function showToast(text) {
   const toast = document.getElementById("toast");
   toast.textContent = text;
   toast.classList.add("show");
   setTimeout(() => toast.classList.remove("show"), 2500);
 }
-
-/*==========================
-CLOSE MODAL ON BACKDROP CLICK
-==========================*/
 
 successOverlay.addEventListener("click", (e) => {
   if (e.target === successOverlay) {
@@ -950,29 +711,6 @@ successOverlay.addEventListener("click", (e) => {
   }
 });
 
-</script>
-
-<!-- OPTIONAL: Load Firebase if you have it -->
-<script type="module">
-// Only loads if firebase-config.js exists
-try {
-  const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js");
-  const { getAuth } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js");
-  const { getFirestore } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-
-  window.firebase = { app, auth, db };
-
-  // Reload address with Firebase
-  if (typeof loadAddress === 'function') {
-    loadAddress();
-  }
-} catch (e) {
-  console.log("Firebase not available, using offline mode:", e.message);
-}
 </script>
 
 </body>
