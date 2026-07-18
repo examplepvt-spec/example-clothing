@@ -1,614 +1,1769 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Checkout — EXAMPLE CLOTHING</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0e0d0b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<title>Collections — EXAMPLE CLOTHING</title>
+<meta name="description" content="Explore premium men's, women's, kids, and sale collections at EXAMPLE CLOTHING. Quality fabrics, timeless design.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
+
 :root{
-  --ink:#161412;
-  --ivory:#f6f3ec;
-  --ivory-dim:#eee9dd;
-  --brass:#9c7a3c;
-  --brass-soft:#c7ab74;
-  --oxblood:#5e2430;
-  --line:#e2dccb;
-  --white:#ffffff;
+  --ink:#0e0d0b;
+  --ink-soft:#191715;
+  --ivory:#f7f4ee;
+  --ivory-soft:#f2eee6;
+  --gold:#b08d3e;
+  --gold-light:#d8bf83;
+  --line:#e4ddcd;
+  --white:#fff;
+  --ease:cubic-bezier(.22,1,.36,1);
 }
 
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html{
+  scroll-behavior:smooth;
+  touch-action:pan-y;
+  overscroll-behavior-y:none;
 }
 
 body{
   background:var(--ivory);
   color:var(--ink);
-  font-family:'Inter',sans-serif;
-  padding-bottom:120px;
+  font-family:Inter,sans-serif;
+  overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
 }
 
-a{ color:inherit; }
+img{
+  display:block;
+  max-width:100%;
+}
 
-.header{
-  background:rgba(246,243,236,.95);
-  backdrop-filter:blur(10px);
-  padding:0 18px;
-  height:64px;
+a{
+  text-decoration:none;
+  color:inherit;
+}
+
+h1,h2,h3{
+  font-family:"Cormorant Garamond",serif;
+  font-weight:500;
+}
+
+/*==========================
+PRELOADER
+==========================*/
+
+.preloader{
+  position:fixed;
+  inset:0;
+  background:var(--ink);
   display:flex;
   align-items:center;
-  border-bottom:1px solid var(--line);
-  position:sticky;
-  top:0;
-  z-index:100;
+  justify-content:center;
+  flex-direction:column;
+  z-index:99999;
+  transition:.8s;
 }
 
-.back-btn{
+.preloader.hide{
+  opacity:0;
+  visibility:hidden;
+}
+
+.loaderLogo{
+  font-family:"Cormorant Garamond",serif;
+  font-size:36px;
+  letter-spacing:8px;
+  color:white;
+  margin-bottom:15px;
+}
+
+.loaderLine{
+  width:120px;
+  height:2px;
+  background:rgba(255,255,255,.15);
+  overflow:hidden;
+}
+
+.loaderLine span{
+  display:block;
+  height:100%;
+  width:0;
+  background:var(--gold);
+  animation:loading 2s forwards;
+}
+
+@keyframes loading{
+  100%{ width:100%; }
+}
+
+/*==========================
+HEADER
+==========================*/
+
+.header{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 20px;
+  z-index:5000;
+  transition:.45s;
+  background:transparent;
+}
+
+.header.active{
+  background:rgba(247,244,238,.94);
+  backdrop-filter:blur(18px) saturate(1.2);
+  -webkit-backdrop-filter:blur(18px) saturate(1.2);
+  border-bottom:1px solid var(--line);
+}
+
+.menu-btn{
+  width:44px;
+  height:44px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:6px;
+  cursor:pointer;
+  background:none;
+  border:none;
+  padding:0;
+  position:relative;
+  z-index:10000;
+}
+
+.menu-btn span{
+  display:block;
+  height:2px;
+  background:white;
+  transition:.35s;
+  border-radius:1px;
+}
+
+.header.active .menu-btn span{
+  background:var(--ink);
+}
+
+.menu-btn span:nth-child(1){ width:24px; }
+.menu-btn span:nth-child(2){ width:17px; }
+.menu-btn span:nth-child(3){ width:21px; }
+
+.logoArea{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex:1;
+  margin-left:14px;
+}
+
+.logo{
   width:36px;
   height:36px;
+  border-radius:50%;
+  object-fit:cover;
+  transition:transform .4s;
+}
+
+.logoText{
+  font-family:"Cormorant Garamond",serif;
+  font-size:22px;
+  letter-spacing:4px;
+  color:white;
+  transition:.35s;
+  position:relative;
+}
+
+.logoText::after{
+  content:"";
+  position:absolute;
+  bottom:-2px;
+  left:0;
+  width:0;
+  height:1px;
+  background:var(--gold);
+  transition:width .4s;
+}
+
+.logoArea:hover .logo,
+.logoArea:active .logo{
+  transform:rotate(15deg);
+}
+
+.logoArea:hover .logoText::after,
+.logoArea:active .logoText::after{
+  width:100%;
+}
+
+.header.active .logoText{
+  color:var(--ink);
+}
+
+.headerIcons{
+  display:flex;
+  gap:6px;
+}
+
+.icon{
+  position:relative;
+  width:42px;
+  height:42px;
   display:flex;
   align-items:center;
   justify-content:center;
   border-radius:50%;
-  text-decoration:none;
+  transition:.3s;
 }
 
-.back-btn:hover{ background:var(--ivory-dim); }
+.icon:hover,
+.icon:active{
+  background:rgba(176,141,62,.12);
+}
 
-.back-btn svg{
-  width:19px;
-  height:19px;
-  stroke:var(--ink);
+.icon svg{
+  width:21px;
+  height:21px;
+  stroke:white;
   fill:none;
-  stroke-width:1.8;
+  stroke-width:1.5;
+  transition:.35s;
 }
 
-.header-title{
-  font-family:'Libre Caslon Display',serif;
-  font-size:20px;
-  flex:1;
+.header.active .icon svg{
+  stroke:var(--ink);
+}
+
+.badge{
+  position:absolute;
+  top:2px;
+  right:2px;
+  background:var(--gold);
+  color:white;
+  font-size:10px;
+  font-weight:700;
+  min-width:16px;
+  height:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  font-variant-numeric:tabular-nums;
+}
+
+/*==========================
+SIDE MENU
+==========================*/
+
+.overlayMenu{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  opacity:0;
+  visibility:hidden;
+  transition:.4s;
+  z-index:8000;
+}
+
+.overlayMenu.show{
+  opacity:1;
+  visibility:visible;
+}
+
+.sideMenu{
+  position:fixed;
+  top:0;
+  left:-320px;
+  width:300px;
+  height:100%;
+  background:#111;
+  color:white;
+  padding:90px 35px;
+  transition:.5s;
+  z-index:9000;
+  overflow-y:auto;
+}
+
+.sideMenu.show{
+  left:0;
+}
+
+.close-btn{
+  position:absolute;
+  top:24px;
+  right:24px;
+  background:none;
+  border:none;
+  color:white;
+  font-size:24px;
+  cursor:pointer;
+  line-height:1;
+  width:40px;
+  height:40px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  transition:.3s;
+}
+
+.close-btn:hover,
+.close-btn:active{
+  background:rgba(255,255,255,.1);
+}
+
+.sideMenu h5{
+  font-size:11px;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  color:var(--gold-light);
+  margin-bottom:25px;
+}
+
+.sideMenu a{
+  display:block;
+  padding:15px 0;
+  font-family:"Cormorant Garamond",serif;
+  font-size:28px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  transition:.35s;
+  position:relative;
+}
+
+.sideMenu a::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:50%;
+  transform:translateY(-50%);
+  width:0;
+  height:2px;
+  background:var(--gold);
+  transition:width .35s;
+}
+
+.sideMenu a:hover,
+.sideMenu a:active{
+  padding-left:16px;
+  color:var(--gold-light);
+}
+
+.sideMenu a:hover::before,
+.sideMenu a:active::before{
+  width:12px;
+}
+
+/*==========================
+BREADCRUMB
+==========================*/
+
+.breadcrumb-wrap{
+  position:fixed;
+  top:72px;
+  left:0;
+  width:100%;
+  z-index:4000;
+  background:rgba(247,244,238,.9);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+  padding:12px 24px;
+  transform:translateY(-100%);
+  opacity:0;
+  transition:.4s;
+}
+
+.breadcrumb-wrap.visible{
+  transform:translateY(0);
+  opacity:1;
+}
+
+.breadcrumb{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:12px;
+  color:#888;
+  max-width:1200px;
+  margin:0 auto;
+}
+
+.breadcrumb a{
+  color:#888;
+  transition:.3s;
+}
+
+.breadcrumb a:hover,
+.breadcrumb a:active{
+  color:var(--gold);
+}
+
+.breadcrumb span.sep{
+  color:#ccc;
+}
+
+.breadcrumb span.current{
+  color:var(--ink);
+  font-weight:500;
+}
+
+/*==========================
+HERO
+==========================*/
+
+.hero{
+  height:55vh;
+  min-height:400px;
+  background:url("categories-banner.jpg") center/cover, var(--ink-soft);
+  position:relative;
+  display:flex;
+  align-items:flex-end;
+  overflow:hidden;
+}
+
+.hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top, rgba(0,0,0,.78), rgba(0,0,0,.15));
+  z-index:1;
+}
+
+.hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity:0.4;
+  z-index:1;
+  pointer-events:none;
+}
+
+.heroContent{
+  position:relative;
+  z-index:2;
+  padding:35px 24px;
+  color:white;
+  max-width:1200px;
+  margin:0 auto;
+  width:100%;
+}
+
+.heroSmall{
+  font-size:11px;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  color:var(--gold-light);
+  margin-bottom:10px;
+  display:inline-block;
+  opacity:0;
+  transform:translateY(20px);
+  animation:heroFade .8s .3s forwards;
+}
+
+.heroTitle{
+  font-size:52px;
+  line-height:1.05;
+  max-width:400px;
+  opacity:0;
+  transform:translateY(30px);
+  animation:heroFade .9s .5s forwards;
+}
+
+.heroDesc{
+  margin-top:15px;
+  font-size:15px;
+  opacity:0;
+  transform:translateY(20px);
+  animation:heroFade .8s .7s forwards;
+  line-height:1.7;
+  max-width:380px;
+  color:rgba(255,255,255,.75);
+}
+
+@keyframes heroFade{
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/*==========================
+TRUST STRIP
+==========================*/
+
+.trust-strip{
+  background:var(--ink);
+  padding:18px 24px;
+  overflow:hidden;
+}
+
+.trust-inner{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:40px;
+  flex-wrap:wrap;
+  max-width:1200px;
+  margin:0 auto;
+}
+
+.trust-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:rgba(255,255,255,.7);
+  font-size:13px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+.trust-item svg{
+  width:18px;
+  height:18px;
+  stroke:var(--gold-light);
+  fill:none;
+  stroke-width:1.5;
+  flex-shrink:0;
+}
+
+/*==========================
+FILTER BAR
+==========================*/
+
+.filter-bar{
+  position:sticky;
+  top:72px;
+  background:rgba(247,244,238,.95);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+  padding:14px 24px;
+  z-index:100;
+  transition:.3s;
+}
+
+.filter-bar.scrolled{
+  box-shadow:0 4px 20px rgba(0,0,0,.06);
+}
+
+.filter-inner{
+  max-width:1200px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  flex-wrap:wrap;
+}
+
+.filter-left{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.filter-pill{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:8px 16px;
+  border:1px solid var(--line);
+  border-radius:100px;
+  font-size:13px;
+  font-weight:500;
+  color:var(--ink);
+  background:white;
+  cursor:pointer;
+  transition:.3s;
+  font-family:inherit;
+}
+
+.filter-pill:hover,
+.filter-pill:active,
+.filter-pill.active{
+  border-color:var(--gold);
+  color:var(--gold);
+  background:rgba(176,141,62,.06);
+}
+
+.filter-pill svg{
+  width:14px;
+  height:14px;
+  stroke:currentColor;
+  fill:none;
+  stroke-width:2;
+}
+
+.filter-count{
+  font-size:13px;
+  color:#888;
+  white-space:nowrap;
+}
+
+.sort-select{
+  padding:8px 32px 8px 14px;
+  border:1px solid var(--line);
+  border-radius:100px;
+  font-size:13px;
+  font-family:inherit;
+  color:var(--ink);
+  background:white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center;
+  appearance:none;
+  -webkit-appearance:none;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.sort-select:hover,
+.sort-select:active{
+  border-color:var(--gold);
+}
+
+/*==========================
+CATEGORY SECTION
+==========================*/
+
+.collections{
+  padding:90px 24px;
+  max-width:1200px;
+  margin:0 auto;
+}
+
+.section-head{
   text-align:center;
-  margin-right:36px;
+  margin-bottom:55px;
 }
 
-.container{
-  padding:16px;
+.mini-title{
+  display:inline-block;
+  font-size:11px;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:12px;
+  position:relative;
+}
+
+.mini-title::after{
+  content:"";
+  position:absolute;
+  bottom:-6px;
+  left:50%;
+  transform:translateX(-50%);
+  width:0;
+  height:1px;
+  background:var(--gold);
+  transition:width .6s .3s;
+}
+
+.section-head.active .mini-title::after{
+  width:40px;
+}
+
+.section-head h2{
+  font-size:48px;
+  margin-bottom:15px;
+  line-height:1.1;
+}
+
+.section-head p{
+  max-width:520px;
+  margin:auto;
+  line-height:1.8;
+  color:#666;
+  font-size:15px;
+}
+
+.category-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:24px;
+}
+
+.category-card{
+  display:block;
+  overflow:hidden;
+  border-radius:20px;
+  background:#fff;
+  box-shadow:0 18px 50px rgba(0,0,0,.08);
+  transition:.5s var(--ease);
+  position:relative;
+}
+
+.category-card:hover,
+.category-card:active,
+.category-card.hovered{
+  transform:translateY(-10px);
+  box-shadow:0 28px 60px rgba(0,0,0,.14);
+}
+
+.image-wrap{
+  position:relative;
+  height:380px;
+  overflow:hidden;
+  background:var(--ivory-soft);
+}
+
+.image-wrap img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:1.2s var(--ease);
+}
+
+.category-card:hover img,
+.category-card:active img,
+.category-card.hovered img{
+  transform:scale(1.12);
+}
+
+.dark-overlay{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top, rgba(0,0,0,.75) 0%, rgba(0,0,0,.05) 60%);
+  z-index:1;
+}
+
+.category-badge{
+  position:absolute;
+  top:16px;
+  left:16px;
+  z-index:3;
+  padding:6px 14px;
+  border-radius:100px;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+.category-badge.sale{
+  background:#c0392b;
+  color:white;
+}
+
+.category-badge.new{
+  background:var(--gold);
+  color:white;
+}
+
+.category-content{
+  position:absolute;
+  left:24px;
+  bottom:24px;
+  color:white;
+  z-index:2;
+}
+
+.category-content span{
+  font-size:11px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:#d8bf83;
+  display:block;
+  margin-bottom:6px;
+}
+
+.category-content h3{
+  font-size:36px;
+  margin:0 0 10px;
+  line-height:1.1;
+}
+
+.explore-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:13px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  border-bottom:1px solid rgba(255,255,255,.5);
+  padding-bottom:4px;
+  transition:.3s;
+}
+
+.explore-btn svg{
+  width:14px;
+  height:14px;
+  stroke:white;
+  fill:none;
+  stroke-width:2;
+  transition:.3s;
+}
+
+.category-card:hover .explore-btn svg,
+.category-card:active .explore-btn svg,
+.category-card.hovered .explore-btn svg{
+  transform:translateX(4px);
+}
+
+.category-card:hover .explore-btn,
+.category-card:active .explore-btn,
+.category-card.hovered .explore-btn{
+  border-color:var(--gold-light);
+  color:var(--gold-light);
+}
+
+/* Item count label */
+.item-count{
+  position:absolute;
+  bottom:24px;
+  right:24px;
+  z-index:2;
+  font-size:12px;
+  color:rgba(255,255,255,.6);
+  letter-spacing:1px;
+}
+
+/*==========================
+REVEAL ANIMATIONS
+==========================*/
+
+.reveal{
+  opacity:0;
+  transform:translateY(50px);
+  transition:1s var(--ease);
+}
+
+.reveal.active{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.stagger-1{ transition-delay:.1s; }
+.stagger-2{ transition-delay:.2s; }
+.stagger-3{ transition-delay:.3s; }
+.stagger-4{ transition-delay:.4s; }
+.stagger-5{ transition-delay:.5s; }
+.stagger-6{ transition-delay:.6s; }
+
+/*==========================
+CTA BANNER
+==========================*/
+
+.cta-banner{
+  background:var(--ink);
+  padding:80px 24px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+
+.cta-banner::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;
+}
+
+.cta-inner{
+  position:relative;
+  z-index:1;
   max-width:600px;
   margin:0 auto;
 }
 
-.section-title{
-  font-size:14px;
-  font-weight:700;
-  text-transform:uppercase;
-  letter-spacing:1px;
+.cta-banner h2{
+  font-size:40px;
+  color:white;
   margin-bottom:12px;
-  margin-top:24px;
-  color:var(--ink);
-  opacity: 0.8;
+  line-height:1.15;
 }
 
-/* Address Card styles */
-.card {
-  background:var(--white);
-  border:1px solid var(--line);
-  border-radius:8px;
-  padding:16px;
-  margin-bottom:16px;
-}
-
-.address-display p {
-  font-size:14px;
-  line-height:1.5;
-  color:#444;
-}
-
-.address-display .name {
-  font-weight:600;
+.cta-banner p{
+  color:rgba(255,255,255,.6);
   font-size:15px;
-  color:var(--ink);
-  margin-bottom:4px;
+  margin-bottom:30px;
+  line-height:1.7;
 }
 
-.change-btn {
-  background:none;
-  border:none;
-  color:var(--brass);
+.cta-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:14px 36px;
+  background:var(--gold);
+  color:white;
   font-size:13px;
   font-weight:600;
-  cursor:pointer;
-  margin-top:12px;
-  padding:0;
-  text-decoration:underline;
-}
-
-/* Cart Items Summary */
-.checkout-item {
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:10px 0;
-  border-bottom:1px solid var(--ivory-dim);
-}
-
-.checkout-item:last-child {
-  border-bottom:none;
-}
-
-.item-thumb {
-  width:50px;
-  height:62px;
-  object-fit:cover;
-  border-radius:4px;
-  background:var(--ivory-dim);
-}
-
-.item-info {
-  flex:1;
-  min-width:0;
-}
-
-.item-name {
-  font-size:14px;
-  font-weight:600;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.item-meta {
-  font-size:12px;
-  color:#666;
-  margin-top:2px;
-}
-
-.item-price {
-  font-size:14px;
-  font-weight:600;
-  font-family:'Libre Caslon Display',serif;
-}
-
-/* Payment Method Styles */
-.payment-option {
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:14px;
-  border:1px solid var(--line);
-  border-radius:6px;
-  margin-bottom:10px;
-  cursor:pointer;
-  background:var(--white);
-  transition: border-color 0.2s;
-}
-
-.payment-option:hover {
-  border-color:var(--brass-soft);
-}
-
-.payment-option input[type="radio"] {
-  accent-color:var(--ink);
-  width:18px;
-  height:18px;
-}
-
-.payment-label {
-  font-size:14px;
-  font-weight:600;
-}
-
-/* Price Summary Details */
-.summary-row {
-  display:flex;
-  justify-content:space-between;
-  font-size:14px;
-  margin-bottom:10px;
-}
-
-.summary-row.total-row {
-  border-top:1px dashed var(--line);
-  padding-top:12px;
-  margin-top:12px;
-  font-weight:700;
-  font-size:16px;
-}
-
-.free-delivery-badge {
-  font-size:11px;
-  background:#e2f0d9;
-  color:#385723;
-  padding:4px 8px;
-  border-radius:4px;
-  display:inline-block;
-  margin-top:6px;
-  font-weight:600;
-}
-
-.delivery-warning {
-  font-size:11px;
-  color:var(--oxblood);
-  margin-top:4px;
-}
-
-/* Bottom Bar */
-.bottom-bar{
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:0;
-  background:var(--white);
-  padding:14px 16px;
-  box-shadow:0 -2px 14px rgba(0,0,0,.08);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-top:1px solid var(--line);
-  z-index:90;
-}
-
-.total-box h3{
-  font-size:12px;
-  color:#666;
+  letter-spacing:2px;
   text-transform:uppercase;
-  letter-spacing:1px;
-  font-weight:600;
-}
-
-.total-box h2{
-  font-family:'Libre Caslon Display',serif;
-  font-size:24px;
-  margin-top:2px;
-}
-
-.place-order-btn{
-  background:var(--ink);
-  color:var(--ivory);
-  padding:15px 26px;
-  border-radius:6px;
-  text-decoration:none;
-  font-size:15px;
-  font-weight:600;
-  letter-spacing:.3px;
+  border-radius:100px;
   border:none;
   cursor:pointer;
+  font-family:inherit;
+  transition:.4s;
+  position:relative;
+  overflow:hidden;
 }
 
-/* Success Modal Overlay */
-.modal-overlay {
+.cta-btn::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(255,255,255,.15);
+  transform:translateY(100%);
+  transition:.4s;
+}
+
+.cta-btn:hover::after,
+.cta-btn:active::after,
+.cta-btn.hovered::after{
+  transform:translateY(0);
+}
+
+.cta-btn:hover,
+.cta-btn:active,
+.cta-btn.hovered{
+  transform:translateY(-2px);
+  box-shadow:0 8px 25px rgba(176,141,62,.35);
+}
+
+.cta-btn svg{
+  width:16px;
+  height:16px;
+  stroke:white;
+  fill:none;
+  stroke-width:2;
+  transition:.3s;
+}
+
+.cta-btn:hover svg,
+.cta-btn:active svg,
+.cta-btn.hovered svg{
+  transform:translateX(4px);
+}
+
+/*==========================
+WHATSAPP FLOAT
+==========================*/
+
+.whatsapp-float{
   position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.6);
-  backdrop-filter:blur(5px);
-  z-index:200;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-}
-
-.success-modal {
-  background:var(--ivory);
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:32px 24px;
-  max-width:400px;
-  width:100%;
-  text-align:center;
-  box-shadow:0 10px 30px rgba(0,0,0,0.15);
-}
-
-.success-icon {
-  width:64px;
-  height:64px;
-  background:#e2f0d9;
+  bottom:24px;
+  right:24px;
+  width:56px;
+  height:56px;
+  background:#25D366;
   border-radius:50%;
   display:flex;
   align-items:center;
   justify-content:center;
-  margin:0 auto 16px;
+  z-index:1000;
+  box-shadow:0 4px 20px rgba(37,211,102,.4);
+  animation:pulse 2s infinite;
+  cursor:pointer;
+  transition:.3s;
 }
 
-.success-icon svg {
-  width:32px;
-  height:32px;
-  stroke:#385723;
-  fill:none;
-  stroke-width:2.5;
+.whatsapp-float:hover,
+.whatsapp-float:active,
+.whatsapp-float.hovered{
+  transform:scale(1.08);
+  box-shadow:0 6px 25px rgba(37,211,102,.5);
 }
 
-.success-modal h2 {
-  font-family:'Libre Caslon Display',serif;
-  font-size:24px;
-  margin-bottom:8px;
+.whatsapp-float svg{
+  width:26px;
+  height:26px;
+  fill:white;
 }
 
-.success-modal p {
-  font-size:14px;
-  color:#666;
-  line-height:1.5;
-  margin-bottom:24px;
+@keyframes pulse{
+  0%,100%{ box-shadow:0 4px 20px rgba(37,211,102,.4); }
+  50%{ box-shadow:0 4px 30px rgba(37,211,102,.7); }
 }
 
-.home-btn {
-  display:inline-block;
+/*==========================
+TOAST NOTIFICATION
+==========================*/
+
+.toast{
+  position:fixed;
+  bottom:100px;
+  left:50%;
+  transform:translateX(-50%) translateY(20px);
   background:var(--ink);
-  color:var(--ivory);
-  padding:12px 24px;
-  border-radius:6px;
-  text-decoration:none;
-  font-weight:600;
+  color:white;
+  padding:14px 28px;
+  border-radius:100px;
   font-size:14px;
+  font-weight:500;
+  z-index:10000;
+  opacity:0;
+  pointer-events:none;
+  transition:.4s;
+  white-space:nowrap;
+  box-shadow:0 8px 30px rgba(0,0,0,.2);
 }
+
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+.toast svg{
+  width:16px;
+  height:16px;
+  stroke:var(--gold-light);
+  fill:none;
+  stroke-width:2;
+  margin-right:8px;
+  vertical-align:middle;
+}
+
+/*==========================
+FOOTER
+==========================*/
+
+.footer{
+  background:var(--ink);
+  color:rgba(255,255,255,.8);
+  text-align:center;
+  padding:70px 24px 40px;
+  position:relative;
+}
+
+.footer::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:60px;
+  height:2px;
+  background:var(--gold);
+}
+
+.footer-logo{
+  font-family:"Cormorant Garamond",serif;
+  font-size:28px;
+  letter-spacing:5px;
+  color:white;
+  margin-bottom:6px;
+}
+
+.footer-tag{
+  font-size:13px;
+  color:var(--gold-light);
+  letter-spacing:1px;
+  margin-bottom:30px;
+}
+
+.footer-links{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:18px;
+  margin:0 0 30px;
+}
+
+.footer-links a{
+  font-size:13px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.75);
+  transition:.3s;
+  position:relative;
+}
+
+.footer-links a::after{
+  content:"";
+  position:absolute;
+  bottom:-2px;
+  left:0;
+  width:0;
+  height:1px;
+  background:var(--gold);
+  transition:width .3s;
+}
+
+.footer-links a:hover,
+.footer-links a:active{
+  color:var(--gold-light);
+}
+
+.footer-links a:hover::after,
+.footer-links a:active::after{
+  width:100%;
+}
+
+.footer-contact p{
+  font-size:13px;
+  margin:6px 0;
+  color:rgba(255,255,255,.55);
+}
+
+.copyright{
+  margin-top:30px;
+  font-size:12px;
+  color:rgba(255,255,255,.35);
+}
+
+/* Social links */
+.social-links{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin:25px 0;
+}
+
+.social-links a{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.15);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:.3s;
+}
+
+.social-links a:hover,
+.social-links a:active,
+.social-links a.hovered{
+  background:var(--gold);
+  border-color:var(--gold);
+  transform:translateY(-3px);
+}
+
+.social-links a svg{
+  width:18px;
+  height:18px;
+  fill:rgba(255,255,255,.7);
+  transition:.3s;
+}
+
+.social-links a:hover svg,
+.social-links a:active svg,
+.social-links a.hovered svg{
+  fill:white;
+}
+
+/*==========================
+RESPONSIVE
+==========================*/
+
+@media(max-width:1024px){
+  .category-grid{
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+  }
+  .image-wrap{
+    height:340px;
+  }
+}
+
+@media(max-width:768px){
+  .hero{
+    height:45vh;
+    min-height:320px;
+  }
+  .heroTitle{
+    font-size:36px;
+  }
+  .heroDesc{
+    font-size:14px;
+  }
+
+  .trust-inner{
+    gap:20px;
+  }
+  .trust-item{
+    font-size:11px;
+  }
+
+  .filter-inner{
+    gap:10px;
+  }
+  .filter-pill{
+    padding:6px 12px;
+    font-size:12px;
+  }
+  .filter-count{
+    font-size:12px;
+  }
+
+  .collections{
+    padding:60px 16px;
+  }
+  .section-head h2{
+    font-size:32px;
+  }
+  .section-head p{
+    font-size:14px;
+  }
+
+  .category-grid{
+    grid-template-columns:1fr;
+    gap:18px;
+  }
+  .image-wrap{
+    height:300px;
+  }
+  .category-content h3{
+    font-size:30px;
+  }
+
+  .cta-banner h2{
+    font-size:28px;
+  }
+  .cta-banner p{
+    font-size:14px;
+  }
+}
+
+@media(max-width:480px){
+  .heroTitle{
+    font-size:30px;
+  }
+  .image-wrap{
+    height:260px;
+  }
+  .category-content h3{
+    font-size:26px;
+  }
+  .trust-item span{
+    display:none;
+  }
+  .filter-bar{
+    padding:10px 16px;
+  }
+}
+
+/* Reduced motion */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:0.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:0.01ms !important;
+  }
+  .reveal{
+    opacity:1;
+    transform:none;
+  }
+}
+
 </style>
+<base target="_blank">
 </head>
 
 <body>
 
+<!-- PRELOADER -->
+<div class="preloader">
+  <div class="loaderLogo">EXAMPLE</div>
+  <div class="loaderLine"><span></span></div>
+</div>
+
+<!-- HEADER -->
 <div class="header">
-  <a href="cart.html" class="back-btn" aria-label="Back">
-    <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg>
+
+  <button class="menu-btn" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+
+  <a href="index.html" class="logoArea">
+    <img src="logo.png" class="logo" alt="EXAMPLE CLOTHING">
+    <span class="logoText">EXAMPLE</span>
   </a>
-  <span class="header-title">Checkout</span>
-</div>
 
-<div class="container">
+  <div class="headerIcons">
 
-  <!-- Delivery Address Section -->
-  <div class="section-title">Delivery Address</div>
-  <div class="card">
-    <div id="addressDisplay" class="address-display">
-      <p id="addrName" class="name">Loading Address...</p>
-      <p id="addrPhone" style="font-weight: 500; margin-bottom: 4px;"></p>
-      <p id="addrDetails"></p>
-      <p id="addrPincode" style="margin-top: 2px;"></p>
-      <button class="change-btn" id="changeAddrBtn">Change Address</button>
-    </div>
-  </div>
+    <a href="login.html" id="accountBtn" class="icon" aria-label="Account">
+      <svg viewBox="0 0 24 24"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z"/><path d="M4.5 20.5c1.4-3.6 4.3-5.5 7.5-5.5s6.1 1.9 7.5 5.5"/></svg>
+    </a>
 
-  <!-- Cart Items Review Section -->
-  <div class="section-title">Review Items</div>
-  <div class="card" id="itemsSummary">
-    <!-- Cart Items will be inserted here dynamically -->
-  </div>
+    <a href="wishlist.html" class="icon" aria-label="Wishlist">
+      <svg viewBox="0 0 24 24"><path d="M12 20.2s-7.6-4.5-9.9-9C.6 8 2 4.5 5.4 3.7c2-.5 3.9.3 5 2 .3.4.5.9.6 1.3.1-.4.3-.9.6-1.3 1.1-1.7 3-2.5 5-2 3.4.8 4.8 4.3 3.3 7.5-2.3 4.5-9.9 9-9.9 9Z"/></svg>
+    </a>
 
-  <!-- Payment Method Section -->
-  <div class="section-title">Payment Method</div>
-  <div>
-    <label class="payment-option">
-      <input type="radio" name="payment" value="UPI" checked>
-      <div class="payment-label">UPI (Google Pay/PhonePe)</div>
-    </label>
-  </div>
+    <a href="cart.html" class="icon" aria-label="Cart">
+      <svg viewBox="0 0 24 24"><path d="M4 7h16l-1.4 10.3a2 2 0 0 1-2 1.7H7.4a2 2 0 0 1-2-1.7L4 7Z"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/></svg>
+      <span class="badge" id="cartCount">0</span>
+    </a>
 
-  <!-- Price Summary Section -->
-  <div class="section-title">Price Details</div>
-  <div class="card">
-    <div class="summary-row">
-      <span>Subtotal</span>
-      <span id="subtotalPrice">₹0</span>
-    </div>
-    <div class="summary-row">
-      <span>Delivery Charge</span>
-      <span id="deliveryCharge">₹0</span>
-    </div>
-    <div id="freeDeliveryNotice" style="text-align: right;">
-      <!-- Free delivery message or warning will show here -->
-    </div>
-    <div class="summary-row total-row">
-      <span>Total Amount</span>
-      <span id="totalPrice" style="font-family:'Libre Caslon Display',serif; font-size:20px;">₹0</span>
-    </div>
   </div>
 
 </div>
 
-<!-- Bottom bar for Quick Place Order -->
-<div class="bottom-bar">
-  <div class="total-box">
-    <h3>Total</h3>
-    <h2 id="bottomTotal">₹0</h2>
-  </div>
-  <button class="place-order-btn" id="placeOrderBtn" onclick="placeOrder()">Place Order</button>
+<!-- BREADCRUMB -->
+<div class="breadcrumb-wrap" id="breadcrumb">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="index.html">Home</a>
+    <span class="sep">/</span>
+    <span class="current">Collections</span>
+  </nav>
 </div>
 
-<!-- Order Success Modal Overlay -->
-<div class="modal-overlay" id="successOverlay">
-  <div class="success-modal">
-    <div class="success-icon">
-      <svg viewBox="0 0 24 24">
-        <path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+<!-- SIDE MENU -->
+<div class="overlayMenu"></div>
+
+<div class="sideMenu">
+  <button class="close-btn" aria-label="Close menu">✕</button>
+  <h5>Browse</h5>
+  <a href="men.html">Men</a>
+  <a href="women.html">Women</a>
+  <a href="kids.html">Kids</a>
+  <a href="sale.html">Sale</a>
+  <a href="accessories.html">Accessories</a>
+  <a href="footwear.html">Footwear</a>
+  <a href="login.html" id="menuLoginLink">Login</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="heroContent">
+    <div class="heroSmall">Explore</div>
+    <h1 class="heroTitle">Our Collections</h1>
+    <p class="heroDesc">Shirts, jackets, tees & polos for men — plus women's jackets and a kids collection.</p>
+  </div>
+</section>
+
+<!-- TRUST STRIP -->
+<div class="trust-strip">
+  <div class="trust-inner">
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg>
+      <span>Authentic</span>
     </div>
-    <h2>Order Placed!</h2>
-    <p>Thank you for shopping with us. Your order details and tracking link have been sent to your registered contact number.</p>
-    <a href="categories.html" class="home-btn" onclick="clearCart()">Continue Shopping</a>
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      <span>Inspected</span>
+    </div>
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14Z"/><path d="M8 22V10H4a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h4Z"/></svg>
+      <span>Trusted</span>
+    </div>
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+      <span>Local</span>
+    </div>
   </div>
 </div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar" id="filterBar">
+  <div class="filter-inner">
+    <div class="filter-left">
+      <button class="filter-pill active" data-filter="all">
+        <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        All
+      </button>
+      <button class="filter-pill" data-filter="men">
+        <svg viewBox="0 0 24 24"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z"/><path d="M4.5 20.5c1.4-3.6 4.3-5.5 7.5-5.5s6.1 1.9 7.5 5.5"/></svg>
+        Men
+      </button>
+      <button class="filter-pill" data-filter="women">
+        <svg viewBox="0 0 24 24"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z"/><path d="M4.5 20.5c1.4-3.6 4.3-5.5 7.5-5.5s6.1 1.9 7.5 5.5"/></svg>
+        Women
+      </button>
+      <button class="filter-pill" data-filter="kids">
+        <svg viewBox="0 0 24 24"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z"/><path d="M4.5 20.5c1.4-3.6 4.3-5.5 7.5-5.5s6.1 1.9 7.5 5.5"/></svg>
+        Kids
+      </button>
+      <button class="filter-pill" data-filter="sale">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Sale
+      </button>
+      <span class="filter-count">6 collections</span>
+    </div>
+    <select class="sort-select" id="sortSelect">
+      <option value="default">Sort by</option>
+      <option value="popular">Most Popular</option>
+      <option value="newest">Newest</option>
+      <option value="az">A — Z</option>
+    </select>
+  </div>
+</div>
+
+<!-- LUXURY CATEGORY GRID -->
+<section class="collections">
+
+  <div class="section-head reveal" id="sectionHead">
+    <span class="mini-title">Browse Collection</span>
+    <h2>Choose Your Style</h2>
+    <p>Explore premium collections crafted with quality fabrics and timeless design.</p>
+  </div>
+
+  <div class="category-grid" id="categoryGrid">
+
+    <a href="men.html" class="category-card reveal stagger-1" data-category="men">
+      <div class="image-wrap">
+        <img src="men.jpg" alt="Men's Collection" loading="lazy">
+        <div class="dark-overlay"></div>
+        <span class="category-badge new">New</span>
+        <div class="category-content">
+          <span>Premium Collection</span>
+          <h3>MEN</h3>
+          <div class="explore-btn">Explore <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </div>
+        <span class="item-count">48 items</span>
+      </div>
+    </a>
+
+    <a href="women.html" class="category-card reveal stagger-2" data-category="women">
+      <div class="image-wrap">
+        <img src="women.jpg" alt="Women's Collection" loading="lazy">
+        <div class="dark-overlay"></div>
+        <div class="category-content">
+          <span>Elegant Fashion</span>
+          <h3>WOMEN</h3>
+          <div class="explore-btn">Explore <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </div>
+        <span class="item-count">36 items</span>
+      </div>
+    </a>
+
+    <a href="kids.html" class="category-card reveal stagger-3" data-category="kids">
+      <div class="image-wrap">
+        <img src="kids.jpg" alt="Kids Collection" loading="lazy">
+        <div class="dark-overlay"></div>
+        <div class="category-content">
+          <span>Comfort Wear</span>
+          <h3>KIDS</h3>
+          <div class="explore-btn">Explore <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </div>
+        <span class="item-count">24 items</span>
+      </div>
+    </a>
+
+    <a href="sale.html" class="category-card reveal stagger-4" data-category="sale">
+      <div class="image-wrap">
+        <img src="sale.jpg" alt="Sale Collection" loading="lazy">
+        <div class="dark-overlay"></div>
+        <span class="category-badge sale">Sale</span>
+        <div class="category-content">
+          <span>Limited Time</span>
+          <h3>SALE</h3>
+          <div class="explore-btn">Shop Now <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </div>
+        <span class="item-count">Up to 50% off</span>
+      </div>
+    </a>
+
+    <a href="accessories.html" class="category-card reveal stagger-5" data-category="accessories">
+      <div class="image-wrap">
+        <img src="accessories.jpg" alt="Accessories Collection" loading="lazy">
+        <div class="dark-overlay"></div>
+        <div class="category-content">
+          <span>Luxury Details</span>
+          <h3>ACCESSORIES</h3>
+          <div class="explore-btn">Explore <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </div>
+        <span class="item-count">18 items</span>
+      </div>
+    </a>
+
+    <a href="footwear.html" class="category-card reveal stagger-6" data-category="footwear">
+      <div class="image-wrap">
+        <img src="footwear.jpg" alt="Footwear Collection" loading="lazy">
+        <div class="dark-overlay"></div>
+        <div class="category-content">
+          <span>Premium Shoes</span>
+          <h3>FOOTWEAR</h3>
+          <div class="explore-btn">Explore <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </div>
+        <span class="item-count">22 items</span>
+      </div>
+    </a>
+
+  </div>
+
+</section>
+
+<!-- CTA BANNER -->
+<section class="cta-banner reveal">
+  <div class="cta-inner">
+    <h2>Can't Decide?</h2>
+    <p>Talk to us directly on WhatsApp for personalized style recommendations and instant orders.</p>
+    <a href="https://wa.me/919656003555" class="cta-btn">
+      Order on WhatsApp
+      <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/919656003555" class="whatsapp-float" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+</a>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+  <span id="toastText">Added to cart</span>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+
+  <div class="footer-logo">EXAMPLE</div>
+  <p class="footer-tag">Premium Clothing Collection</p>
+
+  <div class="social-links">
+    <a href="#" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+    </a>
+    <a href="#" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+    </a>
+    <a href="#" aria-label="YouTube">
+      <svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+    </a>
+  </div>
+
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="categories.html">Collections</a>
+    <a href="wishlist.html">Wishlist</a>
+    <a href="cart.html">Cart</a>
+    <a href="login.html" id="footerLoginLink">Login</a>
+  </div>
+
+  <div class="footer-contact">
+    <p>Calicut, Kerala</p>
+    <p>example@email.com</p>
+    <p>+91 9656003555</p>
+  </div>
+
+  <div class="copyright">© 2026 EXAMPLE CLOTHING</div>
+
+</footer>
+
+<script>
+
+/* HEADER SCROLL */
+const header = document.querySelector(".header");
+const breadcrumb = document.getElementById("breadcrumb");
+const filterBar = document.getElementById("filterBar");
+
+window.addEventListener("scroll", () => {
+  const sy = window.scrollY;
+
+  if(sy > 40){
+    header.classList.add("active");
+  } else {
+    header.classList.remove("active");
+  }
+
+  if(sy > 200){
+    breadcrumb.classList.add("visible");
+  } else {
+    breadcrumb.classList.remove("visible");
+  }
+
+  if(sy > 300){
+    filterBar.classList.add("scrolled");
+  } else {
+    filterBar.classList.remove("scrolled");
+  }
+}, { passive: true });
+
+/* MENU */
+const menu = document.querySelector(".sideMenu");
+const overlay = document.querySelector(".overlayMenu");
+const menuBtn = document.querySelector(".menu-btn");
+const closeBtn = document.querySelector(".close-btn");
+
+function openMenu(){
+  menu.classList.add("show");
+  overlay.classList.add("show");
+  document.body.style.overflow = "hidden";
+}
+
+function closeMenu(){
+  menu.classList.remove("show");
+  overlay.classList.remove("show");
+  document.body.style.overflow = "";
+}
+
+menuBtn.onclick = openMenu;
+closeBtn.onclick = closeMenu;
+overlay.onclick = closeMenu;
+
+// Swipe to close
+let touchStartX = 0;
+menu.addEventListener("touchstart", (e) => {
+  touchStartX = e.touches[0].clientX;
+}, { passive: true });
+
+menu.addEventListener("touchend", (e) => {
+  const diff = e.changedTouches[0].clientX - touchStartX;
+  if(diff < -60) closeMenu();
+}, { passive: true });
+
+/* PRELOADER */
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    document.querySelector(".preloader").classList.add("hide");
+  }, 1200);
+});
+
+setTimeout(() => {
+  document.querySelector(".preloader").classList.add("hide");
+}, 4500);
+
+/* SCROLL REVEAL */
+const reveals = document.querySelectorAll(".reveal");
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add("active");
+    }
+  });
+}, { threshold: .12, rootMargin: "0px 0px -40px 0px" });
+
+reveals.forEach(item => observer.observe(item));
+
+/* TOUCH HOVER SYSTEM */
+function addTouchHover(selector){
+  const elements = document.querySelectorAll(selector);
+  elements.forEach(el => {
+    el.addEventListener("touchstart", () => {
+      el.classList.add("hovered");
+    }, { passive: true });
+    el.addEventListener("touchend", () => {
+      setTimeout(() => el.classList.remove("hovered"), 800);
+    }, { passive: true });
+  });
+}
+
+addTouchHover(".category-card");
+addTouchHover(".filter-pill");
+addTouchHover(".cta-btn");
+addTouchHover(".social-links a");
+addTouchHover(".whatsapp-float");
+
+/* FILTER SYSTEM */
+const filterPills = document.querySelectorAll(".filter-pill");
+const categoryCards = document.querySelectorAll(".category-card");
+const filterCount = document.querySelector(".filter-count");
+
+filterPills.forEach(pill => {
+  pill.addEventListener("click", () => {
+    const filter = pill.dataset.filter;
+
+    filterPills.forEach(p => p.classList.remove("active"));
+    pill.classList.add("active");
+
+    let visible = 0;
+    categoryCards.forEach(card => {
+      if(filter === "all" || card.dataset.category === filter){
+        card.style.display = "block";
+        setTimeout(() => {
+          card.style.opacity = "1";
+          card.style.transform = "translateY(0)";
+        }, 50);
+        visible++;
+      } else {
+        card.style.opacity = "0";
+        card.style.transform = "translateY(20px)";
+        setTimeout(() => { card.style.display = "none"; }, 300);
+      }
+    });
+
+    filterCount.textContent = visible + " collection" + (visible !== 1 ? "s" : "");
+
+    // Toast
+    showToast(filter === "all" ? "Showing all collections" : "Showing " + filter + " collections");
+  });
+});
+
+/* SORT SYSTEM */
+const sortSelect = document.getElementById("sortSelect");
+const grid = document.getElementById("categoryGrid");
+
+sortSelect.addEventListener("change", () => {
+  const value = sortSelect.value;
+  const cards = Array.from(categoryCards);
+
+  if(value === "az"){
+    cards.sort((a, b) => {
+      const aText = a.querySelector("h3").textContent.trim();
+      const bText = b.querySelector("h3").textContent.trim();
+      return aText.localeCompare(bText);
+    });
+  } else if(value === "newest"){
+    cards.sort((a, b) => {
+      const aNew = a.querySelector(".category-badge.new") ? 1 : 0;
+      const bNew = b.querySelector(".category-badge.new") ? 1 : 0;
+      return bNew - aNew;
+    });
+  } else if(value === "popular"){
+    cards.sort((a, b) => {
+      const aCount = parseInt(a.querySelector(".item-count").textContent) || 0;
+      const bCount = parseInt(b.querySelector(".item-count").textContent) || 0;
+      return bCount - aCount;
+    });
+  }
+
+  cards.forEach(card => grid.appendChild(card));
+  showToast("Collections sorted");
+});
+
+/* TOAST */
+function showToast(text){
+  const toast = document.getElementById("toast");
+  const toastText = document.getElementById("toastText");
+  toastText.textContent = text;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2500);
+}
+
+/* CART BADGE */
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let qty = 0;
+cart.forEach(item => { qty += item.qty || 1; });
+document.getElementById("cartCount").innerText = qty;
+
+/* VISIBILITY API */
+document.addEventListener("visibilitychange", () => {
+  if(document.hidden){
+    document.querySelectorAll("video").forEach(v => v.pause());
+  }
+});
+
+</script>
 
 <script type="module">
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-let userAddress = null;
+import { checkUser } from "./auth.js";
 
-// Firebase References (asynchronously populated)
-let db = null;
-let auth = null;
-let onAuthStateChanged = null;
-let collection = null;
-let getDocs = null;
+checkUser((user) => {
+  const accountBtn = document.getElementById("accountBtn");
+  const menuLogin = document.getElementById("menuLoginLink");
+  const footerLogin = document.getElementById("footerLoginLink");
 
-const itemsContainer = document.getElementById("itemsSummary");
-const subtotalPriceEl = document.getElementById("subtotalPrice");
-const deliveryChargeEl = document.getElementById("deliveryCharge");
-const freeDeliveryNoticeEl = document.getElementById("freeDeliveryNotice");
-const totalPriceEl = document.getElementById("totalPrice");
-const bottomTotalEl = document.getElementById("bottomTotal");
-const placeOrderBtn = document.getElementById("placeOrderBtn");
-const successOverlay = document.getElementById("successOverlay");
-const changeAddrBtn = document.getElementById("changeAddrBtn");
-
-// Set up the Change Address action
-changeAddrBtn.onclick = () => {
-  window.location.href = "addresses.html";
-};
-
-// Start initial execution immediately
-if (cart.length === 0) {
-  alert("Your cart is empty. Redirecting to cart page...");
-  window.location.href = "cart.html";
-} else {
-  // First render the summary immediately
-  renderSummary();
-  
-  // Try loading Firebase and Address
-  initFirebaseAndAddress();
-}
-
-// Asynchronously load Firebase config using the correct file name "firebase.js"
-async function initFirebaseAndAddress() {
-  try {
-    // Dynamically import your local config file "firebase.js"
-    const config = await import("./firebase.js");
-    db = config.db;
-    auth = config.auth;
-    
-    // Dynamically import standard Firebase SDK methods
-    const authSDK = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js");
-    onAuthStateChanged = authSDK.onAuthStateChanged;
-    
-    const firestoreSDK = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
-    collection = firestoreSDK.collection;
-    getDocs = firestoreSDK.getDocs;
-    
-    // Check auth status
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        await loadDefaultAddress(user.uid);
-      } else {
-        alert("Please log in to proceed to checkout.");
-        window.location.href = "login.html"; 
-      }
-    });
-  } catch (error) {
-    console.error("Firebase config load failed:", error);
-    document.getElementById("addressDisplay").innerHTML = `
-      <p style="color: var(--oxblood); font-weight: 600; font-size:14px;">Firebase Config Not Found</p>
-      <p style="font-size:12px; color:#666; margin-top:4px; line-height:1.4;">
-        Please ensure 'firebase.js' file is present in your GitHub project root.
-      </p>
-    `;
+  if(user){
+    accountBtn.href = "profile.html";
+    if(menuLogin) menuLogin.style.display = "none";
+    if(footerLogin) footerLogin.style.display = "none";
   }
-}
-
-// Fetch default address from Firestore: customers/{uid}/addresses
-async function loadDefaultAddress(uid) {
-  try {
-    const addrRef = collection(db, "customers", uid, "addresses");
-    const querySnapshot = await getDocs(addrRef);
-    
-    let defaultAddrDoc = null;
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      if (data.isDefault === true) {
-        defaultAddrDoc = data;
-      }
-    });
-
-    if (defaultAddrDoc) {
-      userAddress = defaultAddrDoc;
-      displayAddress();
-    } else {
-      document.getElementById("addressDisplay").innerHTML = `
-        <p style="color: var(--oxblood); font-weight: 600; font-size:14px;">No default address found.</p>
-        <button class="change-btn" onclick="window.location.href='addresses.html'">Add Address</button>
-      `;
-    }
-  } catch (error) {
-    console.error("Error loading address: ", error);
-    document.getElementById("addressDisplay").innerHTML = `
-      <p style="color: var(--oxblood); font-size:14px;">Error loading address. Please try again.</p>
-    `;
-  }
-}
-
-// Render Address UI
-function displayAddress() {
-  if (!userAddress) return;
-  
-  document.getElementById("addrName").innerText = userAddress.fullName || "";
-  document.getElementById("addrPhone").innerText = userAddress.phone || "";
-  
-  const line1 = userAddress.addressLine1 || "";
-  const line2 = userAddress.addressLine2 ? ", " + userAddress.addressLine2 : "";
-  const city = userAddress.city ? ", " + userAddress.city : "";
-  const state = userAddress.state ? ", " + userAddress.state : "";
-  
-  document.getElementById("addrDetails").innerText = `${line1}${line2}${city}${state}`;
-  document.getElementById("addrPincode").innerText = "Pincode: " + (userAddress.zipCode || "");
-}
-
-// Render Order Summary
-function renderSummary() {
-  itemsContainer.innerHTML = "";
-  let subtotal = 0;
-
-  cart.forEach(item => {
-    const qty = item.qty || 1;
-    const unitPrice = Number(item.offerPrice || item.price) || 0;
-    const lineTotal = unitPrice * qty;
-    subtotal += lineTotal;
-
-    const div = document.createElement("div");
-    div.className = "checkout-item";
-    div.innerHTML = `
-      <img src="${item.image || ""}" class="item-thumb" alt="${item.name || "Item"}" onerror="this.style.visibility='hidden'">
-      <div class="item-info">
-        <div class="item-name">${item.name || "Product"}</div>
-        <div class="item-meta">Qty: ${qty} ${item.size ? `| Size: ${item.size}` : ""}</div>
-      </div>
-      <div class="item-price">₹${lineTotal}</div>
-    `;
-    itemsContainer.appendChild(div);
-  });
-
-  const deliveryThreshold = 3500;
-  let deliveryCharge = 100;
-
-  if (subtotal >= deliveryThreshold) {
-    deliveryCharge = 0;
-    freeDeliveryNoticeEl.innerHTML = `<span class="free-delivery-badge">Free Delivery Applied! 🎉</span>`;
-  } else {
-    const balanceNeeded = deliveryThreshold - subtotal;
-    freeDeliveryNoticeEl.innerHTML = `<span class="delivery-warning">Add ₹${balanceNeeded} more to get FREE Delivery</span>`;
-  }
-
-  const finalTotal = subtotal + deliveryCharge;
-
-  subtotalPriceEl.innerText = "₹" + subtotal;
-  deliveryChargeEl.innerText = deliveryCharge === 0 ? "FREE" : "₹" + deliveryCharge;
-  totalPriceEl.innerText = "₹" + finalTotal;
-  bottomTotalEl.innerText = "₹" + finalTotal;
-}
-
-// Bind to window to maintain onclick handlers in HTML
-window.placeOrder = function() {
-  const selectedPayment = document.querySelector('input[name="payment"]:checked').value;
-  console.log("Processing order offline. Payment via: " + selectedPayment);
-  successOverlay.style.display = "flex";
-}
-
-window.clearCart = function() {
-  localStorage.removeItem("cart");
-}
+});
 </script>
 
 </body>
