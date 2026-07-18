@@ -47,26 +47,7 @@ a{color:inherit;text-decoration:none;-webkit-touch-callout:none;}
 ::selection{background:var(--gold);color:var(--white);}
 
 /* ============================================
-   CUSTOM CURSOR — Works on ALL devices
-   On mobile: smaller, less intrusive
-   ============================================ */
-.cursor-dot,.cursor-outline{
-  position:fixed;top:0;left:0;
-  transform:translate(-50%,-50%);
-  border-radius:50%;z-index:99999;
-  pointer-events:none;mix-blend-mode:difference;
-  will-change:transform;
-}
-.cursor-dot{width:6px;height:6px;background:var(--gold-soft);}
-.cursor-outline{width:32px;height:32px;border:1px solid var(--gold-soft);transition:width .3s,height .3s,border-color .3s,background .3s;}
-.cursor-outline.hover{width:50px;height:50px;border-color:var(--gold);background:rgba(176,141,62,0.1);}
-@media(pointer:coarse){
-  .cursor-dot{width:4px;height:4px;opacity:0.6;}
-  .cursor-outline{width:24px;height:24px;opacity:0.6;}
-}
-
-/* ============================================
-   PRELOADER — Same on all devices
+   PRELOADER
    ============================================ */
 .preloader{
   position:fixed;inset:0;background:var(--ink);z-index:9999;
@@ -86,7 +67,7 @@ a{color:inherit;text-decoration:none;-webkit-touch-callout:none;}
 .pl-counter span{color:var(--gold-soft);font-weight:600;}
 
 /* ============================================
-   HEADER — Same hover/active behavior
+   HEADER
    ============================================ */
 .header{
   position:fixed;top:0;left:0;width:100%;height:72px;
@@ -107,32 +88,31 @@ a{color:inherit;text-decoration:none;-webkit-touch-callout:none;}
 .menu-btn span:nth-child(1){width:24px;}
 .menu-btn span:nth-child(2){width:16px;}
 .menu-btn span:nth-child(3){width:20px;}
-/* Hover for desktop, active for mobile */
-.menu-btn:hover span,.menu-btn:active span{width:24px;}
+.menu-btn:hover span,.menu-btn.hovered span{width:24px;}
 .menu-btn.active span:nth-child(1){transform:translateY(7.5px) rotate(45deg);width:24px;}
 .menu-btn.active span:nth-child(2){opacity:0;transform:scaleX(0);}
 .menu-btn.active span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg);width:24px;}
 
 .logo-area{display:flex;align-items:center;gap:12px;flex:1;margin-left:16px;position:relative;}
 .logo{width:36px;height:36px;border-radius:50%;object-fit:cover;transition:transform .5s;}
-.logo-area:hover .logo,.logo-area:active .logo{transform:rotate(15deg) scale(1.1);}
+.logo-area:hover .logo,.logo-area.hovered .logo{transform:rotate(15deg) scale(1.1);}
 .logo-text{font-family:'Cormorant Garamond',serif;font-size:22px;letter-spacing:5px;font-weight:500;transition:color .4s;position:relative;}
 .logo-text::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold);transition:width .5s;}
-.logo-area:hover .logo-text::after,.logo-area:active .logo-text::after{width:100%;}
+.logo-area:hover .logo-text::after,.logo-area.hovered .logo-text::after{width:100%;}
 
 .header-icons{display:flex;align-items:center;gap:6px;}
 .icon-link{position:relative;width:44px;height:44px;display:flex;align-items:center;justify-content:center;text-decoration:none;border-radius:50%;transition:background .3s,transform .3s;overflow:hidden;-webkit-tap-highlight-color:transparent;}
 .icon-link::before{content:'';position:absolute;inset:0;background:var(--gold-glow);border-radius:50%;transform:scale(0);transition:transform .4s;}
-.icon-link:hover::before,.icon-link:active::before{transform:scale(1);}
-.icon-link:hover,.icon-link:active{transform:translateY(-2px);}
+.icon-link:hover::before,.icon-link.hovered::before{transform:scale(1);}
+.icon-link:hover,.icon-link.hovered{transform:translateY(-2px);}
 .icon-link:active{transform:scale(0.9);}
 .icon-link svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:1.5;transition:stroke .4s,transform .3s;position:relative;z-index:1;}
-.icon-link:hover svg,.icon-link:active svg{transform:scale(1.1);}
+.icon-link:hover svg,.icon-link.hovered svg{transform:scale(1.1);}
 .badge{position:absolute;top:2px;right:2px;background:var(--gold);color:var(--white);min-width:18px;height:18px;padding:0 4px;border-radius:50%;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;animation:badgePop .4s var(--ease-spring);box-shadow:0 2px 8px rgba(176,141,62,.3);}
 @keyframes badgePop{from{transform:scale(0);}to{transform:scale(1);}}
 
 /* ============================================
-   SIDE MENU — Same animations
+   SIDE MENU
    ============================================ */
 .side-menu{position:fixed;top:0;left:0;width:min(380px,90%);height:100%;background:var(--ink);color:var(--ivory);padding:100px 40px 40px;transform:translateX(-102%);transition:transform .7s var(--ease);z-index:2000;display:flex;flex-direction:column;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 .side-menu.open{transform:translateX(0);}
@@ -148,17 +128,17 @@ a{color:inherit;text-decoration:none;-webkit-touch-callout:none;}
 .side-menu.open a.nav-link:nth-of-type(6){transition-delay:.50s;}
 .side-menu.open a.nav-link:nth-of-type(7){transition-delay:.57s;}
 .side-menu a.nav-link::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%) scaleX(0);width:4px;height:60%;background:var(--gold);border-radius:2px;transition:transform .4s;transform-origin:left;}
-.side-menu a.nav-link:hover,.side-menu a.nav-link:active{padding-left:16px;color:var(--gold-soft);}
-.side-menu a.nav-link:hover::before,.side-menu a.nav-link:active::before{transform:translateY(-50%) scaleX(1);}
+.side-menu a.nav-link:hover,.side-menu a.nav-link.hovered{padding-left:16px;color:var(--gold-soft);}
+.side-menu a.nav-link:hover::before,.side-menu a.nav-link.hovered::before{transform:translateY(-50%) scaleX(1);}
 .menu-foot{margin-top:auto;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(247,244,238,.35);padding-top:40px;border-top:1px solid var(--line-dark);opacity:0;transition:opacity .6s .8s;}
 .side-menu.open .menu-foot{opacity:1;}
 .close-btn{position:absolute;top:24px;right:24px;width:48px;height:48px;background:none;border:1px solid var(--line-dark);border-radius:50%;color:var(--ivory);font-size:20px;cursor:pointer;line-height:1;transition:background .3s,transform .5s,border-color .3s;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;}
-.close-btn:hover,.close-btn:active{background:rgba(255,255,255,.08);transform:rotate(90deg);border-color:var(--gold-soft);}
+.close-btn:hover,.close-btn.hovered{background:rgba(255,255,255,.08);transform:rotate(90deg);border-color:var(--gold-soft);}
 .menu-overlay{position:fixed;inset:0;background:rgba(10,9,8,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:1500;opacity:0;visibility:hidden;transition:opacity .6s,visibility .6s;}
 .menu-overlay.open{opacity:1;visibility:visible;}
 
 /* ============================================
-   HERO — Same cinematic animation everywhere
+   HERO SECTION
    ============================================ */
 .hero{height:100svh;height:100vh;height:-webkit-fill-available;position:relative;overflow:hidden;background:var(--ink);display:flex;align-items:center;justify-content:center;}
 .hero-bg{position:absolute;inset:0;z-index:0;}
@@ -187,21 +167,21 @@ a{color:inherit;text-decoration:none;-webkit-touch-callout:none;}
 .hero-cta-row{display:flex;flex-direction:column;gap:14px;margin-top:40px;opacity:0;animation:fadeUp 1.2s 2.7s forwards;}
 
 /* ============================================
-   BUTTONS — IDENTICAL hover/active behavior
+   BUTTONS — HOVER + .hovered (JS persistent)
    ============================================ */
 .btn{position:relative;padding:18px 36px;text-decoration:none;font-weight:600;font-size:11px;letter-spacing:3px;text-transform:uppercase;text-align:center;border:1px solid transparent;overflow:hidden;transition:all .5s;z-index:1;display:inline-flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;min-width:240px;-webkit-tap-highlight-color:transparent;}
 .btn::before{content:'';position:absolute;inset:0;z-index:-1;transition:transform .6s;}
 .btn-primary{background:var(--ivory);color:var(--ink);box-shadow:0 4px 20px rgba(247,244,238,.15);}
 .btn-primary::before{background:var(--gold);transform:translateY(101%);}
-/* BOTH hover AND active trigger the same animation */
-.btn-primary:hover,.btn-primary:active{color:var(--white);box-shadow:0 8px 30px rgba(176,141,62,.25);transform:translateY(-2px);}
-.btn-primary:hover::before,.btn-primary:active::before{transform:translateY(0);}
+/* HOVER (desktop mouse) + .hovered (JS touch persistent) */
+.btn-primary:hover,.btn-primary.hovered{color:var(--white);box-shadow:0 8px 30px rgba(176,141,62,.25);transform:translateY(-2px);}
+.btn-primary:hover::before,.btn-primary.hovered::before{transform:translateY(0);}
 .btn-outline{background:transparent;color:var(--ivory);border:1px solid rgba(247,244,238,.35);}
 .btn-outline::before{background:var(--ivory);transform:translateY(101%);}
-.btn-outline:hover,.btn-outline:active{color:var(--ink);border-color:var(--ivory);transform:translateY(-2px);}
-.btn-outline:hover::before,.btn-outline:active::before{transform:translateY(0);}
+.btn-outline:hover,.btn-outline.hovered{color:var(--ink);border-color:var(--ivory);transform:translateY(-2px);}
+.btn-outline:hover::before,.btn-outline.hovered::before{transform:translateY(0);}
 .btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;transition:transform .3s;}
-.btn:hover svg,.btn:active svg{transform:translateX(4px);}
+.btn:hover svg,.btn.hovered svg{transform:translateX(4px);}
 
 /* ============================================
    SCROLL INDICATOR
@@ -213,7 +193,7 @@ a{color:inherit;text-decoration:none;-webkit-touch-callout:none;}
 @keyframes scrollDrop{0%{top:-50px;}60%,100%{top:50px;}}
 
 /* ============================================
-   PARTICLES — Same on all devices
+   PARTICLES
    ============================================ */
 .particles{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden;}
 .particle{position:absolute;width:3px;height:3px;background:var(--gold-soft);border-radius:50%;opacity:0.3;animation:float 15s infinite linear;}
@@ -246,36 +226,35 @@ a{color:inherit;text-decoration:none;-webkit-touch-callout:none;}
 .section-head .lede{margin-top:14px;font-size:15px;color:rgba(14,13,11,.5);font-weight:300;max-width:340px;margin-left:auto;margin-right:auto;line-height:1.7;}
 
 /* ============================================
-   FEATURED PRODUCTS — IDENTICAL hover/active
+   FEATURED PRODUCTS — HOVER + .hovered
    ============================================ */
 .featured-section{padding:0 22px;max-width:1200px;margin:0 auto;}
 .featured-card{margin:32px 0 0;background:var(--white);border:1px solid var(--line);position:relative;overflow:hidden;transition:transform .5s,box-shadow .5s;}
-/* Touch shows same animation as hover */
-.featured-card:hover,.featured-card:active{transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,.08);}
+.featured-card:hover,.featured-card.hovered{transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,.08);}
 .tag-badge{position:absolute;top:18px;left:18px;background:rgba(10,9,8,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--ivory);font-size:9px;letter-spacing:3px;text-transform:uppercase;padding:10px 14px;font-weight:700;z-index:3;display:flex;align-items:center;gap:8px;border-radius:2px;}
 .tag-badge svg{width:12px;height:12px;stroke:var(--gold-soft);fill:none;stroke-width:2;}
 .media-wrap{overflow:hidden;position:relative;}
 .media-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(10,9,8,.15) 100%);pointer-events:none;z-index:1;}
 .featured-card video{width:100%;display:block;aspect-ratio:4/5;object-fit:cover;transition:transform 1.5s,filter .5s;filter:brightness(0.95);}
-.featured-card:hover video,.featured-card:active video{transform:scale(1.08);filter:brightness(1);}
+.featured-card:hover video,.featured-card.hovered video{transform:scale(1.08);filter:brightness(1);}
 .featured-content{padding:28px 24px 24px;text-align:center;position:relative;z-index:2;background:var(--white);}
 .featured-content h3{font-size:26px;line-height:1.2;font-weight:500;transition:color .3s;}
-.featured-card:hover .featured-content h3,.featured-card:active .featured-content h3{color:var(--gold);}
+.featured-card:hover .featured-content h3,.featured-card.hovered .featured-content h3{color:var(--gold);}
 .price-row{display:flex;align-items:baseline;justify-content:center;gap:10px;margin:12px 0 24px;}
 .price{font-size:24px;font-weight:600;font-family:'Cormorant Garamond',serif;letter-spacing:1px;color:var(--ink);}
 .view-btn{position:relative;display:block;text-align:center;background:var(--ink);color:var(--ivory);text-decoration:none;padding:18px;font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;overflow:hidden;z-index:1;transition:letter-spacing .4s;-webkit-tap-highlight-color:transparent;}
 .view-btn::after{content:'';position:absolute;inset:0;background:var(--gold);z-index:-1;transform:translateY(101%);transition:transform .5s;}
-.view-btn:hover,.view-btn:active{letter-spacing:4px;}
-.view-btn:hover::after,.view-btn:active::after{transform:translateY(0);}
+.view-btn:hover,.view-btn.hovered{letter-spacing:4px;}
+.view-btn:hover::after,.view-btn.hovered::after{transform:translateY(0);}
 .quick-add{position:absolute;bottom:20px;right:20px;width:48px;height:48px;background:var(--white);border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:4;box-shadow:0 4px 20px rgba(0,0,0,.15);transform:translateY(20px);opacity:0;transition:all .4s;-webkit-tap-highlight-color:transparent;}
-/* Show on hover (desktop) AND on active/touch (mobile) */
-.featured-card:hover .quick-add,.featured-card:active .quick-add,.featured-card.touched .quick-add{transform:translateY(0);opacity:1;}
-.quick-add:hover,.quick-add:active{background:var(--gold);transform:translateY(0) scale(1.1);}
+/* Show on hover AND .hovered class */
+.featured-card:hover .quick-add,.featured-card.hovered .quick-add{transform:translateY(0);opacity:1;}
+.quick-add:hover,.quick-add.hovered{background:var(--gold);transform:translateY(0) scale(1.1);}
 .quick-add svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:2;transition:stroke .3s;}
-.quick-add:hover svg,.quick-add:active svg{stroke:var(--white);}
+.quick-add:hover svg,.quick-add.hovered svg{stroke:var(--white);}
 
 /* ============================================
-   CRAFT / VALUES — IDENTICAL hover/active
+   CRAFT / VALUES — HOVER + .hovered
    ============================================ */
 .craft{margin-top:90px;background:var(--ink);color:var(--ivory);padding:90px 30px 80px;text-align:center;position:relative;overflow:hidden;}
 .craft::before{content:'E';position:absolute;font-family:'Cormorant Garamond',serif;font-size:500px;line-height:1;color:rgba(255,255,255,.02);top:-80px;right:-60px;pointer-events:none;user-select:none;}
@@ -285,25 +264,25 @@ a{color:inherit;text-decoration:none;-webkit-touch-callout:none;}
 .craft-grid{margin-top:56px;display:grid;gap:40px;max-width:900px;margin-left:auto;margin-right:auto;position:relative;z-index:1;}
 .craft-item{padding:30px 20px;border:1px solid rgba(255,255,255,.06);border-radius:4px;transition:border-color .4s,transform .4s,background .4s;position:relative;overflow:hidden;}
 .craft-item::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .5s;}
-.craft-item:hover,.craft-item:active{border-color:rgba(255,255,255,.12);transform:translateY(-4px);background:rgba(255,255,255,.02);}
-.craft-item:hover::before,.craft-item:active::before{transform:scaleX(1);}
+.craft-item:hover,.craft-item.hovered{border-color:rgba(255,255,255,.12);transform:translateY(-4px);background:rgba(255,255,255,.02);}
+.craft-item:hover::before,.craft-item.hovered::before{transform:scaleX(1);}
 .craft-item .num{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--gold-soft);letter-spacing:3px;font-weight:600;}
 .craft-item h3{font-size:24px;margin-top:10px;}
 .craft-item p{margin-top:10px;font-size:14px;line-height:1.8;color:rgba(247,244,238,.55);font-weight:300;max-width:280px;margin-left:auto;margin-right:auto;}
 
 /* ============================================
-   CATEGORIES — IDENTICAL hover/active
+   CATEGORIES — HOVER + .hovered
    ============================================ */
 .categories{padding:0 22px;display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:32px;max-width:1200px;margin-left:auto;margin-right:auto;}
 .cat{position:relative;background:var(--white);border:1px solid var(--line);text-align:center;padding:48px 14px;font-family:'Cormorant Garamond',serif;font-size:22px;letter-spacing:1px;text-decoration:none;color:var(--ink);transition:all .5s;overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent;}
 .cat::before{content:'';position:absolute;inset:0;background:var(--ink);transform:translateY(101%);transition:transform .6s;z-index:0;}
-.cat:hover::before,.cat:active::before{transform:translateY(0);}
+.cat:hover::before,.cat.hovered::before{transform:translateY(0);}
 .cat span,.cat small{position:relative;z-index:1;display:block;transition:color .4s;}
 .cat small{font-family:'Inter',sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-top:8px;transition:color .4s;}
-.cat:hover,.cat:active{color:var(--ivory);border-color:var(--ink);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.1);}
-.cat:hover small,.cat:active small{color:var(--gold-soft);}
+.cat:hover,.cat.hovered{color:var(--ivory);border-color:var(--ink);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.1);}
+.cat:hover small,.cat.hovered small{color:var(--gold-soft);}
 .cat-arrow{position:absolute;bottom:16px;right:16px;width:32px;height:32px;border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transform:translateX(-10px);transition:all .4s;z-index:2;}
-.cat:hover .cat-arrow,.cat:active .cat-arrow{opacity:1;transform:translateX(0);border-color:rgba(255,255,255,.2);}
+.cat:hover .cat-arrow,.cat.hovered .cat-arrow{opacity:1;transform:translateX(0);border-color:rgba(255,255,255,.2);}
 .cat-arrow svg{width:14px;height:14px;stroke:var(--ivory);fill:none;stroke-width:2;}
 
 /* ============================================
@@ -339,16 +318,16 @@ footer p b{color:var(--gold-soft);display:block;font-weight:600;font-size:10px;l
 footer hr{margin:40px 0 30px;border:none;border-top:1px solid var(--line-dark);max-width:200px;margin-left:auto;margin-right:auto;}
 .social-links{display:flex;justify-content:center;gap:16px;margin:30px 0;}
 .social-links a{width:44px;height:44px;border:1px solid var(--line-dark);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .4s;-webkit-tap-highlight-color:transparent;}
-.social-links a:hover,.social-links a:active{background:var(--gold);border-color:var(--gold);transform:translateY(-3px);}
+.social-links a:hover,.social-links a.hovered{background:var(--gold);border-color:var(--gold);transform:translateY(-3px);}
 .social-links a svg{width:18px;height:18px;stroke:var(--ivory);fill:none;stroke-width:1.5;}
-.social-links a:hover svg,.social-links a:active svg{stroke:var(--white);}
+.social-links a:hover svg,.social-links a.hovered svg{stroke:var(--white);}
 .copyright{color:rgba(247,244,238,.3);font-size:11px;letter-spacing:1px;}
 
 /* ============================================
    WHATSAPP FLOAT
    ============================================ */
 .whatsapp-float{position:fixed;bottom:24px;right:24px;width:56px;height:56px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:900;box-shadow:0 4px 20px rgba(37,211,102,.3);transition:all .4s;animation:whatsappPulse 2s infinite;-webkit-tap-highlight-color:transparent;}
-.whatsapp-float:hover,.whatsapp-float:active{transform:scale(1.1) translateY(-4px);box-shadow:0 8px 30px rgba(37,211,102,.4);}
+.whatsapp-float:hover,.whatsapp-float.hovered{transform:scale(1.1) translateY(-4px);box-shadow:0 8px 30px rgba(37,211,102,.4);}
 .whatsapp-float svg{width:28px;height:28px;fill:var(--white);}
 @keyframes whatsappPulse{0%,100%{box-shadow:0 4px 20px rgba(37,211,102,.3);}50%{box-shadow:0 4px 30px rgba(37,211,102,.5);}}
 
@@ -388,10 +367,6 @@ footer hr{margin:40px 0 30px;border:none;border-top:1px solid var(--line-dark);m
 <base target="_blank">
 </head>
 <body>
-
-<!-- CUSTOM CURSOR -->
-<div class="cursor-dot" id="cursorDot"></div>
-<div class="cursor-outline" id="cursorOutline"></div>
 
 <!-- PRELOADER -->
 <div class="preloader" id="preloader">
@@ -696,90 +671,12 @@ footer hr{margin:40px 0 30px;border:none;border-top:1px solid var(--line-dark);m
   'use strict';
 
   // ============================================
-  // UNIVERSAL CURSOR — Works on ALL devices
-  // Smaller on mobile, same smooth follow
+  // PRELOADER
   // ============================================
-  const cursorDot = document.getElementById('cursorDot');
-  const cursorOutline = document.getElementById('cursorOutline');
-  let mouseX = 0, mouseY = 0, outlineX = 0, outlineY = 0;
-  let cursorActive = false;
-  let cursorRAF = null;
-
-  function updateCursorPos(x, y) {
-    mouseX = x;
-    mouseY = y;
-    if (cursorDot) {
-      cursorDot.style.left = x + 'px';
-      cursorDot.style.top = y + 'px';
-    }
-    if (!cursorActive) {
-      cursorActive = true;
-      animateCursor();
-    }
-  }
-
-  function animateCursor() {
-    if (!cursorActive) return;
-    outlineX += (mouseX - outlineX) * 0.15;
-    outlineY += (mouseY - outlineY) * 0.15;
-    if (cursorOutline) {
-      cursorOutline.style.left = outlineX + 'px';
-      cursorOutline.style.top = outlineY + 'px';
-    }
-    cursorRAF = requestAnimationFrame(animateCursor);
-  }
-
-  // Mouse (desktop)
-  document.addEventListener('mousemove', function(e) {
-    updateCursorPos(e.clientX, e.clientY);
-  }, { passive: true });
-
-  // Touch (mobile) — cursor follows finger
-  document.addEventListener('touchmove', function(e) {
-    if (e.touches && e.touches[0]) {
-      updateCursorPos(e.touches[0].clientX, e.touches[0].clientY);
-    }
-  }, { passive: true });
-
-  document.addEventListener('touchstart', function(e) {
-    if (e.touches && e.touches[0]) {
-      updateCursorPos(e.touches[0].clientX, e.touches[0].clientY);
-    }
-  }, { passive: true });
-
-  // Hover effects on ALL interactive elements
-  const hoverElements = document.querySelectorAll('a, button, .cat, .featured-card, .view-btn, .quick-add, .menu-btn, .close-btn, .icon-link');
-  hoverElements.forEach(function(el) {
-    el.addEventListener('mouseenter', function() {
-      if (cursorOutline) cursorOutline.classList.add('hover');
-    });
-    el.addEventListener('mouseleave', function() {
-      if (cursorOutline) cursorOutline.classList.remove('hover');
-    });
-    // Touch equivalent
-    el.addEventListener('touchstart', function() {
-      if (cursorOutline) cursorOutline.classList.add('hover');
-    }, { passive: true });
-    el.addEventListener('touchend', function() {
-      if (cursorOutline) cursorOutline.classList.remove('hover');
-    }, { passive: true });
-  });
-
-  // Stop cursor when tab hidden
-  document.addEventListener('visibilitychange', function() {
-    if (document.hidden) {
-      cursorActive = false;
-      if (cursorRAF) cancelAnimationFrame(cursorRAF);
-    }
-  });
-
-  // ============================================
-  // PRELOADER — Same on all devices
-  // ============================================
-  const preloader = document.getElementById('preloader');
-  const loadCounter = document.getElementById('loadCounter');
-  let count = 0;
-  let preloaderDone = false;
+  var preloader = document.getElementById('preloader');
+  var loadCounter = document.getElementById('loadCounter');
+  var count = 0;
+  var preloaderDone = false;
 
   function finishPreloader() {
     if (preloaderDone) return;
@@ -807,9 +704,9 @@ footer hr{margin:40px 0 30px;border:none;border-top:1px solid var(--line-dark);m
   setTimeout(finishPreloader, 4500);
 
   // ============================================
-  // FLOATING PARTICLES — Same count everywhere
+  // FLOATING PARTICLES
   // ============================================
-  const particlesContainer = document.getElementById('particles');
+  var particlesContainer = document.getElementById('particles');
   if (particlesContainer) {
     for (var i = 0; i < 15; i++) {
       var p = document.createElement('div');
@@ -826,10 +723,10 @@ footer hr{margin:40px 0 30px;border:none;border-top:1px solid var(--line-dark);m
   // ============================================
   // MENU SYSTEM
   // ============================================
-  const menu = document.getElementById('menu');
-  const overlay = document.getElementById('menuOverlay');
-  const menuBtn = document.getElementById('menuBtn');
-  const closeMenuBtn = document.getElementById('closeMenuBtn');
+  var menu = document.getElementById('menu');
+  var overlay = document.getElementById('menuOverlay');
+  var menuBtn = document.getElementById('menuBtn');
+  var closeMenuBtn = document.getElementById('closeMenuBtn');
 
   function openMenu() {
     if (!menu || !overlay || !menuBtn) return;
@@ -872,7 +769,7 @@ footer hr{margin:40px 0 30px;border:none;border-top:1px solid var(--line-dark);m
   // ============================================
   // HEADER SCROLL BEHAVIOR
   // ============================================
-  const header = document.getElementById('header');
+  var header = document.getElementById('header');
   var lastY = 0;
   var ticking = false;
 
@@ -924,7 +821,7 @@ footer hr{margin:40px 0 30px;border:none;border-top:1px solid var(--line-dark);m
   });
 
   // ============================================
-  // PARALLAX HERO — Same on all devices
+  // PARALLAX HERO
   // ============================================
   var heroVideo = document.querySelector('.hero-bg video');
   if (heroVideo) {
@@ -944,49 +841,61 @@ footer hr{margin:40px 0 30px;border:none;border-top:1px solid var(--line-dark);m
   }
 
   // ============================================
-  // MAGNETIC BUTTON EFFECT — Universal
-  // Works with mouse AND touch
+  // TOUCH-HOVER SYSTEM — Makes animations STAY VISIBLE on mobile
+  // On touchstart: add .hovered class (animation starts)
+  // On touchend: wait 800ms then remove (user SEES the animation)
   // ============================================
-  var magneticBtns = document.querySelectorAll('.btn, .icon-link');
-  magneticBtns.forEach(function(btn) {
-    // Mouse
-    btn.addEventListener('mousemove', function(e) {
-      var rect = btn.getBoundingClientRect();
-      var x = e.clientX - rect.left - rect.width / 2;
-      var y = e.clientY - rect.top - rect.height / 2;
-      btn.style.transform = 'translate(' + (x * 0.2) + 'px, ' + (y * 0.2) + 'px)';
-    });
-    btn.addEventListener('mouseleave', function() {
-      btn.style.transform = '';
-    });
-    // Touch — same magnetic effect
-    btn.addEventListener('touchmove', function(e) {
-      if (e.touches && e.touches[0]) {
-        var rect = btn.getBoundingClientRect();
-        var touch = e.touches[0];
-        var x = touch.clientX - rect.left - rect.width / 2;
-        var y = touch.clientY - rect.top - rect.height / 2;
-        btn.style.transform = 'translate(' + (x * 0.2) + 'px, ' + (y * 0.2) + 'px)';
-      }
+  var touchTimers = {};
+
+  function addTouchHover(el) {
+    el.classList.add('hovered');
+    // Clear any existing timer for this element
+    if (touchTimers[el]) {
+      clearTimeout(touchTimers[el]);
+    }
+  }
+
+  function removeTouchHover(el) {
+    // Wait 800ms so user can SEE the animation before removing
+    touchTimers[el] = setTimeout(function() {
+      el.classList.remove('hovered');
+      delete touchTimers[el];
+    }, 800);
+  }
+
+  // Apply to ALL interactive elements
+  var hoverTargets = document.querySelectorAll(
+    '.btn, .view-btn, .quick-add, .featured-card, .cat, .craft-item, ' +
+    '.icon-link, .menu-btn, .close-btn, .social-links a, .whatsapp-float, .logo-area'
+  );
+
+  hoverTargets.forEach(function(el) {
+    // Touch start — add hover class immediately
+    el.addEventListener('touchstart', function(e) {
+      addTouchHover(el);
     }, { passive: true });
-    btn.addEventListener('touchend', function() {
-      btn.style.transform = '';
+
+    // Touch end — remove after delay so animation stays visible
+    el.addEventListener('touchend', function(e) {
+      removeTouchHover(el);
+    }, { passive: true });
+
+    // Also handle touchcancel (e.g., scroll interrupt)
+    el.addEventListener('touchcancel', function(e) {
+      removeTouchHover(el);
     }, { passive: true });
   });
 
-  // ============================================
-  // TOUCH FEEDBACK — Add .touched class for CSS
-  // This makes :active animations work better
-  // ============================================
-  var allInteractive = document.querySelectorAll('.featured-card, .cat, .craft-item, .btn, .view-btn, .quick-add');
-  allInteractive.forEach(function(el) {
-    el.addEventListener('touchstart', function() {
-      el.classList.add('touched');
+  // For featured cards: when card is touched, also show quick-add
+  var featuredCards = document.querySelectorAll('.featured-card');
+  featuredCards.forEach(function(card) {
+    card.addEventListener('touchstart', function(e) {
+      card.classList.add('hovered');
     }, { passive: true });
-    el.addEventListener('touchend', function() {
+    card.addEventListener('touchend', function(e) {
       setTimeout(function() {
-        el.classList.remove('touched');
-      }, 300);
+        card.classList.remove('hovered');
+      }, 800);
     }, { passive: true });
   });
 
@@ -1063,7 +972,7 @@ footer hr{margin:40px 0 30px;border:none;border-top:1px solid var(--line-dark);m
   }
 
   // ============================================
-  // VISIBILITY API — Pause videos when hidden
+  // VISIBILITY API
   // ============================================
   document.addEventListener('visibilitychange', function() {
     var videos = document.querySelectorAll('video');
