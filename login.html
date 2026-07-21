@@ -407,8 +407,9 @@ async function submit(){
   loginBtn.classList.add("loading");
 
   try{
+    console.log("Before Login");
     await login(email, password);
-
+    console.log("After Login");
     console.log("Login User:", await import("./firebase.js").then(m => m.auth.currentUser));
     
     showMsg("Login successful! Redirecting…", "ok");
