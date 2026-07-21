@@ -964,13 +964,22 @@ footer hr{margin:40px 0 30px;border:none;border-top:1px solid var(--line-dark);m
   // ============================================
   // AUTH CHECK (preserved from original)
   // ============================================
-  if (typeof checkUser === 'function') {
-    checkUser(function(user) {
-      var accountBtn = document.getElementById('accountBtn');
-      if (user && accountBtn) accountBtn.href = 'profile.html';
-    });
-  }
+<script type="module">
+import { checkUser } from "./auth.js";
 
+checkUser((user) => {
+    const accountBtn = document.getElementById("accountBtn");
+
+    if (!accountBtn) return;
+
+    if (user) {
+        accountBtn.href = "profile.html";
+    } else {
+        accountBtn.href = "login.html";
+    }
+});
+</script>
+  
   // ============================================
   // VISIBILITY API
   // ============================================
