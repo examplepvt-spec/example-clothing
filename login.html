@@ -408,9 +408,14 @@ async function submit(){
 
   try{
     await login(email, password);
+
+    console.log("Login User:", await import("./firebase.js").then(m => m.auth.currentUser));
+    
     showMsg("Login successful! Redirecting…", "ok");
     setTimeout(() => { window.location.href = "index.html"; }, 800);
   }
+
+  
   catch(error){
     console.error(error);
     showMsg(friendlyError(error), "error");
