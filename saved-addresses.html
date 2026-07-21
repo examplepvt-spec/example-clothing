@@ -1,825 +1,900 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Saved Addresses — EXAMPLE CLOTHING</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-<style>
-:root{
-  --ink:#161412;
-  --ivory:#f6f3ec;
-  --ivory-dim:#eee9dd;
-  --brass:#9c7a3c;
-  --brass-soft:#c7ab74;
-  --line:#e2dccb;
-  --white:#ffffff;
-}
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-body{
-  background:var(--ivory);
-  color:var(--ink);
-  font-family:'Inter',sans-serif;
-  -webkit-font-smoothing:antialiased;
-}
-
-h1, h2, h3{
-  font-family:'Libre Caslon Display',serif;
-  font-weight:400;
-}
-
-a{
-  color:inherit;
-}
-
-.header{
-  position:sticky;
-  top:0;
-  width:100%;
-  height:68px;
-  background:rgba(246,243,236,.95);
-  backdrop-filter:blur(10px);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 18px;
-  z-index:1000;
-  border-bottom:1px solid var(--line);
-}
-
-.menu-btn{
-  width:24px;
-  height:18px;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  cursor:pointer;
-  background:none;
-  border:none;
-  padding:0;
-}
-
-.menu-btn span{
-  display:block;
-  height:2px;
-  background:var(--ink);
-  border-radius:2px;
-}
-
-.logo-area{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  flex:1;
-  margin-left:18px;
-}
-
-.logo{
-  width:34px;
-  height:34px;
-  border-radius:50%;
-  object-fit:cover;
-}
-
-.logo-text{
-  font-family:'Libre Caslon Display',serif;
-  font-size:17px;
-  letter-spacing:.3px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.header-icons{
-  display:flex;
-  align-items:center;
-  gap:6px;
-}
-
-.icon-link{
-  position:relative;
-  width:42px;
-  height:42px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-decoration:none;
-  border-radius:50%;
-  transition:background .2s;
-}
-
-.icon-link:hover{
-  background:var(--ivory-dim);
-}
-
-.icon-link svg{
-  width:21px;
-  height:21px;
-  stroke:var(--ink);
-  fill:none;
-  stroke-width:1.6;
-}
-
-.badge{
-  position:absolute;
-  top:2px;
-  right:2px;
-  background:var(--brass);
-  color:var(--white);
-  min-width:16px;
-  height:16px;
-  padding:0 3px;
-  border-radius:50%;
-  font-size:10px;
-  font-weight:700;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.side-menu{
-  position:fixed;
-  top:0;
-  left:-300px;
-  width:290px;
-  height:100%;
-  background:var(--ink);
-  color:var(--ivory);
-  padding:90px 32px 32px;
-  transition:.4s cubic-bezier(.4,0,.2,1);
-  z-index:2000;
-}
-
-.side-menu.open{
-  left:0;
-}
-
-.menu-tag{
-  font-size:11px;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  color:var(--brass-soft);
-  margin-bottom:20px;
-  display:block;
-}
-
-.side-menu a.nav-link{
-  display:block;
-  text-decoration:none;
-  color:var(--ivory);
-  font-family:'Libre Caslon Display',serif;
-  font-size:22px;
-  padding:13px 0;
-  border-bottom:1px solid rgba(255,255,255,.1);
-}
-
-.close-btn{
-  position:absolute;
-  top:24px;
-  right:24px;
-  background:none;
-  border:none;
-  color:var(--ivory);
-  font-size:26px;
-  cursor:pointer;
-  line-height:1;
-}
-
-.menu-overlay{
-  display:none;
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,.4);
-  z-index:1500;
-}
-
-.menu-overlay.open{
-  display:block;
-}
-
-.page-head{
-  padding:28px 22px 10px;
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-end;
-}
-
-.eyebrow-dark{
-  font-size:11px;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  color:var(--brass);
-  font-weight:700;
-}
-
-.page-head h1{
-  font-size:28px;
-  margin-top:6px;
-}
-
-.add-trigger-btn{
-  background:var(--ink);
-  color:var(--white);
-  border:none;
-  padding:10px 16px;
-  border-radius:6px;
-  font-size:12px;
-  font-weight:600;
-  letter-spacing:1px;
-  text-transform:uppercase;
-  cursor:pointer;
-  transition:background .2s;
-}
-
-.add-trigger-btn:hover{
-  background:var(--brass);
-}
-
-.form-panel {
-  display: none;
-  background: var(--white);
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  margin: 10px 22px 24px;
-  padding: 24px 20px;
-}
-
-.form-panel.open {
-  display: block;
-}
-
-.form-panel h3 {
-  font-size: 20px;
-  margin-bottom: 18px;
-}
-
-.form-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.field-wrap {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.field-wrap label {
-  font-size: 11px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--brass);
-  font-weight: 700;
-}
-
-.field-wrap input {
-  width: 100%;
-  padding: 13px 16px;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  font-size: 14px;
-  font-family: 'Inter', sans-serif;
-  background: var(--white);
-  color: var(--ink);
-}
-
-.field-wrap input:focus {
-  outline: none;
-  border-color: var(--brass);
-}
-
-.row-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.checkbox-wrap {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  margin-top: 6px;
-}
-
-.checkbox-wrap input {
-  width: 18px;
-  height: 18px;
-  accent-color: var(--brass);
-  cursor: pointer;
-}
-
-.checkbox-wrap span {
-  font-size: 13px;
-  font-weight: 500;
-  user-select: none;
-}
-
-.button-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: 10px;
-}
-
-.btn {
-  padding: 14px 20px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  text-align: center;
-  transition: all .2s;
-}
-
-.btn-primary {
-  background: var(--ink);
-  color: var(--white);
-  border: none;
-}
-
-.btn-primary:hover {
-  background: var(--brass);
-}
-
-.btn-secondary {
-  background: transparent;
-  color: var(--ink);
-  border: 1px solid var(--line);
-}
-
-.btn-secondary:hover {
-  background: var(--ivory-dim);
-}
-
-.address-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 0 22px 30px;
-}
-
-.address-card {
-  background: var(--white);
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.address-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.address-name {
-  font-size: 15px;
-  font-weight: 700;
-}
-
-.tag-default {
-  background: var(--ivory-dim);
-  border: 1px solid var(--brass-soft);
-  color: var(--brass);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  padding: 2px 6px;
-  border-radius: 4px;
-}
-
-.address-body {
-  font-size: 13px;
-  color: #555;
-  line-height: 1.5;
-}
-
-.address-phone {
-  font-size: 13px;
-  color: #777;
-}
-
-.address-actions {
-  display: flex;
-  gap: 14px;
-  margin-top: 8px;
-  border-top: 1px solid var(--ivory-dim);
-  padding-top: 12px;
-}
-
-.action-btn {
-  background: none;
-  border: none;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--ink);
-  cursor: pointer;
-  transition: color .2s;
-}
-
-.action-btn:hover {
-  color: var(--brass);
-}
-
-.action-btn.delete-btn {
-  color: #c92a2a;
-  margin-left: auto;
-}
-
-.action-btn.delete-btn:hover {
-  color: #e03131;
-}
-
-.state-msg {
-  text-align: center;
-  padding: 40px 20px;
-  color: #8a8578;
-  font-size: 14px;
-}
-
-.back {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  justify-content: center;
-  padding: 10px 22px 40px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 14px;
-  color: var(--ink);
-}
-
-.back svg {
-  width: 16px;
-  height: 16px;
-  stroke: var(--ink);
-  fill: none;
-  stroke-width: 2;
-}
-
-</style>
-<base target="_blank">
-</head>
-
-<body>
-
-<div class="menu-overlay" id="menuOverlay"></div>
-
-<div class="header">
-  <button class="menu-btn" id="menuBtn" aria-label="Open menu">
-    <span></span><span></span><span></span>
-  </button>
-
-  <div class="logo-area">
-    <img src="logo.png" class="logo" alt="EXAMPLE CLOTHING">
-    <span class="logo-text">EXAMPLE CLOTHING</span>
-  </div>
-
-  <div class="header-icons">
-    <a href="profile.html" class="icon-link" aria-label="Account">
-      <svg viewBox="0 0 24 24"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z"/><path d="M4.5 20.5c1.4-3.6 4.3-5.5 7.5-5.5s6.1 1.9 7.5 5.5"/></svg>
-    </a>
-
-    <a href="wishlist.html" class="icon-link" aria-label="Wishlist">
-      <svg viewBox="0 0 24 24"><path d="M12 20.2s-7.6-4.5-9.9-9C.6 8 2 4.5 5.4 3.7c2-.5 3.9.3 5 2 .3.4.5.9.6 1.3.1-.4.3-.9.6-1.3 1.1-1.7 3-2.5 5-2 3.4.8 4.8 4.3 3.3 7.5-2.3 4.5-9.9 9-9.9 9Z"/></svg>
-    </a>
-
-    <a href="cart.html" class="icon-link" aria-label="Cart">
-      <svg viewBox="0 0 24 24"><path d="M4 7h16l-1.4 10.3a2 2 0 0 1-2 1.7H7.4a2 2 0 0 1-2-1.7L4 7Z"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/></svg>
-      <span class="badge" id="cartCount">0</span>
-    </a>
-  </div>
-</div>
-
-<div class="side-menu" id="menu">
-  <button class="close-btn" id="closeMenuBtn">✕</button>
-  <span class="menu-tag">Browse</span>
-  <a href="men.html" class="nav-link">Men</a>
-  <a href="women.html" class="nav-link">Women</a>
-  <a href="kids.html" class="nav-link">Kids</a>
-  <a href="sale.html" class="nav-link">Sale</a>
-  <a href="accessories.html" class="nav-link">Accessories</a>
-  <a href="footwear.html" class="nav-link">Footwear</a>
-</div>
-
-<div class="page-head">
-  <div>
-    <span class="eyebrow-dark">Account</span>
-    <h1>Saved Addresses</h1>
-  </div>
-  <button id="addAddressBtn" class="add-trigger-btn">Add New</button>
-</div>
-
-<div id="addressFormPanel" class="form-panel">
-  <h3 id="formTitle">Add New Address</h3>
-  <form id="addressForm" class="form-grid">
-    <div class="field-wrap">
-      <label for="fullName">Full Name</label>
-      <input type="text" id="fullName" required placeholder="Enter recipient's name">
-    </div>
-    <div class="field-wrap">
-      <label for="addressLine1">Address Line 1</label>
-      <input type="text" id="addressLine1" required placeholder="Street address">
-    </div>
-    <div class="field-wrap">
-      <label for="addressLine2">Address Line 2 (Optional)</label>
-      <input type="text" id="addressLine2" placeholder="Apartment, suite, etc.">
-    </div>
-    <div class="row-2">
-      <div class="field-wrap">
-        <label for="city">City</label>
-        <input type="text" id="city" required placeholder="City">
-      </div>
-      <div class="field-wrap">
-        <label for="state">State</label>
-        <input type="text" id="state" required placeholder="State">
-      </div>
-    </div>
-    <div class="row-2">
-      <div class="field-wrap">
-        <label for="zipCode">ZIP Code</label>
-        <input type="text" id="zipCode" required placeholder="123456">
-      </div>
-      <div class="field-wrap">
-        <label for="phone">Phone Number</label>
-        <input type="tel" id="phone" required placeholder="10-digit number">
-      </div>
-    </div>
-    <div class="field-wrap">
-      <label class="checkbox-wrap">
-        <input type="checkbox" id="isDefault">
-        <span>Set as Default Address</span>
-      </label>
-    </div>
-    <div class="button-row">
-      <button type="button" id="cancelFormBtn" class="btn btn-secondary">Cancel</button>
-      <button type="submit" id="saveFormBtn" class="btn btn-primary">Save Address</button>
-    </div>
-  </form>
-</div>
-
-<div id="addressList" class="address-grid"></div>
-
-<a href="profile.html" class="back">
-  <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg>
-  Back to Profile
+<!DOCTYPE html>  <html>  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+<title>Saved Addresses — EXAMPLE CLOTHING</title>  <link rel="preconnect" href="https://fonts.googleapis.com">  
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>  
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">  <style>  
+:root{  
+  --ink:#161412;  
+  --ivory:#f6f3ec;  
+  --ivory-dim:#eee9dd;  
+  --brass:#9c7a3c;  
+  --brass-soft:#c7ab74;  
+  --line:#e2dccb;  
+  --white:#ffffff;  
+}  
+  
+*{  
+  margin:0;  
+  padding:0;  
+  box-sizing:border-box;  
+}  
+  
+body{  
+  background:var(--ivory);  
+  color:var(--ink);  
+  font-family:'Inter',sans-serif;  
+  -webkit-font-smoothing:antialiased;  
+}  
+  
+h1, h2, h3{  
+  font-family:'Libre Caslon Display',serif;  
+  font-weight:400;  
+}  
+  
+a{  
+  color:inherit;  
+}  
+  
+.header{  
+  position:sticky;  
+  top:0;  
+  width:100%;  
+  height:68px;  
+  background:rgba(246,243,236,.95);  
+  backdrop-filter:blur(10px);  
+  display:flex;  
+  align-items:center;  
+  justify-content:space-between;  
+  padding:0 18px;  
+  z-index:1000;  
+  border-bottom:1px solid var(--line);  
+}  
+  
+.menu-btn{  
+  width:24px;  
+  height:18px;  
+  display:flex;  
+  flex-direction:column;  
+  justify-content:space-between;  
+  cursor:pointer;  
+  background:none;  
+  border:none;  
+  padding:0;  
+}  
+  
+.menu-btn span{  
+  display:block;  
+  height:2px;  
+  background:var(--ink);  
+  border-radius:2px;  
+}  
+  
+.logo-area{  
+  display:flex;  
+  align-items:center;  
+  gap:10px;  
+  flex:1;  
+  margin-left:18px;  
+}  
+  
+.logo{  
+  width:34px;  
+  height:34px;  
+  border-radius:50%;  
+  object-fit:cover;  
+}  
+  
+.logo-text{  
+  font-family:'Libre Caslon Display',serif;  
+  font-size:17px;  
+  letter-spacing:.3px;  
+  white-space:nowrap;  
+  overflow:hidden;  text-overflow:ellipsis;  
+}  
+  
+.header-icons{  
+  display:flex;  
+  align-items:center;  
+  gap:6px;  
+}  
+  
+.icon-link{  
+  position:relative;  
+  width:42px;  
+  height:42px;  
+  display:flex;  
+  align-items:center;  
+  justify-content:center;  
+  text-decoration:none;  
+  border-radius:50%;  
+  transition:background .2s;  
+}  
+  
+.icon-link:hover{  
+  background:var(--ivory-dim);  
+}  
+  
+.icon-link svg{  
+  width:21px;  
+  height:21px;  
+  stroke:var(--ink);  
+  fill:none;  
+  stroke-width:1.6;  
+}  
+  
+.badge{  
+  position:absolute;  
+  top:2px;  
+  right:2px;  
+  background:var(--brass);  
+  color:var(--white);  
+  min-width:16px;  
+  height:16px;  
+  padding:0 3px;  
+  border-radius:50%;  
+  font-size:10px;  
+  font-weight:700;  
+  display:flex;  
+  align-items:center;  
+  justify-content:center;  
+}  
+  
+.side-menu{  
+  position:fixed;  
+  top:0;  
+  left:-300px;  
+  width:290px;  
+  height:100%;  
+  background:var(--ink);  
+  color:var(--ivory);  
+  padding:90px 32px 32px;  
+  transition:.4s cubic-bezier(.4,0,.2,1);  
+  z-index:2000;  
+}  
+  
+.side-menu.open{  
+  left:0;  
+}  
+  
+.menu-tag{  
+  font-size:11px;  
+  letter-spacing:2px;  
+  text-transform:uppercase;  
+  color:var(--brass-soft);  
+  margin-bottom:20px;  
+  display:block;  
+}  
+  
+.side-menu a.nav-link{  
+  display:block;  
+  text-decoration:none;  
+  color:var(--ivory);  
+  font-family:'Libre Caslon Display',serif;  
+  font-size:22px;  
+  padding:13px 0;  
+  border-bottom:1px solid rgba(255,255,255,.1);  
+}  
+  
+.close-btn{  
+  position:absolute;  
+  top:24px;  
+  right:24px;  
+  background:none;  
+  border:none;  
+  color:var(--ivory);  
+  font-size:26px;  
+  cursor:pointer;  
+  line-height:1;  
+}  
+  
+.menu-overlay{  
+  display:none;  
+  position:fixed;  
+  top:0;  
+  left:0;  
+  width:100%;  
+  height:100%;  
+  background:rgba(0,0,0,.4);  
+  z-index:1500;  
+}  
+  
+.menu-overlay.open{  
+  display:block;  
+}  
+  
+.page-head{  
+  padding:28px 22px 10px;  
+  display:flex;  
+  justify-content:space-between;  
+  align-items:flex-end;  
+}  
+  
+.eyebrow-dark{  
+  font-size:11px;  
+  letter-spacing:2px;  
+  text-transform:uppercase;  
+  color:var(--brass);  
+  font-weight:700;  
+}  
+  
+.page-head h1{  
+  font-size:28px;  
+  margin-top:6px;  
+}  
+  
+.add-trigger-btn{  
+  background:var(--ink);  
+  color:var(--white);  
+  border:none;  
+  padding:10px 16px;  
+  border-radius:6px;  
+  font-size:12px;  
+  font-weight:600;  
+  letter-spacing:1px;  
+  text-transform:uppercase;  
+  cursor:pointer;  
+  transition:background .2s;  
+}  
+  
+.add-trigger-btn:hover{  
+  background:var(--brass);  
+}  
+  
+.form-panel {  
+  display: none;  
+  background: var(--white);  
+  border: 1px solid var(--line);  
+  border-radius: 6px;  
+  margin: 10px 22px 24px;  
+  padding: 24px 20px;  
+}  
+  
+.form-panel.open {  
+  display: block;  
+}  
+  
+.form-panel h3 {  
+  font-size: 20px;  
+  margin-bottom: 18px;  
+}  
+  
+.form-grid {  
+  display: flex;  
+  flex-direction: column;  
+  gap: 16px;  
+}  
+  
+.field-wrap {  
+  display: flex;  
+  flex-direction: column;  
+  gap: 6px;  
+}  
+  
+.field-wrap label {  
+  font-size: 11px;  
+  letter-spacing: 1px;  
+  text-transform: uppercase;  
+  color: var(--brass);  
+  font-weight: 700;  
+}  
+  
+.field-wrap input {  
+  width: 100%;  
+  padding: 13px 16px;  
+  border: 1px solid var(--line);  
+  border-radius: 6px;  
+  font-size: 14px;  
+  font-family: 'Inter', sans-serif;  
+  background: var(--white);  
+  color: var(--ink);  
+}  
+  
+.field-wrap input:focus {  
+  outline: none;  
+  border-color: var(--brass);  
+}  
+  
+.row-2 {  
+  display: grid;  
+  grid-template-columns: 1fr 1fr;  
+  gap: 12px;  
+}  
+  
+.checkbox-wrap {  
+  display: flex;  
+  align-items: center;  
+  gap: 10px;  
+  cursor: pointer;  
+  margin-top: 6px;  
+}  
+  
+.checkbox-wrap input {  
+  width: 18px;  
+  height: 18px;  
+  accent-color: var(--brass);  
+  cursor: pointer;  
+}  
+  
+.checkbox-wrap span {  
+  font-size: 13px;  
+  font-weight: 500;  
+  user-select: none;  
+}  
+  
+.button-row {  
+  display: grid;  
+  grid-template-columns: 1fr 1fr;  
+  gap: 12px;  
+  margin-top: 10px;  
+}  
+  
+.btn {  
+  padding: 14px 20px;  
+  border-radius: 6px;  
+  font-size: 13px;  
+  font-weight: 600;  
+  letter-spacing: 1px;  
+  text-transform: uppercase;  
+  cursor: pointer;  
+  text-align: center;  
+  transition: all .2s;  
+}  
+  
+.btn-primary {  
+  background: var(--ink);  
+  color: var(--white);  
+  border: none;  
+}  
+  
+.btn-primary:hover {  
+  background: var(--brass);  
+}  
+  
+.btn-secondary {  
+  background: transparent;  
+  color: var(--ink);  
+  border: 1px solid var(--line);  
+}  
+  
+.btn-secondary:hover {  
+  background: var(--ivory-dim);  
+}  
+  
+.address-grid {  
+  display: flex;  
+  flex-direction: column;  
+  gap: 16px;  
+  padding: 0 22px 30px;  
+}  
+  
+.address-card {  
+  background: var(--white);  
+  border: 1px solid var(--line);  
+  border-radius: 6px;  
+  padding: 20px;  
+  display: flex;  
+  flex-direction: column;  
+  gap: 8px;  
+}  
+  
+.address-header {  
+  display: flex;  
+  align-items: center;  
+  gap: 10px;  
+}  
+  
+.address-name {  
+  font-size: 15px;  
+  font-weight: 700;  
+}  
+  
+.tag-default {  
+  background: var(--ivory-dim);  
+  border: 1px solid var(--brass-soft);  
+  color: var(--brass);  
+  font-size: 9px;  
+  font-weight: 700;  
+  letter-spacing: 1px;  
+  text-transform: uppercase;  
+  padding: 2px 6px;  
+  border-radius: 4px;  
+}  
+  
+.address-body {  
+  font-size: 13px;  
+  color: #555;  
+  line-height: 1.5;  
+}  
+  
+.address-phone {  
+  font-size: 13px;  
+  color: #777;  
+}  
+  
+.address-actions {  
+  display: flex;  
+  gap: 14px;  
+  margin-top: 8px;  
+  border-top: 1px solid var(--ivory-dim);  
+  padding-top: 12px;  
+}  
+  
+.action-btn {  
+  background: none;  
+  border: none;  
+  font-size: 12px;  
+  font-weight: 600;  
+  color: var(--ink);  
+  cursor: pointer;  
+  transition: color .2s;  
+}  
+  
+.action-btn:hover {  
+  color: var(--brass);  
+}  
+  
+.action-btn.delete-btn {  
+  color: #c92a2a;  
+  margin-left: auto;  
+}  
+  
+.action-btn.delete-btn:hover {  
+  color: #e03131;  
+}  
+  
+.state-msg {  
+  text-align: center;  
+  padding: 40px 20px;  
+  color: #8a8578;  
+  font-size: 14px;  
+}  
+  
+.back {  
+  display: flex;  
+  align-items: center;  
+  gap: 8px;  
+  justify-content: center;  
+  padding: 10px 22px 40px;  
+  text-decoration: none;  
+  font-weight: 600;  
+  font-size: 14px;  
+  color: var(--ink);  
+}  
+  
+.back svg {  
+  width: 16px;  
+  height: 16px;  
+  stroke: var(--ink);  
+  fill: none;  
+  stroke-width: 2;  
+}  
+  
+</style>  <base target="_blank">  
+</head>  <body>  <div class="menu-overlay" id="menuOverlay"></div>  <div class="header">  
+  <button class="menu-btn" id="menuBtn" aria-label="Open menu">  
+    <span></span><span></span><span></span>  
+  </button>    <div class="logo-area">  
+    <img src="logo.png" class="logo" alt="EXAMPLE CLOTHING">  
+    <span class="logo-text">EXAMPLE CLOTHING</span>  
+  </div>    <div class="header-icons">  
+    <a href="profile.html" class="icon-link" aria-label="Account">  
+      <svg viewBox="0 0 24 24"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z"/><path d="M4.5 20.5c1.4-3.6 4.3-5.5 7.5-5.5s6.1 1.9 7.5 5.5"/></svg>  
+    </a>  <a href="wishlist.html" class="icon-link" aria-label="Wishlist">  
+  <svg viewBox="0 0 24 24"><path d="M12 20.2s-7.6-4.5-9.9-9C.6 8 2 4.5 5.4 3.7c2-.5 3.9.3 5 2 .3.4.5.9.6 1.3.1-.4.3-.9.6-1.3 1.1-1.7 3-2.5 5-2 3.4.8 4.8 4.3 3.3 7.5-2.3 4.5-9.9 9-9.9 9Z"/></svg>  
+</a>  
+
+<a href="cart.html" class="icon-link" aria-label="Cart">  
+  <svg viewBox="0 0 24 24"><path d="M4 7h16l-1.4 10.3a2 2 0 0 1-2 1.7H7.4a2 2 0 0 1-2-1.7L4 7Z"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/></svg>  
+  <span class="badge" id="cartCount">0</span>  
 </a>
 
-<script>
-// Menu controls
-const menu = document.getElementById("menu");
-const menuOverlay = document.getElementById("menuOverlay");
-const menuBtn = document.getElementById("menuBtn");
-const closeMenuBtn = document.getElementById("closeMenuBtn");
+  </div>  
+</div>  <div class="side-menu" id="menu">  
+  <button class="close-btn" id="closeMenuBtn">✕</button>  
+  <span class="menu-tag">Browse</span>  
+  <a href="men.html" class="nav-link">Men</a>  
+  <a href="women.html" class="nav-link">Women</a>  
+  <a href="kids.html" class="nav-link">Kids</a>  
+  <a href="sale.html" class="nav-link">Sale</a>  
+  <a href="accessories.html" class="nav-link">Accessories</a>  
+  <a href="footwear.html" class="nav-link">Footwear</a>  
+</div>  <div class="page-head">  
+  <div>  
+    <span class="eyebrow-dark">Account</span>  
+    <h1>Saved Addresses</h1>  
+  </div>  
+  <button id="addAddressBtn" class="add-trigger-btn">Add New</button>  
+</div>  <div id="addressFormPanel" class="form-panel">  
+  <h3 id="formTitle">Add New Address</h3>  
+  <form id="addressForm" class="form-grid">  
+    <div class="field-wrap">  
+      <label for="fullName">Full Name</label>  
+      <input type="text" id="fullName" required placeholder="Enter recipient's name">  
+    </div>  
+    <div class="field-wrap">  
+      <label for="addressLine1">Address Line 1</label>  
+      <input type="text" id="addressLine1" required placeholder="Street address">  
+    </div>  
+    <div class="field-wrap">  
+      <label for="addressLine2">Address Line 2 (Optional)</label>  
+      <input type="text" id="addressLine2" placeholder="Apartment, suite, etc.">  
+    </div>  
+    <div class="row-2">  
+      <div class="field-wrap">  
+        <label for="city">City</label>  
+        <input type="text" id="city" required placeholder="City">  
+      </div>  
+      <div class="field-wrap">  
+        <label for="state">State</label>  
+        <input type="text" id="state" required placeholder="State">  
+      </div>  
+    </div>  
+    <div class="row-2">  
+      <div class="field-wrap">  
+        <label for="zipCode">ZIP Code</label>  
+        <input type="text" id="zipCode" required placeholder="123456">  
+      </div>  
+      <div class="field-wrap">  
+        <label for="phone">Phone Number</label>  
+        <input type="tel" id="phone" required placeholder="10-digit number">  
+      </div>  
+    </div>  
+    <div class="field-wrap">  
+      <label class="checkbox-wrap">  
+        <input type="checkbox" id="isDefault">  
+        <span>Set as Default Address</span>  
+      </label>  
+    </div>  
+    <div class="button-row">  
+      <button type="button" id="cancelFormBtn" class="btn btn-secondary">Cancel</button>  
+      <button type="submit" id="saveFormBtn" class="btn btn-primary">Save Address</button>  
+    </div>  
+  </form>  
+</div>  <div id="addressList" class="address-grid"></div>  <a href="profile.html" class="back">  
+  <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg>  
+  Back to Profile  
+</a>  
 
-function openMenu() {
-  if (menu && menuOverlay) {
-    menu.classList.add("open");
-    menuOverlay.classList.add("open");
-  }
-}
+<!-- Firestore and Authentication Script -->
+<script type="module">  
+import { app, auth, db } from "./firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { 
+  collection, 
+  doc, 
+  setDoc, 
+  deleteDoc, 
+  onSnapshot, 
+  writeBatch 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-function closeMenu() {
-  if (menu && menuOverlay) {
-    menu.classList.remove("open");
-    menuOverlay.classList.remove("open");
-  }
-}
+// Menu controls  
+const menu = document.getElementById("menu");  
+const menuOverlay = document.getElementById("menuOverlay");  
+const menuBtn = document.getElementById("menuBtn");  
+const closeMenuBtn = document.getElementById("closeMenuBtn");  
+  
+function openMenu() {  
+  if (menu && menuOverlay) {  
+    menu.classList.add("open");  
+    menuOverlay.classList.add("open");  
+  }  
+}  
+  
+function closeMenu() {  
+  if (menu && menuOverlay) {  
+    menu.classList.remove("open");  
+    menuOverlay.classList.remove("open");  
+  }  
+}  
+  
+if (menuBtn) menuBtn.addEventListener("click", openMenu);  
+if (closeMenuBtn) closeMenuBtn.addEventListener("click", closeMenu);  
+if (menuOverlay) menuOverlay.addEventListener("click", closeMenu);  
+  
+// Cart badge (preserved reading from localStorage)
+const cartCount = document.getElementById("cartCount");  
+if (cartCount) {  
+  try {  
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];  
+    let totalQty = 0;  
+    cart.forEach(item => { totalQty += item.qty || 1; });  
+    cartCount.innerText = totalQty;  
+  } catch(e) {  
+    console.error(e);  
+  }  
+}  
+  
+// Address management  
+const addressList = document.getElementById("addressList");  
+const addressFormPanel = document.getElementById("addressFormPanel");  
+const addressForm = document.getElementById("addressForm");  
+const formTitle = document.getElementById("formTitle");  
+const addAddressBtn = document.getElementById("addAddressBtn");  
+const cancelFormBtn = document.getElementById("cancelFormBtn");  
+const saveFormBtn = document.getElementById("saveFormBtn");  
+  
+const fullNameInput = document.getElementById("fullName");  
+const addressLine1Input = document.getElementById("addressLine1");  
+const addressLine2Input = document.getElementById("addressLine2");  
+const cityInput = document.getElementById("city");  
+const stateInput = document.getElementById("state");  
+const zipCodeInput = document.getElementById("zipCode");  
+const phoneInput = document.getElementById("phone");  
+const isDefaultInput = document.getElementById("isDefault");  
+  
+let allAddresses = [];  
+let editAddressId = null; // Storing document ID string instead of index
+let unsubscribeAddresses = null;
 
-if (menuBtn) menuBtn.addEventListener("click", openMenu);
-if (closeMenuBtn) closeMenuBtn.addEventListener("click", closeMenu);
-if (menuOverlay) menuOverlay.addEventListener("click", closeMenu);
-
-// Cart badge
-const cartCount = document.getElementById("cartCount");
-if (cartCount) {
-  try {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    let totalQty = 0;
-    cart.forEach(item => { totalQty += item.qty || 1; });
-    cartCount.innerText = totalQty;
-  } catch(e) {
-    console.error(e);
-  }
-}
-
-// Address management
-const addressList = document.getElementById("addressList");
-const addressFormPanel = document.getElementById("addressFormPanel");
-const addressForm = document.getElementById("addressForm");
-const formTitle = document.getElementById("formTitle");
-const addAddressBtn = document.getElementById("addAddressBtn");
-const cancelFormBtn = document.getElementById("cancelFormBtn");
-const saveFormBtn = document.getElementById("saveFormBtn");
-
-const fullNameInput = document.getElementById("fullName");
-const addressLine1Input = document.getElementById("addressLine1");
-const addressLine2Input = document.getElementById("addressLine2");
-const cityInput = document.getElementById("city");
-const stateInput = document.getElementById("state");
-const zipCodeInput = document.getElementById("zipCode");
-const phoneInput = document.getElementById("phone");
-const isDefaultInput = document.getElementById("isDefault");
-
-let allAddresses = [];
-let editAddressId = null;
-const STORAGE_KEY = "_saved_addresses";
-
-// Load addresses from localStorage
-function loadAddresses() {
-  try {
-    allAddresses = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-    allAddresses.sort((a, b) => (b.isDefault || false) - (a.isDefault || false));
-    renderAddresses();
-  } catch (e) {
-    console.error("Error loading addresses:", e);
-    showState("Error loading addresses");
-  }
-}
-
-function renderAddresses() {
-  if (allAddresses.length === 0) {
-    showState("You have no saved addresses yet. Add one to get started!");
-    return;
-  }
-
-  addressList.innerHTML = allAddresses.map((addr, idx) => {
-    const name = escapeHtml(addr.fullName);
-    const line1 = escapeHtml(addr.addressLine1);
-    const line2 = addr.addressLine2 ? escapeHtml(addr.addressLine2) : "";
-    const city = escapeHtml(addr.city);
-    const state = escapeHtml(addr.state);
-    const zip = escapeHtml(addr.zipCode);
-    const phone = escapeHtml(addr.phone);
-    const isDefault = addr.isDefault === true;
-
-    const defaultTag = isDefault ? `<span class="tag-default">Default</span>` : "";
-    const defaultAction = !isDefault 
-      ? `<button class="action-btn" type="button" onclick="setDefaultAddress(${idx})">Set as Default</button>` 
-      : "";
-
-    return `
-      <div class="address-card">
-        <div class="address-header">
-          <span class="address-name">${name}</span>
-          ${defaultTag}
-        </div>
-        <div class="address-body">
-          ${line1}${line2 ? ", " + line2 : ""}<br>
-          ${city}, ${state} - ${zip}
-        </div>
-        <div class="address-phone">Phone: ${phone}</div>
-        <div class="address-actions">
-          <button class="action-btn" type="button" onclick="editAddress(${idx})">Edit</button>
-          ${defaultAction}
-          <button class="action-btn delete-btn" type="button" onclick="deleteAddress(${idx})">Delete</button>
-        </div>
-      </div>
-    `;
-  }).join("");
-}
-
-function showState(message) {
-  addressList.innerHTML = `<div class="state-msg">${escapeHtml(message)}</div>`;
-}
-
-function escapeHtml(str) {
-  const div = document.createElement("div");
-  div.innerText = str || "";
-  return div.innerHTML;
-}
-
-function saveAddressesToStorage() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(allAddresses));
-  } catch (e) {
-    console.error("Error saving addresses:", e);
-    alert("Failed to save address. Please try again.");
-  }
-}
-
-if (addAddressBtn) {
-  addAddressBtn.addEventListener("click", () => {
-    editAddressId = null;
-    formTitle.innerText = "Add New Address";
-    addressForm.reset();
-    isDefaultInput.checked = false;
-    addressFormPanel.classList.add("open");
-    addressFormPanel.scrollIntoView({ behavior: "smooth" });
-  });
-}
-
-if (cancelFormBtn) {
-  cancelFormBtn.addEventListener("click", () => {
-    addressFormPanel.classList.remove("open");
-  });
-}
-
-if (addressForm) {
-  addressForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    const isDefault = isDefaultInput.checked;
-    const addrData = {
-      fullName: fullNameInput.value.trim(),
-      addressLine1: addressLine1Input.value.trim(),
-      addressLine2: addressLine2Input.value.trim(),
-      city: cityInput.value.trim(),
-      state: stateInput.value.trim(),
-      zipCode: zipCodeInput.value.trim(),
-      phone: phoneInput.value.trim(),
-      isDefault: isDefault
-    };
-
-    if (editAddressId !== null) {
-      // Update existing
-      allAddresses[editAddressId] = addrData;
-    } else {
-      // Add new
-      allAddresses.push(addrData);
+// Handle authentication and load real-time addresses
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    const addressesRef = collection(db, "customers", user.uid, "addresses");
+    
+    if (unsubscribeAddresses) {
+      unsubscribeAddresses();
     }
-
-    // Handle default status
-    if (isDefault) {
-      allAddresses.forEach((addr, idx) => {
-        if (idx !== editAddressId) {
-          addr.isDefault = false;
-        }
+    
+    showState("Loading addresses...");
+    
+    unsubscribeAddresses = onSnapshot(addressesRef, (snapshot) => {
+      allAddresses = [];
+      snapshot.forEach((docSnap) => {
+        allAddresses.push({
+          id: docSnap.id,
+          ...docSnap.data()
+        });
       });
+      // Sort default addresses first
+      allAddresses.sort((a, b) => (b.isDefault || false) - (a.isDefault || false));
+      renderAddresses();
+    }, (error) => {
+      console.error("Error loading addresses from Firestore:", error);
+      showState("Error loading addresses. Check database rules.");
+    });
+  } else {
+    if (unsubscribeAddresses) {
+      unsubscribeAddresses();
+      unsubscribeAddresses = null;
+    }
+    allAddresses = [];
+    showState("Please log in to manage your addresses.");
+  }
+});
+  
+function renderAddresses() {  
+  if (allAddresses.length === 0) {  
+    showState("You have no saved addresses yet. Add one to get started!");  
+    return;  
+  }  
+  
+  addressList.innerHTML = allAddresses.map((addr) => {  
+    const name = escapeHtml(addr.fullName);  
+    const line1 = escapeHtml(addr.addressLine1);  
+    const line2 = addr.addressLine2 ? escapeHtml(addr.addressLine2) : "";  
+    const city = escapeHtml(addr.city);  
+    const state = escapeHtml(addr.state);  
+    const zip = escapeHtml(addr.zipCode);  
+    const phone = escapeHtml(addr.phone);  
+    const isDefault = addr.isDefault === true;  
+  
+    const defaultTag = isDefault ? `<span class="tag-default">Default</span>` : "";  
+    const defaultAction = !isDefault   
+      ? `<button class="action-btn" type="button" onclick="setDefaultAddress('${addr.id}')">Set as Default</button>`   
+      : "";  
+  
+    return `  
+      <div class="address-card">  
+        <div class="address-header">  
+          <span class="address-name">${name}</span>  
+          ${defaultTag}  
+        </div>  
+        <div class="address-body">  
+          ${line1}${line2 ? ", " + line2 : ""}<br>  
+          ${city}, ${state} - ${zip}  
+        </div>  
+        <div class="address-phone">Phone: ${phone}</div>  
+        <div class="address-actions">  
+          <button class="action-btn" type="button" onclick="editAddress('${addr.id}')">Edit</button>  
+          ${defaultAction}  
+          <button class="action-btn delete-btn" type="button" onclick="deleteAddress('${addr.id}')">Delete</button>  
+        </div>  
+      </div>  
+    `;  
+  }).join("");  
+}  
+  
+function showState(message) {  
+  addressList.innerHTML = `<div class="state-msg">${escapeHtml(message)}</div>`;  
+}  
+  
+function escapeHtml(str) {  
+  const div = document.createElement("div");  
+  div.innerText = str || "";  
+  return div.innerHTML;  
+}  
+  
+if (addAddressBtn) {  
+  addAddressBtn.addEventListener("click", () => {  
+    editAddressId = null;  
+    formTitle.innerText = "Add New Address";  
+    addressForm.reset();  
+    isDefaultInput.checked = false;  
+    addressFormPanel.classList.add("open");  
+    addressFormPanel.scrollIntoView({ behavior: "smooth" });  
+  });  
+}  
+  
+if (cancelFormBtn) {  
+  cancelFormBtn.addEventListener("click", () => {  
+    addressFormPanel.classList.remove("open");  
+    editAddressId = null;
+  });  
+}  
+  
+if (addressForm) {  
+  addressForm.addEventListener("submit", async (e) => {  
+    e.preventDefault();  
+  
+    const user = auth.currentUser;
+    if (!user) {
+      alert("Please log in to add or edit addresses.");
+      return;
     }
 
-    saveAddressesToStorage();
-    addressFormPanel.classList.remove("open");
-    loadAddresses();
-  });
-}
-
-window.editAddress = function(idx) {
-  const addr = allAddresses[idx];
-  if (!addr) return;
-
-  editAddressId = idx;
-  formTitle.innerText = "Edit Address";
-
-  fullNameInput.value = addr.fullName || "";
-  addressLine1Input.value = addr.addressLine1 || "";
-  addressLine2Input.value = addr.addressLine2 || "";
-  cityInput.value = addr.city || "";
-  stateInput.value = addr.state || "";
-  zipCodeInput.value = addr.zipCode || "";
-  phoneInput.value = addr.phone || "";
-  isDefaultInput.checked = addr.isDefault === true;
-
-  addressFormPanel.classList.add("open");
-  addressFormPanel.scrollIntoView({ behavior: "smooth" });
-};
-
-window.setDefaultAddress = function(idx) {
-  allAddresses.forEach((addr, i) => {
-    addr.isDefault = (i === idx);
-  });
+    const isDefault = isDefaultInput.checked;  
+    const addrData = {  
+      fullName: fullNameInput.value.trim(),  
+      addressLine1: addressLine1Input.value.trim(),  
+      addressLine2: addressLine2Input.value.trim(),  
+      city: cityInput.value.trim(),  
+      state: stateInput.value.trim(),  
+      zipCode: zipCodeInput.value.trim(),  
+      phone: phoneInput.value.trim(),  
+      isDefault: isDefault  
+    };  
   
-  // Also save to checkout default address
-  if (allAddresses[idx]) {
-    localStorage.setItem("defaultAddress", JSON.stringify(allAddresses[idx]));
-  }
+    try {
+      const addressesRef = collection(db, "customers", user.uid, "addresses");
+      const batch = writeBatch(db);
+
+      // Handle updating existing or creating new document
+      let docRef;
+      if (editAddressId !== null) {  
+        docRef = doc(db, "customers", user.uid, "addresses", editAddressId);
+      } else {  
+        docRef = doc(addressesRef);
+      }  
+
+      // If this address is set to default, set all others to false
+      if (isDefault) {
+        allAddresses.forEach((addr) => {
+          if (addr.id !== editAddressId) {
+            const otherDocRef = doc(db, "customers", user.uid, "addresses", addr.id);
+            batch.update(otherDocRef, { isDefault: false });
+          }
+        });
+      }
+
+      batch.set(docRef, addrData);
+      await batch.commit();
+
+      addressFormPanel.classList.remove("open");  
+    editAddressId = null;
+  });  
+}  
   
-  saveAddressesToStorage();
-  loadAddresses();
-};
+if (addressForm) {  
+  addressForm.addEventListener("submit", async (e) => {  
+    e.preventDefault();  
+  
+    const user = auth.currentUser;
+    if (!user) {
+      alert("Please log in to add or edit addresses.");
+      return;
+    }
 
-window.deleteAddress = function(idx) {
-  if (confirm("Are you sure you want to delete this address?")) {
-    allAddresses.splice(idx, 1);
-    saveAddressesToStorage();
-    loadAddresses();
+    const isDefault = isDefaultInput.checked;  
+    const addrData = {  
+      fullName: fullNameInput.value.trim(),  
+      addressLine1: addressLine1Input.value.trim(),  
+      addressLine2: addressLine2Input.value.trim(),  
+      city: cityInput.value.trim(),  
+      state: stateInput.value.trim(),  
+      zipCode: zipCodeInput.value.trim(),  
+      phone: phoneInput.value.trim(),  
+      isDefault: isDefault  
+    };  
+  
+    try {
+      const addressesRef = collection(db, "customers", user.uid, "addresses");
+      const batch = writeBatch(db);
+
+      // Handle updating existing or creating new document
+      let docRef;
+      if (editAddressId !== null) {  
+        docRef = doc(db, "customers", user.uid, "addresses", editAddressId);
+      } else {  
+        docRef = doc(addressesRef);
+      }  
+
+      // If this address is set to default, set all others to false
+      if (isDefault) {
+        allAddresses.forEach((addr) => {
+          if (addr.id !== editAddressId) {
+            const otherDocRef = doc(db, "customers", user.uid, "addresses", addr.id);
+            batch.update(otherDocRef, { isDefault: false });
+          }
+        });
+      }
+
+      batch.set(docRef, addrData);
+      await batch.commit();
+
+      addressFormPanel.classList.remove("open");  
+      addressForm.reset();
+      editAddressId = null;
+    } catch (error) {
+      console.error("Error writing address data to Firestore:", error);
+      alert("Failed to save address. Please try again.");
+    }
+  });  
+}  
+  
+window.editAddress = function(id) {  
+  const addr = allAddresses.find(a => a.id === id);  
+  if (!addr) return;  
+  
+  editAddressId = id;  
+  formTitle.innerText = "Edit Address";  
+  
+  fullNameInput.value = addr.fullName || "";  
+  addressLine1Input.value = addr.addressLine1 || "";  
+  addressLine2Input.value = addr.addressLine2 || "";  
+  cityInput.value = addr.city || "";  
+  stateInput.value = addr.state || "";  
+  zipCodeInput.value = addr.zipCode || "";  
+  phoneInput.value = addr.phone || "";  
+  isDefaultInput.checked = addr.isDefault === true;  
+  
+  addressFormPanel.classList.add("open");  
+  addressFormPanel.scrollIntoView({ behavior: "smooth" });  
+};  
+  
+window.setDefaultAddress = async function(id) {  
+  const user = auth.currentUser;
+  if (!user) return;
+    
+  try {
+    const batch = writeBatch(db);
+    allAddresses.forEach((addr) => {
+      const docRef = doc(db, "customers", user.uid, "addresses", addr.id);
+      batch.update(docRef, { isDefault: (addr.id === id) });
+    });
+    await batch.commit();
+  } catch (error) {
+    console.error("Error setting default address in Firestore:", error);
+    alert("Failed to update default address.");
   }
-};
+};  
+  
+window.deleteAddress = async function(id) {  
+  const user = auth.currentUser;
+  if (!user) return;
 
-// Initialize
-loadAddresses();
-
-</script>
-
-</body>
+  if (confirm("Are you sure you want to delete this address?")) {  
+    try {
+      const docRef = doc(db, "customers", user.uid, "addresses", id);
+      await deleteDoc(docRef);
+    } catch (error) {
+      console.error("Error deleting address from Firestore:", error);
+      alert("Failed to delete address.");
+    }
+  }  
+};  
+  
+</script>  </body>  
 </html>
