@@ -81,7 +81,7 @@ h2{ font-family:'Libre Caslon Display',serif; font-size:20px; margin-bottom:12px
   <div class="card">
     <h2>Order Summary</h2>
     <div class="summary-line"><span>Items Subtotal</span><span id="subtotalText">₹0</span></div>
-    <div class="summary-line"><span>Delivery Fee</span><span id="deliveryText">₹0</span></div>
+    <div class="summary-line"><span>Delivery Fee</span><span id="deliveryText">FREE</span></div>
     <div class="summary-line total"><span>Total Amount</span><span id="totalText">₹0</span></div>
   </div>
 
@@ -141,19 +141,33 @@ if (!checkoutData || !cart || cart.length === 0) {
   showToast("Cart is empty or session expired.");
   setTimeout(() => window.location.href = "cart.html", 1500);
 } else {
-  renderSummary();
+  applyDeliveryRulesAndRender();
 }
 
 onAuthStateChanged(auth, (user) => {
   currentUser = user;
 });
 
-function renderSummary() {
+function applyDeliveryRulesAndRender() {
+  // =========================================================================
+  // TEMPORARY TESTING CONFIGURATION (Delivery Charge = ₹0 for all orders)
+  // =========================================================================
+  // PRODUCTION RULE TO RESTORE LATER:
+  // const deliveryThreshold = 3499;
+  // const standardFee = 99;
+  // checkoutData.deliveryCharge = checkoutData.subtotal >= deliveryThreshold ? 0 : standardFee;
+  // =========================================================================
+
+  // Temporary testing override:
+  checkoutData.deliveryCharge = 0;
+  checkoutData.totalPrice = Number(checkoutData.subtotal) + checkoutData.deliveryCharge;
+
+  // Render UI
   subtotalText.innerText = "₹" + checkoutData.subtotal;
-  deliveryText.innerText = checkoutData.deliveryCharge === 0 ? "FREE" : "₹" + checkoutData.deliveryCharge;
+  deliveryText.innerText = "FREE";
   totalText.innerText = "₹" + checkoutData.totalPrice;
 
-  // Build standard UPI intent deep-link
+  // Build standard UPI intent deep-link with the updated total
   const note = encodeURIComponent("Payment for EXAMPLE CLOTHING");
   const upiUrl = `upi://pay?pa=${PAYTM_UPI_ID}&pn=${encodeURIComponent(STORE_NAME)}&am=${checkoutData.totalPrice}&cu=INR&tn=${note}`;
   
