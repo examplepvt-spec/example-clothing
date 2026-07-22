@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Payment — EXAMPLE CLOTHING</title>
+<title>Payment (Testing Mode) — EXAMPLE CLOTHING</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,9 +39,11 @@ body{ background:var(--ivory); color:var(--ink); font-family:'Inter',sans-serif;
 .card{ background:var(--white); border:1px solid var(--line); border-radius:10px; padding:20px; margin-bottom:18px; }
 h2{ font-family:'Libre Caslon Display',serif; font-size:20px; margin-bottom:12px; }
 
-.qr-box{ text-align:center; padding:16px; background:var(--ivory-dim); border-radius:8px; margin-bottom:16px; }
-.qr-box img{ max-width:220px; width:100%; border-radius:8px; }
-.upi-tag{ font-size:16px; font-weight:700; color:var(--ink); margin-top:8px; word-break:break-all; }
+.testing-banner{
+  background:#fff3e0; border:1px solid #ffe0b2; color:#e65100;
+  padding:12px 16px; border-radius:8px; font-size:13px; font-weight:600;
+  display:flex; align-items:center; gap:10px; margin-bottom:18px;
+}
 
 .summary-line{ display:flex; justify-content:space-between; margin-bottom:8px; font-size:14px; color:#555; }
 .summary-line.total{ font-weight:700; font-size:18px; color:var(--ink); border-top:1px dashed var(--line); padding-top:10px; margin-top:10px; }
@@ -50,17 +52,10 @@ h2{ font-family:'Libre Caslon Display',serif; font-size:20px; margin-bottom:12px
   display:block; width:100%; padding:16px; border-radius:8px; font-size:15px; font-weight:600;
   text-align:center; border:none; cursor:pointer; text-decoration:none; margin-bottom:12px; transition:.2s;
 }
-.btn-upi{ background:#002e6e; color:#ffffff; }
-.btn-upi:hover{ background:#001d47; }
 
-.btn-confirm{ background:var(--ink); color:var(--ivory); }
-.btn-confirm:hover{ background:var(--brass); }
-.btn-confirm:disabled{ opacity:.6; cursor:not-allowed; }
-
-.input-field{ width:100%; padding:14px; border:1px solid var(--line); border-radius:6px; font-size:14px; margin-bottom:12px; font-family:inherit; outline:none; }
-.input-field:focus{ border-color:var(--brass); }
-
-.instruction{ font-size:13px; color:#666; line-height:1.5; margin-bottom:14px; background:#f9f8f3; padding:12px; border-radius:6px; border-left:3px solid var(--brass); }
+.btn-test{ background:#2e7d32; color:#ffffff; }
+.btn-test:hover{ background:#1b5e20; }
+.btn-test:disabled{ opacity:.6; cursor:not-allowed; }
 
 .toast{ position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background:var(--ink); color:#fff; padding:12px 24px; border-radius:50px; font-size:13px; opacity:0; pointer-events:none; transition:.3s; z-index:1000; }
 .toast.show{ opacity:1; }
@@ -73,10 +68,16 @@ h2{ font-family:'Libre Caslon Display',serif; font-size:20px; margin-bottom:12px
   <a href="checkout.html" class="back-btn" aria-label="Back">
     <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg>
   </a>
-  <span class="header-title">Pay via UPI</span>
+  <span class="header-title">Payment (Testing Mode)</span>
 </div>
 
 <div class="container">
+
+  <!-- TESTING MODE NOTICE BANNER -->
+  <div class="testing-banner">
+    <span>🧪</span>
+    <span>Testing Mode Active — Actual payment step is bypassed for order flow testing.</span>
+  </div>
 
   <div class="card">
     <h2>Order Summary</h2>
@@ -86,32 +87,13 @@ h2{ font-family:'Libre Caslon Display',serif; font-size:20px; margin-bottom:12px
   </div>
 
   <div class="card">
-    <h2>Step 1: Pay via Any UPI App</h2>
-    
-    <div class="instruction">
-      Tap the button below to launch <strong>GPay, PhonePe, Paytm, or BHIM</strong> automatically with the exact total amount pre-filled.
-    </div>
+    <h2>Complete Test Order</h2>
+    <p style="font-size:13px; color:#666; margin-bottom:16px; line-height:1.5;">
+      Click the button below to submit a test order directly to Firestore without payment.
+    </p>
 
-    <!-- Direct UPI App Launcher -->
-    <a href="#" id="upiDeepLinkBtn" class="btn btn-upi">⚡ Pay with Any UPI App</a>
-
-    <div class="qr-box">
-      <div style="font-size:12px; color:#777; margin-bottom:6px;">Or scan QR using any UPI app</div>
-      <img src="paytmqr.jpg" alt="UPI QR Code" onerror="this.style.display='none';">
-      <div class="upi-tag">8089979791@paytm</div>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>Step 2: Confirm Payment</h2>
-    
-    <div class="instruction">
-      After completing the payment in your UPI app, enter your 12-digit UPI Reference / UTR Number below (optional) and click <strong>"I Have Paid"</strong>.
-    </div>
-
-    <input type="text" id="utrNumberInput" class="input-field" placeholder="12-digit UTR / UPI Ref No. (Optional)" maxlength="18">
-
-    <button class="btn btn-confirm" id="confirmPaidBtn">I Have Paid</button>
+    <!-- TEST ORDER BUTTON -->
+    <button class="btn btn-test" id="placeTestOrderBtn">🧪 Place Test Order (Skip Payment)</button>
   </div>
 
 </div>
@@ -123,9 +105,6 @@ import { app, auth, db } from "./firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const PAYTM_UPI_ID = "8089979791@paytm";
-const PAYEE_NAME = "Shibu N V";
-
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 let checkoutData = JSON.parse(localStorage.getItem("checkoutData")) || null;
 let currentUser = null;
@@ -133,9 +112,7 @@ let currentUser = null;
 const subtotalText = document.getElementById("subtotalText");
 const deliveryText = document.getElementById("deliveryText");
 const totalText = document.getElementById("totalText");
-const upiDeepLinkBtn = document.getElementById("upiDeepLinkBtn");
-const confirmPaidBtn = document.getElementById("confirmPaidBtn");
-const utrNumberInput = document.getElementById("utrNumberInput");
+const placeTestOrderBtn = document.getElementById("placeTestOrderBtn");
 
 if (!checkoutData || !cart || cart.length === 0) {
   showToast("Cart is empty or session expired.");
@@ -149,37 +126,23 @@ onAuthStateChanged(auth, (user) => {
 });
 
 function applyDeliveryRulesAndRender() {
-  // =========================================================================
-  // TEMPORARY TESTING CONFIGURATION (Delivery Charge = ₹0 for all orders)
-  // =========================================================================
-  // PRODUCTION RULE TO RESTORE LATER:
-  // const deliveryThreshold = 3499;
-  // const standardFee = 99;
-  // checkoutData.deliveryCharge = checkoutData.subtotal >= deliveryThreshold ? 0 : standardFee;
-  // =========================================================================
-
-  // Temporary testing override:
+  // Temporary testing override: Delivery Charge = ₹0
   checkoutData.deliveryCharge = 0;
   checkoutData.totalPrice = Number(checkoutData.subtotal) + checkoutData.deliveryCharge;
 
-  // Render UI
   subtotalText.innerText = "₹" + checkoutData.subtotal;
   deliveryText.innerText = "FREE";
   totalText.innerText = "₹" + checkoutData.totalPrice;
-
-  // Build standard UPI intent deep-link with verified Payee Name "Shibu N V"
-  const note = encodeURIComponent("Order Payment");
-  const upiUrl = `upi://pay?pa=${PAYTM_UPI_ID}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${checkoutData.totalPrice}&cu=INR&tn=${note}`;
-  
-  upiDeepLinkBtn.href = upiUrl;
 }
 
-confirmPaidBtn.addEventListener("click", async () => {
-  confirmPaidBtn.disabled = true;
-  confirmPaidBtn.innerText = "Submitting Order...";
+// =========================================================================
+// TEMPORARY TESTING MODE: DIRECT ORDER CREATION
+// =========================================================================
+placeTestOrderBtn.addEventListener("click", async () => {
+  placeTestOrderBtn.disabled = true;
+  placeTestOrderBtn.innerText = "Creating Test Order...";
 
   const orderId = "EX" + Date.now().toString().slice(-6);
-  const utrNo = utrNumberInput.value.trim();
 
   const orderPayload = {
     orderId: orderId,
@@ -190,10 +153,10 @@ confirmPaidBtn.addEventListener("click", async () => {
     subtotal: checkoutData.subtotal || 0,
     deliveryCharge: checkoutData.deliveryCharge || 0,
     totalPrice: checkoutData.totalPrice || 0,
-    paymentMethod: "UPI Direct (8089979791@paytm)",
+    paymentMethod: "Testing Mode (Bypassed)",
     paymentStatus: "Pending Verification",
     orderStatus: "Pending",
-    utrNumber: utrNo || "N/A",
+    utrNumber: "TEST-MODE-BYPASS",
     courierName: "",
     trackingNumber: "",
     trackingUrl: "",
@@ -218,10 +181,10 @@ confirmPaidBtn.addEventListener("click", async () => {
     window.location.href = `order-success.html?orderId=${orderId}`;
 
   } catch (err) {
-    console.error("Error creating order:", err);
-    showToast("Failed to submit order. Please try again.");
-    confirmPaidBtn.disabled = false;
-    confirmPaidBtn.innerText = "I Have Paid";
+    console.error("Error creating test order:", err);
+    showToast("Failed to submit test order. Please try again.");
+    placeTestOrderBtn.disabled = false;
+    placeTestOrderBtn.innerText = "🧪 Place Test Order (Skip Payment)";
   }
 });
 
