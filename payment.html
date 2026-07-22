@@ -184,6 +184,11 @@ textarea{
   margin-top:8px;
   border:none;
   cursor:pointer;
+  transition:background .2s;
+}
+
+.btn:hover{
+  background:var(--brass);
 }
 
 .btn:disabled{
@@ -251,7 +256,7 @@ textarea{
 <body>
 
 <div class="header">
-  <a href="javascript:history.back()" class="back-btn" aria-label="Back">
+  <a href="checkout.html" class="back-btn" aria-label="Back">
     <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg>
   </a>
   <span class="header-title">Payment</span>
@@ -263,7 +268,7 @@ textarea{
   <h2 style="margin-top:6px;">Scan QR or Pay via UPI</h2>
 
   <div class="qr-box">
-    <img src="paytmqr.jpg" alt="Payment QR code" onerror="this.outerHTML='&lt;div class=&quot;qr-fallback&quot;&gt;QR code image not found&lt;/div&gt;'">
+    <img src="paytmqr.jpg" alt="Payment QR code" onerror="this.outerHTML='<div class=&quot;qr-fallback&quot;>QR code image not found</div>'">
     <div class="upi">8089979791@paytm</div>
   </div>
 
@@ -291,12 +296,44 @@ textarea{
 
 </div>
 
-<script>
+<!-- FIREBASE FIRESTORE INTEGRATION -->
+<script type="module">
+import { app, auth, db } from "./firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let checkoutData = JSON.parse(localStorage.getItem("checkoutData")) || null;
 
 const orderSummary = document.getElementById("orderSummary");
 const whatsappBtn = document.getElementById("whatsappBtn");
+
+const nameInput = document.getElementById("name");
+const phoneInput = document.getElementById("phone");
+const addressInput = document.getElementById("address");
+const pincodeInput = document.getElementById("pincode");
+
+// Autofill address details if user came from checkout.html
+if (checkoutData && checkoutData.address) {
+  const addr = checkoutData.address;
+  if (addr.fullName) nameInput.value = addr.fullName;
+  if (addr.phone) phoneInput.value = addr.phone.replace(/\D/g, "").slice(-10);
+  
+  let fullAddr = addr.addressLine1 || "";
+  if (addr.addressLine2) fullAddr += ", " + addr.addressLine2;
+  if (addr.city) fullAddr += ", " + addr.city;
+  if (addr.state) fullAddr += ", " + addr.state;
+  addressInput.value = fullAddr;
+
+  if (addr.zipCode) pincodeInput.value = addr.zipCode;
+}
+
+// Auto-fill logged in user info
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    if (!nameInput.value && user.displayName) nameInput.value = user.displayName;
+  }
+});
 
 function escapeHtml(str){
     const div = document.createElement("div");
@@ -305,7 +342,6 @@ function escapeHtml(str){
 }
 
 function renderOrderSummary(){
-
     if(cart.length === 0){
         orderSummary.innerHTML = `<div class="empty-note">Your cart is empty.</div>`;
         whatsappBtn.disabled = true;
@@ -354,10 +390,10 @@ function validateForm(){
     clearFieldErrors();
     let valid = true;
 
-    const name = document.getElementById("name").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const address = document.getElementById("address").value.trim();
-    const pincode = document.getElementById("pincode").value.trim();
+    const name = nameInput.value.trim();
+    const phone = phoneInput.value.trim();
+    const address = addressInput.value.trim();
+    const pincode = pincodeInput.value.trim();
 
     if(!name){
         showFieldError("name", "Enter your full name");
@@ -369,7 +405,7 @@ function validateForm(){
         valid = false;
     }
 
-    if(!address || address.length < 10){
+    if(!address || address.length < 5){
         showFieldError("address", "Enter your complete delivery address");
         valid = false;
     }
@@ -382,14 +418,49 @@ function validateForm(){
     return valid ? { name, phone, address, pincode } : null;
 }
 
-whatsappBtn.addEventListener("click", () => {
+whatsappBtn.addEventListener("click", async () => {
 
     if(cart.length === 0) return;
 
     const formData = validateForm();
     if(!formData) return;
 
-    let message = "*NEW ORDER*\n\n";
+    whatsappBtn.disabled = true;
+    whatsappBtn.innerText = "Processing Order...";
+
+    const user = auth.currentUser;
+    const orderId = "EX" + Date.now().toString().slice(-6);
+
+    const orderPayload = {
+      orderId: orderId,
+      userId: user ? user.uid : "guest",
+      userEmail: user ? user.email : "",
+      customerName: formData.name,
+      phone: formData.phone,
+      address: formData.address,
+      pincode: formData.pincode,
+      items: cart,
+      totalPrice: orderTotal,
+      paymentMethod: "UPI / QR",
+      paymentStatus: "Pending Verification",
+      orderStatus: "Placed",
+      createdAt: new Date().toISOString()
+    };
+
+    try {
+      // Save order to Firestore global orders
+      await setDoc(doc(db, "orders", orderId), orderPayload);
+
+      // Save order under user profile in Firestore
+      if (user) {
+        await setDoc(doc(db, "customers", user.uid, "orders", orderId), orderPayload);
+      }
+    } catch(err) {
+      console.error("Error saving order to Firestore:", err);
+    }
+
+    // Build WhatsApp Message
+    let message = "*NEW ORDER (#" + orderId + ")*\n\n";
     message += "Name: " + formData.name + "\n";
     message += "Phone: " + formData.phone + "\n";
     message += "Address: " + formData.address + "\n";
@@ -403,10 +474,18 @@ whatsappBtn.addEventListener("click", () => {
 
     message += "\nTotal: ₹" + orderTotal;
 
+    // Clear cart and checkout session
+    localStorage.removeItem("cart");
+    localStorage.removeItem("checkoutData");
+    localStorage.setItem("lastOrder", JSON.stringify(orderPayload));
+
+    // Open WhatsApp
     window.open("https://wa.me/919656003555?text=" + encodeURIComponent(message), "_blank");
 
-    // Clear cart after handing off to WhatsApp, so the user doesn't accidentally re-order
-    localStorage.removeItem("cart");
+    // Redirect to Order Success page
+    setTimeout(() => {
+      window.location.href = `order-success.html?orderId=${orderId}`;
+    }, 1000);
 });
 
 </script>
