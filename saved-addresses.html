@@ -1,10 +1,13 @@
-<!DOCTYPE html>  <html>  
+<!DOCTYPE html>  
+<html>  
 <head>  
 <meta charset="UTF-8">  
 <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-<title>Saved Addresses — EXAMPLE CLOTHING</title>  <link rel="preconnect" href="https://fonts.googleapis.com">  
+<title>Saved Addresses — EXAMPLE CLOTHING</title>  
+<link rel="preconnect" href="https://fonts.googleapis.com">  
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>  
-<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">  <style>  
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">  
+<style>  
 :root{  
   --ink:#161412;  
   --ivory:#f6f3ec;  
@@ -471,27 +474,35 @@ a{
   stroke-width: 2;  
 }  
   
-</style>  <base target="_blank">  
-</head>  <body>  <div class="menu-overlay" id="menuOverlay"></div>  <div class="header">  
+</style>  
+</head>  
+<body>  
+
+<div class="menu-overlay" id="menuOverlay"></div>  
+
+<div class="header">  
   <button class="menu-btn" id="menuBtn" aria-label="Open menu">  
     <span></span><span></span><span></span>  
-  </button>    <div class="logo-area">  
+  </button>    
+  <div class="logo-area">  
     <img src="logo.png" class="logo" alt="EXAMPLE CLOTHING">  
     <span class="logo-text">EXAMPLE CLOTHING</span>  
-  </div>    <div class="header-icons">  
+  </div>    
+  <div class="header-icons">  
     <a href="profile.html" class="icon-link" aria-label="Account">  
       <svg viewBox="0 0 24 24"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z"/><path d="M4.5 20.5c1.4-3.6 4.3-5.5 7.5-5.5s6.1 1.9 7.5 5.5"/></svg>  
-    </a>  <a href="wishlist.html" class="icon-link" aria-label="Wishlist">  
-  <svg viewBox="0 0 24 24"><path d="M12 20.2s-7.6-4.5-9.9-9C.6 8 2 4.5 5.4 3.7c2-.5 3.9.3 5 2 .3.4.5.9.6 1.3.1-.4.3-.9.6-1.3 1.1-1.7 3-2.5 5-2 3.4.8 4.8 4.3 3.3 7.5-2.3 4.5-9.9 9-9.9 9Z"/></svg>  
-</a>  
-
-<a href="cart.html" class="icon-link" aria-label="Cart">  
-  <svg viewBox="0 0 24 24"><path d="M4 7h16l-1.4 10.3a2 2 0 0 1-2 1.7H7.4a2 2 0 0 1-2-1.7L4 7Z"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/></svg>  
-  <span class="badge" id="cartCount">0</span>  
-</a>
-
+    </a>  
+    <a href="wishlist.html" class="icon-link" aria-label="Wishlist">  
+      <svg viewBox="0 0 24 24"><path d="M12 20.2s-7.6-4.5-9.9-9C.6 8 2 4.5 5.4 3.7c2-.5 3.9.3 5 2 .3.4.5.9.6 1.3.1-.4.3-.9.6-1.3 1.1-1.7 3-2.5 5-2 3.4.8 4.8 4.3 3.3 7.5-2.3 4.5-9.9 9-9.9 9Z"/></svg>  
+    </a>  
+    <a href="cart.html" class="icon-link" aria-label="Cart">  
+      <svg viewBox="0 0 24 24"><path d="M4 7h16l-1.4 10.3a2 2 0 0 1-2 1.7H7.4a2 2 0 0 1-2-1.7L4 7Z"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/></svg>  
+      <span class="badge" id="cartCount">0</span>  
+    </a>  
   </div>  
-</div>  <div class="side-menu" id="menu">  
+</div>  
+
+<div class="side-menu" id="menu">  
   <button class="close-btn" id="closeMenuBtn">✕</button>  
   <span class="menu-tag">Browse</span>  
   <a href="men.html" class="nav-link">Men</a>  
@@ -500,13 +511,17 @@ a{
   <a href="sale.html" class="nav-link">Sale</a>  
   <a href="accessories.html" class="nav-link">Accessories</a>  
   <a href="footwear.html" class="nav-link">Footwear</a>  
-</div>  <div class="page-head">  
+</div>  
+
+<div class="page-head">  
   <div>  
     <span class="eyebrow-dark">Account</span>  
     <h1>Saved Addresses</h1>  
   </div>  
   <button id="addAddressBtn" class="add-trigger-btn">Add New</button>  
-</div>  <div id="addressFormPanel" class="form-panel">  
+</div>  
+
+<div id="addressFormPanel" class="form-panel">  
   <h3 id="formTitle">Add New Address</h3>  
   <form id="addressForm" class="form-grid">  
     <div class="field-wrap">  
@@ -552,7 +567,11 @@ a{
       <button type="submit" id="saveFormBtn" class="btn btn-primary">Save Address</button>  
     </div>  
   </form>  
-</div>  <div id="addressList" class="address-grid"></div>  <a href="profile.html" class="back">  
+</div>  
+
+<div id="addressList" class="address-grid"></div>  
+
+<a href="profile.html" class="back">  
   <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg>  
   Back to Profile  
 </a>  
@@ -594,7 +613,7 @@ if (menuBtn) menuBtn.addEventListener("click", openMenu);
 if (closeMenuBtn) closeMenuBtn.addEventListener("click", closeMenu);  
 if (menuOverlay) menuOverlay.addEventListener("click", closeMenu);  
   
-// Cart badge (preserved reading from localStorage)
+// Cart badge
 const cartCount = document.getElementById("cartCount");  
 if (cartCount) {  
   try {  
@@ -626,7 +645,7 @@ const phoneInput = document.getElementById("phone");
 const isDefaultInput = document.getElementById("isDefault");  
   
 let allAddresses = [];  
-let editAddressId = null; // Storing document ID string instead of index
+let editAddressId = null; 
 let unsubscribeAddresses = null;
 
 // Handle authentication and load real-time addresses
@@ -648,12 +667,11 @@ onAuthStateChanged(auth, (user) => {
           ...docSnap.data()
         });
       });
-      // Sort default addresses first
       allAddresses.sort((a, b) => (b.isDefault || false) - (a.isDefault || false));
       renderAddresses();
     }, (error) => {
       console.error("Error loading addresses from Firestore:", error);
-      showState("Error loading addresses. Check database rules.");
+      showState("Error loading addresses.");
     });
   } else {
     if (unsubscribeAddresses) {
@@ -722,7 +740,7 @@ if (addAddressBtn) {
     editAddressId = null;  
     formTitle.innerText = "Add New Address";  
     addressForm.reset();  
-    isDefaultInput.checked = false;  
+    isDefaultInput.checked = (allAddresses.length === 0);  
     addressFormPanel.classList.add("open");  
     addressFormPanel.scrollIntoView({ behavior: "smooth" });  
   });  
@@ -745,7 +763,7 @@ if (addressForm) {
       return;
     }
 
-    const isDefault = isDefaultInput.checked;  
+    const isDefault = isDefaultInput.checked || (allAddresses.length === 0);  
     const addrData = {  
       fullName: fullNameInput.value.trim(),  
       addressLine1: addressLine1Input.value.trim(),  
@@ -761,7 +779,6 @@ if (addressForm) {
       const addressesRef = collection(db, "customers", user.uid, "addresses");
       const batch = writeBatch(db);
 
-      // Handle updating existing or creating new document
       let docRef;
       if (editAddressId !== null) {  
         docRef = doc(db, "customers", user.uid, "addresses", editAddressId);
@@ -769,59 +786,6 @@ if (addressForm) {
         docRef = doc(addressesRef);
       }  
 
-      // If this address is set to default, set all others to false
-      if (isDefault) {
-        allAddresses.forEach((addr) => {
-          if (addr.id !== editAddressId) {
-            const otherDocRef = doc(db, "customers", user.uid, "addresses", addr.id);
-            batch.update(otherDocRef, { isDefault: false });
-          }
-        });
-      }
-
-      batch.set(docRef, addrData);
-      await batch.commit();
-
-      addressFormPanel.classList.remove("open");  
-    editAddressId = null;
-  });  
-}  
-  
-if (addressForm) {  
-  addressForm.addEventListener("submit", async (e) => {  
-    e.preventDefault();  
-  
-    const user = auth.currentUser;
-    if (!user) {
-      alert("Please log in to add or edit addresses.");
-      return;
-    }
-
-    const isDefault = isDefaultInput.checked;  
-    const addrData = {  
-      fullName: fullNameInput.value.trim(),  
-      addressLine1: addressLine1Input.value.trim(),  
-      addressLine2: addressLine2Input.value.trim(),  
-      city: cityInput.value.trim(),  
-      state: stateInput.value.trim(),  
-      zipCode: zipCodeInput.value.trim(),  
-      phone: phoneInput.value.trim(),  
-      isDefault: isDefault  
-    };  
-  
-    try {
-      const addressesRef = collection(db, "customers", user.uid, "addresses");
-      const batch = writeBatch(db);
-
-      // Handle updating existing or creating new document
-      let docRef;
-      if (editAddressId !== null) {  
-        docRef = doc(db, "customers", user.uid, "addresses", editAddressId);
-      } else {  
-        docRef = doc(addressesRef);
-      }  
-
-      // If this address is set to default, set all others to false
       if (isDefault) {
         allAddresses.forEach((addr) => {
           if (addr.id !== editAddressId) {
@@ -838,7 +802,7 @@ if (addressForm) {
       addressForm.reset();
       editAddressId = null;
     } catch (error) {
-      console.error("Error writing address data to Firestore:", error);
+      console.error("Error saving address to Firestore:", error);
       alert("Failed to save address. Please try again.");
     }
   });  
@@ -896,5 +860,6 @@ window.deleteAddress = async function(id) {
   }  
 };  
   
-</script>  </body>  
+</script>  
+</body>  
 </html>
