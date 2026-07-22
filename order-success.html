@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Submitted — EXAMPLE CLOTHING</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --ink:#161412;
+  --ivory:#f6f3ec;
+  --ivory-dim:#eee9dd;
+  --brass:#9c7a3c;
+  --line:#e2dccb;
+  --white:#ffffff;
+}
+
+*{ margin:0; padding:0; box-sizing:border-box; }
+
+body{
+  background:var(--ivory);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  -webkit-font-smoothing:antialiased;
+}
+
+.success-card{
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:36px 24px;
+  max-width:460px;
+  width:100%;
+  text-align:center;
+  box-shadow:0 8px 30px rgba(0,0,0,.04);
+}
+
+.icon-wrap{
+  width:64px;
+  height:64px;
+  background:#fff8e1;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 18px;
+  color:#f57f17;
+}
+
+.icon-wrap svg{
+  width:32px;
+  height:32px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+h1{
+  font-family:'Libre Caslon Display',serif;
+  font-size:26px;
+  margin-bottom:10px;
+}
+
+.msg-text{
+  font-size:14px;
+  color:#666;
+  line-height:1.6;
+  margin-bottom:24px;
+}
+
+.info-box{
+  background:var(--ivory);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:16px;
+  text-align:left;
+  font-size:13px;
+  margin-bottom:24px;
+}
+
+.info-row{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:10px;
+  gap:10px;
+}
+
+.info-row:last-child{
+  margin-bottom:0;
+}
+
+.info-label{
+  color:#777;
+}
+
+.info-val{
+  font-weight:600;
+  color:var(--ink);
+  text-align:right;
+}
+
+.status-tag{
+  background:#fff3e0;
+  color:#e65100;
+  padding:2px 8px;
+  border-radius:4px;
+  font-size:12px;
+  font-weight:700;
+}
+
+.btn-group{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.btn{
+  display:block;
+  width:100%;
+  padding:14px;
+  border-radius:6px;
+  font-size:13px;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  text-decoration:none;
+  text-align:center;
+  transition:.2s;
+}
+
+.btn-primary{
+  background:var(--ink);
+  color:var(--ivory);
+}
+
+.btn-primary:hover{
+  background:var(--brass);
+}
+
+.btn-secondary{
+  background:transparent;
+  color:var(--ink);
+  border:1px solid var(--line);
+}
+
+.btn-secondary:hover{
+  background:var(--ivory-dim);
+}
+</style>
+</head>
+
+<body>
+
+<div class="success-card">
+  
+  <div class="icon-wrap">
+    <svg viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10"/>
+      <polyline points="12 6 12 12 16 14"/>
+    </svg>
+  </div>
+
+  <h1>Order Submitted!</h1>
+  <p class="msg-text">
+    Thank you for your order. Your payment will be verified by our team. Once verified, your order status will change automatically.
+  </p>
+
+  <div class="info-box">
+    <div class="info-row">
+      <span class="info-label">Order ID</span>
+      <span class="info-val" id="orderIdText">...</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Payment Status</span>
+      <span class="info-val"><span class="status-tag" id="paymentStatusText">Pending Verification</span></span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Order Status</span>
+      <span class="info-val" id="orderStatusText">Pending</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Payment Method</span>
+      <span class="info-val" id="paymentMethodText">UPI Direct (8089979791@paytm)</span>
+    </div>
+    <div class="info-row" style="border-top:1px dashed var(--line); padding-top:10px; margin-top:10px;">
+      <span class="info-label" style="font-weight:700; color:var(--ink);">Total Amount</span>
+      <span class="info-val" id="totalAmountText" style="font-size:15px; font-weight:700;">₹0</span>
+    </div>
+  </div>
+
+  <div class="btn-group">
+    <a href="my-orders.html" class="btn btn-primary">View My Orders</a>
+    <a href="index.html" class="btn btn-secondary">Continue Shopping</a>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const orderIdParam = urlParams.get("orderId");
+  const lastOrder = JSON.parse(localStorage.getItem("lastOrder")) || null;
+
+  const orderId = orderIdParam || (lastOrder ? lastOrder.orderId : "N/A");
+  const paymentStatus = (lastOrder && lastOrder.paymentStatus) ? lastOrder.paymentStatus : "Pending Verification";
+  const orderStatus = (lastOrder && lastOrder.orderStatus) ? lastOrder.orderStatus : "Pending";
+  const totalPrice = (lastOrder && lastOrder.totalPrice) ? "₹" + lastOrder.totalPrice : "₹0";
+  const paymentMethod = (lastOrder && lastOrder.paymentMethod) ? lastOrder.paymentMethod : "UPI Direct (8089979791@paytm)";
+
+  document.getElementById("orderIdText").innerText = orderId.startsWith("#") ? orderId : "#" + orderId;
+  document.getElementById("paymentStatusText").innerText = paymentStatus;
+  document.getElementById("orderStatusText").innerText = orderStatus;
+  document.getElementById("totalAmountText").innerText = totalPrice;
+  document.getElementById("paymentMethodText").innerText = paymentMethod;
+})();
+</script>
+
+</body>
+</html>
