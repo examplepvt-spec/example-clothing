@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Orders — EXAMPLE CLOTHING</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --ink:#161412;
+  --ivory:#f6f3ec;
+  --ivory-dim:#eee9dd;
+  --brass:#9c7a3c;
+  --brass-soft:#c7ab74;
+  --oxblood:#5e2430;
+  --line:#e2dccb;
+  --white:#ffffff;
+}
+
+*{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+body{
+  background:var(--ivory);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  padding-bottom:60px;
+  -webkit-font-smoothing:antialiased;
+}
+
+a{ color:inherit; text-decoration:none; }
+
+.header{
+  background:rgba(246,243,236,.95);
+  backdrop-filter:blur(10px);
+  padding:0 18px;
+  height:64px;
+  display:flex;
+  align-items:center;
+  border-bottom:1px solid var(--line);
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.back-btn{
+  width:36px;
+  height:36px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+}
+
+.back-btn:hover{ background:var(--ivory-dim); }
+
+.back-btn svg{
+  width:19px;
+  height:19px;
+  stroke:var(--ink);
+  fill:none;
+  stroke-width:1.8;
+}
+
+.header-title{
+  font-family:'Libre Caslon Display',serif;
+  font-size:20px;
+  flex:1;
+  text-align:center;
+  margin-right:36px;
+}
+
+.container{
+  max-width:600px;
+  margin:24px auto;
+  padding:0 16px;
+}
+
+.order-card{
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:20px;
+  margin-bottom:18px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.02);
+}
+
+.order-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  border-bottom:1px solid var(--line);
+  padding-bottom:12px;
+  margin-bottom:14px;
+}
+
+.order-id{
+  font-size:16px;
+  font-weight:700;
+  color:var(--ink);
+}
+
+.order-date{
+  font-size:12px;
+  color:#777;
+  margin-top:2px;
+}
+
+.badge-wrap{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:4px;
+}
+
+.tag{
+  font-size:11px;
+  font-weight:700;
+  padding:3px 8px;
+  border-radius:4px;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+}
+
+.tag-pending{ background:#fff3e0; color:#e65100; }
+.tag-confirmed{ background:#e3f2fd; color:#1565c0; }
+.tag-packed{ background:#f3e5f5; color:#7b1fa2; }
+.tag-shipped{ background:#e8f5e9; color:#2e7d32; }
+.tag-delivered{ background:#e8f5e9; color:#1b5e20; }
+.tag-cancelled{ background:#ffebee; color:#c62828; }
+
+.tag-pay-pending{ background:#f5f5f5; color:#616161; }
+.tag-pay-paid{ background:#e8f5e9; color:#2e7d32; }
+
+.items-list{
+  margin-bottom:14px;
+}
+
+.item-row{
+  display:flex;
+  justify-content:space-between;
+  font-size:13.5px;
+  margin-bottom:8px;
+  color:#444;
+}
+
+.item-row:last-child{
+  margin-bottom:0;
+}
+
+.item-name-col{
+  font-weight:500;
+}
+
+.item-meta{
+  font-size:12px;
+  color:#777;
+}
+
+.total-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-top:1px dashed var(--line);
+  padding-top:12px;
+  font-size:15px;
+  font-weight:700;
+  color:var(--ink);
+}
+
+.tracking-box{
+  background:var(--ivory);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:14px;
+  margin-top:14px;
+  font-size:13px;
+  line-height:1.6;
+}
+
+.tracking-box h4{
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  color:var(--brass);
+  margin-bottom:6px;
+}
+
+.track-link{
+  display:inline-block;
+  margin-top:8px;
+  font-weight:600;
+  color:var(--brass);
+  text-decoration:underline;
+}
+
+.state-msg{
+  text-align:center;
+  padding:60px 20px;
+  color:#888;
+  font-size:14px;
+  line-height:1.6;
+}
+
+.btn-shop{
+  display:inline-block;
+  margin-top:16px;
+  background:var(--ink);
+  color:var(--ivory);
+  padding:12px 24px;
+  border-radius:6px;
+  font-size:13px;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <a href="profile.html" class="back-btn" aria-label="Back">
+    <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg>
+  </a>
+  <span class="header-title">My Orders</span>
+</div>
+
+<div class="container" id="ordersContainer">
+  <div class="state-msg">Loading your orders...</div>
+</div>
+
+<script type="module">
+import { app, auth, db } from "./firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const ordersContainer = document.getElementById("ordersContainer");
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    const ordersRef = collection(db, "customers", user.uid, "orders");
+
+    // Real-time listener for customer's orders
+    onSnapshot(ordersRef, (snapshot) => {
+      if (snapshot.empty) {
+        ordersContainer.innerHTML = `
+          <div class="state-msg">
+            <p>You have not placed any orders yet.</p>
+            <a href="index.html" class="btn-shop">Explore Collection</a>
+          </div>
+        `;
+        return;
+      }
+
+      let ordersList = [];
+      snapshot.forEach(docSnap => {
+        ordersList.push({ id: docSnap.id, ...docSnap.data() });
+      });
+
+      // Sort in reverse chronological order (newest first)
+      ordersList.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+
+      renderOrders(ordersList);
+
+    }, (error) => {
+      console.error("Error loading orders:", error);
+      ordersContainer.innerHTML = `<div class="state-msg">Failed to load orders. Please try again later.</div>`;
+    });
+
+  } else {
+    ordersContainer.innerHTML = `
+      <div class="state-msg">
+        <p>Please log in to view your saved orders.</p>
+        <a href="login.html" class="btn-shop">Login Now</a>
+      </div>
+    `;
+  }
+});
+
+function renderOrders(orders) {
+  let html = "";
+
+  orders.forEach(order => {
+    const dateFormatted = order.createdAt 
+      ? new Date(order.createdAt).toLocaleDateString("en-IN", { day: 'numeric', month: 'short', year: 'numeric' })
+      : "Recently";
+
+    const orderStatusClass = getStatusClass(order.orderStatus);
+    const items = order.items || [];
+
+    html += `
+      <div class="order-card">
+        
+        <div class="order-head">
+          <div>
+            <div class="order-id">#${escapeHtml(order.orderId || order.id)}</div>
+            <div class="order-date">${dateFormatted}</div>
+          </div>
+          <div class="badge-wrap">
+            <span class="tag ${orderStatusClass}">${escapeHtml(order.orderStatus || 'Pending')}</span>
+            <span class="tag tag-pay-pending">${escapeHtml(order.paymentStatus || 'Pending Verification')}</span>
+          </div>
+        </div>
+
+        <div class="items-list">
+          ${items.map(item => {
+            const price = Number(item.offerPrice || item.price) || 0;
+            const qty = item.qty || 1;
+            const size = item.size ? ` (Size: ${escapeHtml(item.size)})` : '';
+            return `
+              <div class="item-row">
+                <div>
+                  <div class="item-name-col">${escapeHtml(item.name || 'Product')}${size}</div>
+                  <div class="item-meta">Qty: ${qty} × ₹${price}</div>
+                </div>
+                <div style="font-weight:600;">₹${price * qty}</div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+
+        <div class="total-row">
+          <span>Total Amount</span>
+          <span>₹${order.totalPrice || order.subtotal || 0}</span>
+        </div>
+
+        ${(order.trackingNumber || order.courierName) ? `
+          <div class="tracking-box">
+            <h4>Shipment Details</h4>
+            ${order.courierName ? `<div><strong>Courier:</strong> ${escapeHtml(order.courierName)}</div>` : ''}
+            ${order.trackingNumber ? `<div><strong>Tracking Number:</strong> ${escapeHtml(order.trackingNumber)}</div>` : ''}
+            ${order.trackingUrl ? `<a href="${escapeHtml(order.trackingUrl)}" target="_blank" class="track-link">Track Package Live →</a>` : ''}
+          </div>
+        ` : ''}
+
+      </div>
+    `;
+  });
+
+  ordersContainer.innerHTML = html;
+}
+
+function getStatusClass(status) {
+  switch ((status || '').toLowerCase()) {
+    case 'confirmed': return 'tag-confirmed';
+    case 'packed': return 'tag-packed';
+    case 'shipped': return 'tag-shipped';
+    case 'delivered': return 'tag-delivered';
+    case 'cancelled': return 'tag-cancelled';
+    default: return 'tag-pending';
+  }
+}
+
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.innerText = str || "";
+  return div.innerHTML;
+}
+</script>
+
+</body>
+</html>
