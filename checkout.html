@@ -473,7 +473,6 @@ a{ color:inherit; text-decoration:none; }
 }
 
 </style>
-<base target="_blank">
 </head>
 
 <body>
@@ -490,10 +489,7 @@ a{ color:inherit; text-decoration:none; }
   <div class="section-title">Delivery Address</div>
   <div class="card" id="addressCard">
     <div id="addressDisplay" class="address-display">
-      <p class="name">Guest User</p>
-      <p class="phone">+91 9656003555</p>
-      <p>123 Sample Street, Near City Center</p>
-      <p>Calicut, Kerala — 673001</p>
+      <p style="color:#888;">Loading address...</p>
     </div>
   </div>
 
@@ -553,9 +549,12 @@ a{ color:inherit; text-decoration:none; }
 
 <div class="toast" id="toast"></div>
 
-<script>
+<!-- FIREBASE AUTH & FIRESTORE INTEGRATION -->
+<script type="module">
+import { app, auth, db } from "./firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// Fallback address for when Firebase is not available
 const fallbackAddress = {
   fullName: "Guest User",
   phone: "+91 9656003555",
@@ -563,8 +562,7 @@ const fallbackAddress = {
   addressLine2: "Near City Center",
   city: "Calicut",
   state: "Kerala",
-  zipCode: "673001",
-  isDefault: true
+  zipCode: "673001"
 };
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -580,47 +578,73 @@ const placeOrderBtn = document.getElementById("placeOrderBtn");
 const successOverlay = document.getElementById("successOverlay");
 const addressDisplay = document.getElementById("addressDisplay");
 
-// Initialize
 if (cart.length === 0) {
   showToast("Your cart is empty. Redirecting...");
   setTimeout(() => { window.location.href = "cart.html"; }, 1500);
 } else {
   renderSummary();
-  loadAddress();
 }
 
-function loadAddress() {
-  // Try localStorage first
-  const savedAddress = localStorage.getItem("defaultAddress");
-  if (savedAddress) {
+// Fetch user address from Firebase
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
     try {
-      userAddress = JSON.parse(savedAddress);
-      displayAddress();
-      return;
-    } catch(e) {
-      console.log("Saved address error, using fallback");
+      const addressesRef = collection(db, "customers", user.uid, "addresses");
+      const snap = await getDocs(addressesRef);
+      
+      let addresses = [];
+      snap.forEach(d => addresses.push({ id: d.id, ...d.data() }));
+
+      if (addresses.length > 0) {
+        const defaultAddr = addresses.find(a => a.isDefault === true) || addresses[0];
+        userAddress = defaultAddr;
+      } else {
+        const customerSnap = await getDoc(doc(db, "customers", user.uid));
+        const custData = customerSnap.exists() ? customerSnap.data() : {};
+        userAddress = {
+          fullName: custData.name || user.displayName || "Valued Customer",
+          phone: custData.phone || user.phoneNumber || "+91 Mobile Number",
+          addressLine1: "No address added yet",
+          addressLine2: "",
+          city: "Calicut",
+          state: "Kerala",
+          zipCode: ""
+        };
+      }
+    } catch (e) {
+      console.error("Error fetching address:", e);
+      userAddress = fallbackAddress;
     }
+  } else {
+    userAddress = fallbackAddress;
   }
-  
-  // Use fallback
-  userAddress = fallbackAddress;
   displayAddress();
-}
+});
 
 function displayAddress() {
   if (!userAddress) return;
 
+  const name = userAddress.fullName || "Guest User";
+  const phone = userAddress.phone || "";
   const line1 = userAddress.addressLine1 || "";
   const line2 = userAddress.addressLine2 ? ", " + userAddress.addressLine2 : "";
   const city = userAddress.city || "";
   const state = userAddress.state ? ", " + userAddress.state : "";
+  const zip = userAddress.zipCode ? " — " + userAddress.zipCode : "";
 
   addressDisplay.innerHTML = `
-    <p class="name">${userAddress.fullName || "Guest User"}</p>
-    <p class="phone">${userAddress.phone || ""}</p>
-    <p>${line1}${line2}</p>
-    <p>${city}${state} — ${userAddress.zipCode || ""}</p>
+    <p class="name">${escapeHtml(name)}</p>
+    <p class="phone">${escapeHtml(phone)}</p>
+    <p>${escapeHtml(line1)}${escapeHtml(line2)}</p>
+    <p>${escapeHtml(city)}${escapeHtml(state)}${escapeHtml(zip)}</p>
+    <a href="saved-addresses.html" target="_self" style="display:inline-block; margin-top:10px; font-size:12px; font-weight:600; color:var(--brass); text-decoration:underline;">Change or Add Address</a>
   `;
+}
+
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.innerText = str || "";
+  return div.innerHTML;
 }
 
 function renderSummary() {
@@ -642,10 +666,10 @@ function renderSummary() {
     const div = document.createElement("div");
     div.className = "checkout-item";
     div.innerHTML = `
-      <img src="${item.image || ""}" class="item-thumb" alt="${item.name || "Item"}" onerror="this.style.visibility='hidden';">
+      <img src="${item.image || ""}" class="item-thumb" alt="${escapeHtml(item.name || "Item")}" onerror="this.style.visibility='hidden';">
       <div class="item-info">
-        <div class="item-name">${item.name || "Product"}</div>
-        <div class="item-meta">Qty: ${qty}${item.size ? " | Size: " + item.size : ""}</div>
+        <div class="item-name">${escapeHtml(item.name || "Product")}</div>
+        <div class="item-meta">Qty: ${qty}${item.size ? " | Size: " + escapeHtml(item.size) : ""}</div>
       </div>
       <div class="item-price">₹${lineTotal}</div>
     `;
@@ -674,7 +698,7 @@ function updateTotals(subtotal, delivery, total) {
   bottomTotalEl.innerText = "₹" + total;
 }
 
-function placeOrder() {
+window.placeOrder = function() {
   if (cart.length === 0) {
     showToast("Your cart is empty");
     return;
@@ -691,12 +715,12 @@ function placeOrder() {
     placeOrderBtn.disabled = false;
     placeOrderBtn.innerText = "Place Order";
   }, 800);
-}
+};
 
-function clearCart() {
+window.clearCart = function() {
   localStorage.removeItem("cart");
   cart = [];
-}
+};
 
 function showToast(text) {
   const toast = document.getElementById("toast");
@@ -711,7 +735,6 @@ successOverlay.addEventListener("click", (e) => {
     setTimeout(() => { successOverlay.style.display = "none"; }, 400);
   }
 });
-
 </script>
 
 </body>
