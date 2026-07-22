@@ -4,8 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#161412">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Checkout — EXAMPLE CLOTHING</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,36 +20,15 @@
   --oxblood:#5e2430;
   --line:#e2dccb;
   --white:#ffffff;
-  --gold:#b08d3e;
 }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
-}
-
-html{
-  touch-action:pan-y;
-  overscroll-behavior-y:none;
-}
-
-body{
-  background:var(--ivory);
-  color:var(--ink);
-  font-family:'Inter',sans-serif;
-  padding-bottom:120px;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-}
-
+*{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+body{ background:var(--ivory); color:var(--ink); font-family:'Inter',sans-serif; padding-bottom:120px; -webkit-font-smoothing:antialiased; }
 a{ color:inherit; text-decoration:none; }
 
 .header{
   background:rgba(246,243,236,.95);
   backdrop-filter:blur(10px);
-  -webkit-backdrop-filter:blur(10px);
   padding:0 18px;
   height:64px;
   display:flex;
@@ -62,416 +39,46 @@ a{ color:inherit; text-decoration:none; }
   z-index:100;
 }
 
-.back-btn{
-  width:40px;
-  height:40px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:50%;
-  transition:.3s;
-}
+.back-btn{ width:40px; height:40px; display:flex; align-items:center; justify-content:center; border-radius:50%; transition:.3s; }
+.back-btn:hover{ background:var(--ivory-dim); }
+.back-btn svg{ width:19px; height:19px; stroke:var(--ink); fill:none; stroke-width:1.8; }
 
-.back-btn:hover,
-.back-btn:active{
-  background:var(--ivory-dim);
-}
+.header-title{ font-family:'Libre Caslon Display',serif; font-size:20px; flex:1; text-align:center; margin-right:40px; }
 
-.back-btn svg{
-  width:19px;
-  height:19px;
-  stroke:var(--ink);
-  fill:none;
-  stroke-width:1.8;
-}
+.container{ padding:16px; max-width:600px; margin:0 auto; }
 
-.header-title{
-  font-family:'Libre Caslon Display',serif;
-  font-size:20px;
-  flex:1;
-  text-align:center;
-  margin-right:40px;
-}
+.section-title{ font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:2px; margin-bottom:12px; margin-top:28px; color:var(--ink); opacity:.7; }
 
-.container{
-  padding:16px;
-  max-width:600px;
-  margin:0 auto;
-}
+.card { background:var(--white); border:1px solid var(--line); border-radius:12px; padding:18px; margin-bottom:16px; }
 
-.section-title{
-  font-size:13px;
-  font-weight:700;
-  text-transform:uppercase;
-  letter-spacing:2px;
-  margin-bottom:12px;
-  margin-top:28px;
-  color:var(--ink);
-  opacity:.7;
-}
+.address-display p { font-size:14px; line-height:1.6; color:#555; }
+.address-display .name { font-weight:700; font-size:16px; color:var(--ink); margin-bottom:6px; }
+.address-display .phone { font-weight:600; color:var(--brass); margin-bottom:4px; font-size:14px; }
 
-.card {
-  background:var(--white);
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:18px;
-  margin-bottom:16px;
-  transition:.3s;
-}
+.checkout-item { display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid var(--ivory-dim); }
+.checkout-item:last-child { border-bottom:none; }
 
-.card:hover{
-  box-shadow:0 4px 16px rgba(0,0,0,.06);
-}
+.item-thumb { width:56px; height:70px; object-fit:cover; border-radius:6px; background:var(--ivory-dim); flex-shrink:0; }
+.item-info { flex:1; min-width:0; }
+.item-name { font-size:14px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--ink); }
+.item-meta { font-size:12px; color:#888; margin-top:3px; }
+.item-price { font-size:15px; font-weight:700; font-family:'Libre Caslon Display',serif; color:var(--ink); flex-shrink:0; }
 
-.address-display p {
-  font-size:14px;
-  line-height:1.6;
-  color:#555;
-}
+.summary-row { display:flex; justify-content:space-between; font-size:14px; margin-bottom:12px; color:#555; }
+.summary-row.total-row { border-top:1px dashed var(--line); padding-top:14px; margin-top:14px; font-weight:700; font-size:17px; color:var(--ink); }
 
-.address-display .name {
-  font-weight:700;
-  font-size:16px;
-  color:var(--ink);
-  margin-bottom:6px;
-}
+.free-delivery-badge { font-size:11px; background:#e2f0d9; color:#385723; padding:5px 12px; border-radius:100px; display:inline-block; margin-top:6px; font-weight:600; }
+.delivery-warning { font-size:12px; color:var(--oxblood); margin-top:6px; font-weight:500; }
 
-.address-display .phone {
-  font-weight:600;
-  color:var(--brass);
-  margin-bottom:4px;
-  font-size:14px;
-}
+.bottom-bar{ position:fixed; left:0; right:0; bottom:0; background:var(--white); padding:14px 16px; box-shadow:0 -4px 20px rgba(0,0,0,.1); display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--line); z-index:90; }
+.total-box h3{ font-size:11px; color:#888; text-transform:uppercase; letter-spacing:2px; font-weight:600; margin-bottom:3px; }
+.total-box h2{ font-family:'Libre Caslon Display',serif; font-size:26px; color:var(--ink); }
 
-.checkout-item {
-  display:flex;
-  align-items:center;
-  gap:14px;
-  padding:12px 0;
-  border-bottom:1px solid var(--ivory-dim);
-}
+.place-order-btn{ background:var(--ink); color:var(--ivory); padding:16px 32px; border-radius:8px; font-size:15px; font-weight:700; letter-spacing:.5px; border:none; cursor:pointer; transition:.3s; }
+.place-order-btn:hover{ background:var(--brass); }
 
-.checkout-item:last-child {
-  border-bottom:none;
-}
-
-.item-thumb {
-  width:56px;
-  height:70px;
-  object-fit:cover;
-  border-radius:6px;
-  background:var(--ivory-dim);
-  flex-shrink:0;
-}
-
-.item-info {
-  flex:1;
-  min-width:0;
-}
-
-.item-name {
-  font-size:14px;
-  font-weight:600;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  color:var(--ink);
-}
-
-.item-meta {
-  font-size:12px;
-  color:#888;
-  margin-top:3px;
-}
-
-.item-price {
-  font-size:15px;
-  font-weight:700;
-  font-family:'Libre Caslon Display',serif;
-  color:var(--ink);
-  flex-shrink:0;
-}
-
-.payment-option {
-  display:flex;
-  align-items:center;
-  gap:14px;
-  padding:16px;
-  border:1px solid var(--line);
-  border-radius:10px;
-  margin-bottom:10px;
-  cursor:pointer;
-  background:var(--white);
-  transition:.3s;
-}
-
-.payment-option:hover,
-.payment-option:active{
-  border-color:var(--brass-soft);
-  box-shadow:0 2px 10px rgba(0,0,0,.05);
-}
-
-.payment-option input[type="radio"] {
-  accent-color:var(--ink);
-  width:20px;
-  height:20px;
-  flex-shrink:0;
-  cursor:pointer;
-}
-
-.payment-label {
-  font-size:14px;
-  font-weight:600;
-  color:var(--ink);
-}
-
-.payment-desc{
-  font-size:12px;
-  color:#888;
-  margin-top:2px;
-}
-
-.summary-row {
-  display:flex;
-  justify-content:space-between;
-  font-size:14px;
-  margin-bottom:12px;
-  color:#555;
-}
-
-.summary-row.total-row {
-  border-top:1px dashed var(--line);
-  padding-top:14px;
-  margin-top:14px;
-  font-weight:700;
-  font-size:17px;
-  color:var(--ink);
-}
-
-.free-delivery-badge {
-  font-size:11px;
-  background:#e2f0d9;
-  color:#385723;
-  padding:5px 12px;
-  border-radius:100px;
-  display:inline-block;
-  margin-top:6px;
-  font-weight:600;
-}
-
-.delivery-warning {
-  font-size:12px;
-  color:var(--oxblood);
-  margin-top:6px;
-  font-weight:500;
-}
-
-.bottom-bar{
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:0;
-  background:var(--white);
-  padding:14px 16px;
-  box-shadow:0 -4px 20px rgba(0,0,0,.1);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-top:1px solid var(--line);
-  z-index:90;
-}
-
-.total-box h3{
-  font-size:11px;
-  color:#888;
-  text-transform:uppercase;
-  letter-spacing:2px;
-  font-weight:600;
-  margin-bottom:3px;
-}
-
-.total-box h2{
-  font-family:'Libre Caslon Display',serif;
-  font-size:26px;
-  color:var(--ink);
-}
-
-.place-order-btn{
-  background:var(--ink);
-  color:var(--ivory);
-  padding:16px 32px;
-  border-radius:8px;
-  font-size:15px;
-  font-weight:700;
-  letter-spacing:.5px;
-  border:none;
-  cursor:pointer;
-  transition:.3s;
-  position:relative;
-  overflow:hidden;
-}
-
-.place-order-btn::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:rgba(255,255,255,.1);
-  transform:translateY(100%);
-  transition:.3s;
-}
-
-.place-order-btn:hover::after,
-.place-order-btn:active::after{
-  transform:translateY(0);
-}
-
-.place-order-btn:hover,
-.place-order-btn:active{
-  transform:translateY(-1px);
-  box-shadow:0 6px 20px rgba(0,0,0,.2);
-}
-
-.place-order-btn:disabled{
-  opacity:.5;
-  cursor:not-allowed;
-  transform:none;
-}
-
-.modal-overlay {
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.6);
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
-  z-index:200;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  opacity:0;
-  transition:opacity .4s;
-}
-
-.modal-overlay.show{
-  opacity:1;
-}
-
-.success-modal {
-  background:var(--ivory);
-  border:1px solid var(--line);
-  border-radius:16px;
-  padding:36px 28px;
-  max-width:400px;
-  width:100%;
-  text-align:center;
-  box-shadow:0 20px 50px rgba(0,0,0,.2);
-  transform:scale(.9);
-  transition:transform .4s;
-}
-
-.modal-overlay.show .success-modal{
-  transform:scale(1);
-}
-
-.success-icon {
-  width:72px;
-  height:72px;
-  background:#e2f0d9;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin:0 auto 20px;
-  animation:successPop .5s ease;
-}
-
-@keyframes successPop{
-  0%{ transform:scale(0); }
-  60%{ transform:scale(1.1); }
-  100%{ transform:scale(1); }
-}
-
-.success-icon svg {
-  width:36px;
-  height:36px;
-  stroke:#385723;
-  fill:none;
-  stroke-width:2.5;
-}
-
-.success-modal h2 {
-  font-family:'Libre Caslon Display',serif;
-  font-size:26px;
-  margin-bottom:10px;
-  color:var(--ink);
-}
-
-.success-modal p {
-  font-size:14px;
-  color:#666;
-  line-height:1.7;
-  margin-bottom:28px;
-}
-
-.home-btn {
-  display:inline-block;
-  background:var(--ink);
-  color:var(--ivory);
-  padding:14px 32px;
-  border-radius:8px;
-  font-weight:600;
-  font-size:14px;
-  transition:.3s;
-  border:none;
-  cursor:pointer;
-}
-
-.home-btn:hover,
-.home-btn:active{
-  background:var(--brass);
-  transform:translateY(-2px);
-}
-
-.toast{
-  position:fixed;
-  bottom:100px;
-  left:50%;
-  transform:translateX(-50%) translateY(20px);
-  background:var(--ink);
-  color:white;
-  padding:14px 28px;
-  border-radius:100px;
-  font-size:14px;
-  font-weight:500;
-  z-index:10000;
-  opacity:0;
-  pointer-events:none;
-  transition:.4s;
-  white-space:nowrap;
-  box-shadow:0 8px 30px rgba(0,0,0,.2);
-}
-
-.toast.show{
-  opacity:1;
-  transform:translateX(-50%) translateY(0);
-}
-
-@media(max-width:480px){
-  .container{
-    padding:12px;
-  }
-  .place-order-btn{
-    padding:14px 24px;
-    font-size:14px;
-  }
-  .total-box h2{
-    font-size:22px;
-  }
-}
-
+.toast{ position:fixed; bottom:100px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--ink); color:white; padding:14px 28px; border-radius:100px; font-size:14px; font-weight:500; z-index:10000; opacity:0; pointer-events:none; transition:.4s; white-space:nowrap; }
+.toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
 </style>
 </head>
 
@@ -487,7 +94,7 @@ a{ color:inherit; text-decoration:none; }
 <div class="container">
 
   <div class="section-title">Delivery Address</div>
-  <div class="card" id="addressCard">
+  <div class="card">
     <div id="addressDisplay" class="address-display">
       <p style="color:#888;">Loading address...</p>
     </div>
@@ -495,17 +102,6 @@ a{ color:inherit; text-decoration:none; }
 
   <div class="section-title">Review Items</div>
   <div class="card" id="itemsSummary"></div>
-
-  <div class="section-title">Payment Method</div>
-  <div>
-    <label class="payment-option">
-      <input type="radio" name="payment" value="UPI" checked>
-      <div>
-        <div class="payment-label">UPI (Google Pay / PhonePe)</div>
-        <div class="payment-desc">Pay securely using any UPI app</div>
-      </div>
-    </label>
-  </div>
 
   <div class="section-title">Price Details</div>
   <div class="card">
@@ -520,7 +116,7 @@ a{ color:inherit; text-decoration:none; }
     <div id="freeDeliveryNotice" style="text-align:right;"></div>
     <div class="summary-row total-row">
       <span>Total Amount</span>
-      <span id="totalPrice" style="font-family:'Libre Caslon Display',serif; font-size:20px; font-weight:700;">₹0</span>
+      <span id="totalPrice">₹0</span>
     </div>
   </div>
 
@@ -531,25 +127,11 @@ a{ color:inherit; text-decoration:none; }
     <h3>Total</h3>
     <h2 id="bottomTotal">₹0</h2>
   </div>
-  <button class="place-order-btn" id="placeOrderBtn" onclick="placeOrder()">Place Order</button>
-</div>
-
-<div class="modal-overlay" id="successOverlay">
-  <div class="success-modal">
-    <div class="success-icon">
-      <svg viewBox="0 0 24 24">
-        <path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </div>
-    <h2>Order Placed!</h2>
-    <p>Thank you for shopping with us. Your order details and tracking link have been sent to your registered contact number.</p>
-    <a href="categories.html" class="home-btn" onclick="clearCart()">Continue Shopping</a>
-  </div>
+  <button class="place-order-btn" id="placeOrderBtn" onclick="proceedToPayment()">Proceed to Payment →</button>
 </div>
 
 <div class="toast" id="toast"></div>
 
-<!-- FIREBASE AUTH & FIRESTORE INTEGRATION -->
 <script type="module">
 import { app, auth, db } from "./firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -567,6 +149,9 @@ const fallbackAddress = {
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 let userAddress = null;
+let currentSubtotal = 0;
+let currentDeliveryCharge = 0;
+let currentTotal = 0;
 
 const itemsContainer = document.getElementById("itemsSummary");
 const subtotalPriceEl = document.getElementById("subtotalPrice");
@@ -574,8 +159,6 @@ const deliveryChargeEl = document.getElementById("deliveryCharge");
 const freeDeliveryNoticeEl = document.getElementById("freeDeliveryNotice");
 const totalPriceEl = document.getElementById("totalPrice");
 const bottomTotalEl = document.getElementById("bottomTotal");
-const placeOrderBtn = document.getElementById("placeOrderBtn");
-const successOverlay = document.getElementById("successOverlay");
 const addressDisplay = document.getElementById("addressDisplay");
 
 if (cart.length === 0) {
@@ -585,7 +168,6 @@ if (cart.length === 0) {
   renderSummary();
 }
 
-// Fetch user address from Firebase
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     try {
@@ -596,15 +178,14 @@ onAuthStateChanged(auth, async (user) => {
       snap.forEach(d => addresses.push({ id: d.id, ...d.data() }));
 
       if (addresses.length > 0) {
-        const defaultAddr = addresses.find(a => a.isDefault === true) || addresses[0];
-        userAddress = defaultAddr;
+        userAddress = addresses.find(a => a.isDefault === true) || addresses[0];
       } else {
         const customerSnap = await getDoc(doc(db, "customers", user.uid));
         const custData = customerSnap.exists() ? customerSnap.data() : {};
         userAddress = {
           fullName: custData.name || user.displayName || "Valued Customer",
-          phone: custData.phone || user.phoneNumber || "+91 Mobile Number",
-          addressLine1: "No address added yet",
+          phone: custData.phone || user.phoneNumber || "+91 9656003555",
+          addressLine1: "Please add an address",
           addressLine2: "",
           city: "Calicut",
           state: "Kerala",
@@ -612,7 +193,7 @@ onAuthStateChanged(auth, async (user) => {
         };
       }
     } catch (e) {
-      console.error("Error fetching address:", e);
+      console.error(e);
       userAddress = fallbackAddress;
     }
   } else {
@@ -623,7 +204,6 @@ onAuthStateChanged(auth, async (user) => {
 
 function displayAddress() {
   if (!userAddress) return;
-
   const name = userAddress.fullName || "Guest User";
   const phone = userAddress.phone || "";
   const line1 = userAddress.addressLine1 || "";
@@ -637,7 +217,7 @@ function displayAddress() {
     <p class="phone">${escapeHtml(phone)}</p>
     <p>${escapeHtml(line1)}${escapeHtml(line2)}</p>
     <p>${escapeHtml(city)}${escapeHtml(state)}${escapeHtml(zip)}</p>
-    <a href="saved-addresses.html" target="_self" style="display:inline-block; margin-top:10px; font-size:12px; font-weight:600; color:var(--brass); text-decoration:underline;">Change or Add Address</a>
+    <a href="saved-addresses.html" style="display:inline-block; margin-top:10px; font-size:12px; font-weight:600; color:var(--brass); text-decoration:underline;">Change or Add Address</a>
   `;
 }
 
@@ -649,19 +229,13 @@ function escapeHtml(str) {
 
 function renderSummary() {
   itemsContainer.innerHTML = "";
-  let subtotal = 0;
-
-  if (cart.length === 0) {
-    itemsContainer.innerHTML = '<p style="text-align:center; color:#888; padding:20px 0;">Your cart is empty</p>';
-    updateTotals(0, 0, 0);
-    return;
-  }
+  currentSubtotal = 0;
 
   cart.forEach(item => {
     const qty = item.qty || 1;
     const unitPrice = Number(item.offerPrice || item.price) || 0;
     const lineTotal = unitPrice * qty;
-    subtotal += lineTotal;
+    currentSubtotal += lineTotal;
 
     const div = document.createElement("div");
     div.className = "checkout-item";
@@ -677,49 +251,44 @@ function renderSummary() {
   });
 
   const deliveryThreshold = 3500;
-  let deliveryCharge = 100;
+  currentDeliveryCharge = currentSubtotal >= deliveryThreshold ? 0 : 100;
 
-  if (subtotal >= deliveryThreshold) {
-    deliveryCharge = 0;
+  if (currentDeliveryCharge === 0) {
     freeDeliveryNoticeEl.innerHTML = `<span class="free-delivery-badge">Free Delivery Applied! 🎉</span>`;
   } else {
-    const balanceNeeded = deliveryThreshold - subtotal;
-    freeDeliveryNoticeEl.innerHTML = `<span class="delivery-warning">Add ₹${balanceNeeded} more to get FREE Delivery</span>`;
+    const balance = deliveryThreshold - currentSubtotal;
+    freeDeliveryNoticeEl.innerHTML = `<span class="delivery-warning">Add ₹${balance} more to get FREE Delivery</span>`;
   }
 
-  const finalTotal = subtotal + deliveryCharge;
-  updateTotals(subtotal, deliveryCharge, finalTotal);
+  currentTotal = currentSubtotal + currentDeliveryCharge;
+  subtotalPriceEl.innerText = "₹" + currentSubtotal;
+  deliveryChargeEl.innerText = currentDeliveryCharge === 0 ? "FREE" : "₹" + currentDeliveryCharge;
+  totalPriceEl.innerText = "₹" + currentTotal;
+  bottomTotalEl.innerText = "₹" + currentTotal;
 }
 
-function updateTotals(subtotal, delivery, total) {
-  subtotalPriceEl.innerText = "₹" + subtotal;
-  deliveryChargeEl.innerText = delivery === 0 ? "FREE" : "₹" + delivery;
-  totalPriceEl.innerText = "₹" + total;
-  bottomTotalEl.innerText = "₹" + total;
-}
-
-window.placeOrder = function() {
+window.proceedToPayment = function() {
   if (cart.length === 0) {
     showToast("Your cart is empty");
     return;
   }
+  if (!userAddress || !userAddress.addressLine1) {
+    showToast("Please select a valid delivery address.");
+    return;
+  }
 
-  placeOrderBtn.disabled = true;
-  placeOrderBtn.innerText = "Processing...";
+  // Save checkout data for payment.html
+  const checkoutData = {
+    address: userAddress,
+    cart: cart,
+    subtotal: currentSubtotal,
+    deliveryCharge: currentDeliveryCharge,
+    totalPrice: currentTotal
+  };
+  localStorage.setItem("checkoutData", JSON.stringify(checkoutData));
 
-  setTimeout(() => {
-    successOverlay.style.display = "flex";
-    requestAnimationFrame(() => {
-      successOverlay.classList.add("show");
-    });
-    placeOrderBtn.disabled = false;
-    placeOrderBtn.innerText = "Place Order";
-  }, 800);
-};
-
-window.clearCart = function() {
-  localStorage.removeItem("cart");
-  cart = [];
+  // Redirect to payment.html
+  window.location.href = "payment.html";
 };
 
 function showToast(text) {
@@ -728,13 +297,6 @@ function showToast(text) {
   toast.classList.add("show");
   setTimeout(() => toast.classList.remove("show"), 2500);
 }
-
-successOverlay.addEventListener("click", (e) => {
-  if (e.target === successOverlay) {
-    successOverlay.classList.remove("show");
-    setTimeout(() => { successOverlay.style.display = "none"; }, 400);
-  }
-});
 </script>
 
 </body>
