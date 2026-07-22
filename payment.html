@@ -57,7 +57,7 @@ h2{ font-family:'Libre Caslon Display',serif; font-size:20px; margin-bottom:12px
 .btn-test:hover{ background:#1b5e20; }
 .btn-test:disabled{ opacity:.6; cursor:not-allowed; }
 
-.toast{ position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background:var(--ink); color:#fff; padding:12px 24px; border-radius:50px; font-size:13px; opacity:0; pointer-events:none; transition:.3s; z-index:1000; }
+.toast{ position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background:var(--ink); color:#fff; padding:12px 24px; border-radius:50px; font-size:13px; opacity:0; pointer-events:none; transition:.3s; z-index:1000; max-width:90%; word-break:break-word; }
 .toast.show{ opacity:1; }
 </style>
 </head>
@@ -114,7 +114,15 @@ const deliveryText = document.getElementById("deliveryText");
 const totalText = document.getElementById("totalText");
 const placeTestOrderBtn = document.getElementById("placeTestOrderBtn");
 
+// Helper to remove any 'undefined' values which crash Firestore setDoc()
+function cleanPayload(data) {
+  return JSON.parse(JSON.stringify(data, (key, value) => {
+    return value === undefined ? "" : value;
+  }));
+}
+
 if (!checkoutData || !cart || cart.length === 0) {
+  console.warn("[DEBUG] Missing checkoutData or cart in localStorage.");
   showToast("Cart is empty or session expired.");
   setTimeout(() => window.location.href = "cart.html", 1500);
 } else {
@@ -123,36 +131,45 @@ if (!checkoutData || !cart || cart.length === 0) {
 
 onAuthStateChanged(auth, (user) => {
   currentUser = user;
+  console.log("[DEBUG] Auth State Updated. Current User:", user ? user.uid : "Guest / Unauthenticated");
 });
 
 function applyDeliveryRulesAndRender() {
-  // Temporary testing override: Delivery Charge = ₹0
   checkoutData.deliveryCharge = 0;
-  checkoutData.totalPrice = Number(checkoutData.subtotal) + checkoutData.deliveryCharge;
+  checkoutData.totalPrice = Number(checkoutData.subtotal || 0) + checkoutData.deliveryCharge;
 
-  subtotalText.innerText = "₹" + checkoutData.subtotal;
+  subtotalText.innerText = "₹" + (checkoutData.subtotal || 0);
   deliveryText.innerText = "FREE";
-  totalText.innerText = "₹" + checkoutData.totalPrice;
+  totalText.innerText = "₹" + (checkoutData.totalPrice || 0);
 }
 
 // =========================================================================
-// TEMPORARY TESTING MODE: DIRECT ORDER CREATION
+// TEST ORDER CREATION WITH DETAILED LOGGING
 // =========================================================================
 placeTestOrderBtn.addEventListener("click", async () => {
   placeTestOrderBtn.disabled = true;
   placeTestOrderBtn.innerText = "Creating Test Order...";
 
+  const user = auth.currentUser || currentUser;
   const orderId = "EX" + Date.now().toString().slice(-6);
 
-  const orderPayload = {
+  console.log("=== DEBUG: ORDER CREATION PROCESS STARTED ===");
+  console.log("1. App:", app ? "Initialized" : "Missing");
+  console.log("2. Firestore DB:", db ? "Initialized" : "Missing");
+  console.log("3. User:", user ? { uid: user.uid, email: user.email } : "Guest User");
+  console.log("4. Raw CheckoutData:", checkoutData);
+
+  const rawAddress = (checkoutData && checkoutData.address) ? checkoutData.address : {};
+
+  const rawPayload = {
     orderId: orderId,
-    userId: currentUser ? currentUser.uid : "guest",
-    userEmail: currentUser ? currentUser.email : (checkoutData.address && checkoutData.address.email ? checkoutData.address.email : "guest@example.com"),
-    address: checkoutData.address || {},
-    items: checkoutData.cart || cart,
-    subtotal: checkoutData.subtotal || 0,
-    deliveryCharge: checkoutData.deliveryCharge || 0,
-    totalPrice: checkoutData.totalPrice || 0,
+    userId: user ? user.uid : "guest",
+    userEmail: user ? (user.email || "guest@example.com") : (rawAddress.email || "guest@example.com"),
+    address: rawAddress,
+    items: (checkoutData && checkoutData.cart && checkoutData.cart.length > 0) ? checkoutData.cart : cart,
+    subtotal: checkoutData ? Number(checkoutData.subtotal || 0) : 0,
+    deliveryCharge: checkoutData ? Number(checkoutData.deliveryCharge || 0) : 0,
+    totalPrice: checkoutData ? Number(checkoutData.totalPrice || 0) : 0,
     paymentMethod: "Testing Mode (Bypassed)",
     paymentStatus: "Pending Verification",
     orderStatus: "Pending",
@@ -163,26 +180,44 @@ placeTestOrderBtn.addEventListener("click", async () => {
     createdAt: new Date().toISOString()
   };
 
-  try {
-    // 1. Save to Global Orders (Admin view)
-    await setDoc(doc(db, "orders", orderId), orderPayload);
+  // Clean payload to ensure no 'undefined' fields
+  const orderPayload = cleanPayload(rawPayload);
+  console.log("5. Sanitized Order Payload:", orderPayload);
 
-    // 2. Save to User Orders (Customer view)
-    if (currentUser) {
-      await setDoc(doc(db, "customers", currentUser.uid, "orders", orderId), orderPayload);
+  try {
+    // 1. Write to Global Orders collection
+    console.log(`6. Attempting write to 'orders/${orderId}'...`);
+    const globalOrderRef = doc(db, "orders", orderId);
+    await setDoc(globalOrderRef, orderPayload);
+    console.log("✅ Global Order written successfully!");
+
+    // 2. Write to Customer Orders subcollection if user is logged in
+    if (user && user.uid && user.uid !== "guest") {
+      console.log(`7. Attempting write to 'customers/${user.uid}/orders/${orderId}'...`);
+      const userOrderRef = doc(db, "customers", user.uid, "orders", orderId);
+      await setDoc(userOrderRef, orderPayload);
+      console.log("✅ Customer Order written successfully!");
+    } else {
+      console.log("ℹ️ Guest user detected: Skipped customer subcollection write.");
     }
 
-    // 3. Clear customer's cart and checkout session
+    // 3. Clear customer session
     localStorage.removeItem("cart");
     localStorage.removeItem("checkoutData");
     localStorage.setItem("lastOrder", JSON.stringify(orderPayload));
 
-    // 4. Redirect to Order Success page
+    console.log("=== DEBUG: ORDER SUCCESSFUL! Redirecting... ===");
     window.location.href = `order-success.html?orderId=${orderId}`;
 
   } catch (err) {
-    console.error("Error creating test order:", err);
-    showToast("Failed to submit test order. Please try again.");
+    console.error("=== ❌ FIRESTORE WRITE ERROR ===");
+    console.error("Error Code:", err.code);
+    console.error("Error Message:", err.message);
+    console.error("Full Error Stack:", err);
+
+    const exactError = err.code ? `[${err.code}] ${err.message}` : (err.message || String(err));
+    showToast("Firebase Error: " + exactError);
+
     placeTestOrderBtn.disabled = false;
     placeTestOrderBtn.innerText = "🧪 Place Test Order (Skip Payment)";
   }
@@ -192,7 +227,7 @@ function showToast(msg) {
   const toast = document.getElementById("toast");
   toast.innerText = msg;
   toast.classList.add("show");
-  setTimeout(() => toast.classList.remove("show"), 3000);
+  setTimeout(() => toast.classList.remove("show"), 5000);
 }
 </script>
 
