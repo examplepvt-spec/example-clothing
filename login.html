@@ -406,14 +406,14 @@ async function submit(){
   loginBtn.disabled = true;
   loginBtn.classList.add("loading");
 
-  try{
-    console.log("Before Login");
+   try{
     await login(email, password);
-    console.log("After Login");
-    console.log("Login User:", await import("./firebase.js").then(m => m.auth.currentUser));
+    
+    // Firebase auth state save ആകാൻ കാത്തിരിക്കുക
+    await new Promise(resolve => setTimeout(resolve, 1500));
     
     showMsg("Login successful! Redirecting…", "ok");
-    setTimeout(() => { window.location.href = "index.html"; }, 800);
+    window.location.href = "index.html";
   }
 
   
