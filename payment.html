@@ -124,7 +124,7 @@ import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/f
 import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const PAYTM_UPI_ID = "8089979791@paytm";
-const STORE_NAME = "EXAMPLE CLOTHING";
+const PAYEE_NAME = "Shibu N V";
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 let checkoutData = JSON.parse(localStorage.getItem("checkoutData")) || null;
@@ -167,9 +167,9 @@ function applyDeliveryRulesAndRender() {
   deliveryText.innerText = "FREE";
   totalText.innerText = "₹" + checkoutData.totalPrice;
 
-  // Build standard UPI intent deep-link with the updated total
-  const note = encodeURIComponent("Payment for EXAMPLE CLOTHING");
-  const upiUrl = `upi://pay?pa=${PAYTM_UPI_ID}&pn=${encodeURIComponent(STORE_NAME)}&am=${checkoutData.totalPrice}&cu=INR&tn=${note}`;
+  // Build standard UPI intent deep-link with verified Payee Name "Shibu N V"
+  const note = encodeURIComponent("Order Payment");
+  const upiUrl = `upi://pay?pa=${PAYTM_UPI_ID}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${checkoutData.totalPrice}&cu=INR&tn=${note}`;
   
   upiDeepLinkBtn.href = upiUrl;
 }
