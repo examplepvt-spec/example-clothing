@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shop &amp; Search — EXAMPLE CLOTHING</title>
+<title>Product Details — EXAMPLE CLOTHING</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,730 +21,581 @@
   --white:#ffffff;
 }
 
-*{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
 body{
   background:var(--ivory);
   color:var(--ink);
   font-family:'Inter',sans-serif;
   -webkit-font-smoothing:antialiased;
-  padding-bottom:80px;
+  padding-bottom:40px;
 }
-a{ color:inherit; text-decoration:none; }
 
-h1, h2, h3{
+h1{
   font-family:'Libre Caslon Display',serif;
   font-weight:400;
 }
 
-/* HEADER */
+a{
+  color:inherit;
+}
+
+/* ---------- HEADER ---------- */
+
 .header{
-  position:sticky; top:0; width:100%; height:68px;
-  background:rgba(246,243,236,.95); backdrop-filter:blur(10px);
-  display:flex; align-items:center; justify-content:space-between; padding:0 18px; z-index:1000;
+  position:sticky;
+  top:0;
+  width:100%;
+  height:68px;
+  background:rgba(246,243,236,.95);
+  backdrop-filter:blur(10px);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 18px;
+  z-index:1000;
   border-bottom:1px solid var(--line);
 }
-.logo-text{ font-family:'Libre Caslon Display',serif; font-size:20px; font-weight:400; }
 
-.header-icons{ display:flex; align-items:center; gap:8px; }
-.icon-link{
-  position:relative; width:38px; height:38px; display:flex; align-items:center;
-  justify-content:center; border-radius:50%; transition:background .2s;
+.back-btn{
+  width:38px;
+  height:38px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  text-decoration:none;
 }
-.icon-link:hover{ background:var(--ivory-dim); }
-.icon-link svg{ width:20px; height:20px; stroke:var(--ink); fill:none; stroke-width:1.6; }
+
+.back-btn:hover{
+  background:var(--ivory-dim);
+}
+
+.back-btn svg{
+  width:20px;
+  height:20px;
+  stroke:var(--ink);
+  fill:none;
+  stroke-width:1.8;
+}
+
+.header-title{
+  font-family:'Libre Caslon Display',serif;
+  font-size:16px;
+  flex:1;
+  text-align:center;
+}
+
+.cart-icon{
+  position:relative;
+  width:38px;
+  height:38px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  text-decoration:none;
+}
+
+.cart-icon:hover{
+  background:var(--ivory-dim);
+}
+
+.cart-icon svg{
+  width:20px;
+  height:20px;
+  stroke:var(--ink);
+  fill:none;
+  stroke-width:1.6;
+}
+
 .badge{
-  position:absolute; top:0; right:0; background:var(--brass); color:var(--white);
-  min-width:16px; height:16px; padding:0 3px; border-radius:50%; font-size:10px; font-weight:700;
-  display:flex; align-items:center; justify-content:center;
+  position:absolute;
+  top:0;
+  right:0;
+  background:var(--brass);
+  color:var(--white);
+  min-width:16px;
+  height:16px;
+  padding:0 3px;
+  border-radius:50%;
+  font-size:10px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
-/* SEARCH HERO */
-.search-hero{
-  background:var(--white); border-bottom:1px solid var(--line); padding:30px 20px 24px; text-align:center;
-}
-.search-hero h1{ font-size:clamp(28px, 4vw, 40px); margin-bottom:14px; }
+/* ---------- SLIDER ---------- */
 
-.search-input-wrap{
-  position:relative; max-width:550px; margin:0 auto; display:flex; align-items:center;
-}
-.search-input-wrap svg{
-  position:absolute; left:16px; width:18px; height:18px; stroke:var(--brass); fill:none; stroke-width:2;
-}
-.search-input{
-  width:100%; padding:14px 44px 14px 46px; background:var(--ivory);
-  border:1px solid var(--line); border-radius:100px; color:var(--ink);
-  font-size:14px; font-family:'Inter',sans-serif; outline:none; transition:all .2s;
-}
-.search-input:focus{
-  border-color:var(--brass); background:var(--white);
-  box-shadow:0 0 15px rgba(156,122,60,0.15);
-}
-.clear-search-btn{
-  position:absolute; right:14px; background:none; border:none; color:#888;
-  font-size:18px; cursor:pointer; display:none; padding:2px;
-}
-.clear-search-btn.show{ display:block; }
-
-/* MAIN LAYOUT GRID */
-.layout{
-  max-width:1200px; margin:24px auto; padding:0 18px;
-  display:grid; grid-template-columns:1fr; gap:24px;
-}
-@media(min-width:992px){
-  .layout{ grid-template-columns:250px 1fr; }
+.slider{
+  position:relative;
+  background:var(--ivory-dim);
+  overflow:hidden;
 }
 
-/* SIDEBAR & MOBILE DRAWER */
-.filter-sidebar{
-  background:var(--white); border:1px solid var(--line); border-radius:10px; padding:20px;
-  height:fit-content; position:sticky; top:88px;
+.slider img{
+  width:100%;
+  height:420px;
+  object-fit:contain;
+  background:var(--ivory-dim);
+  display:block;
 }
 
-@media(max-width:991px){
-  .filter-sidebar{
-    position:fixed; top:0; left:-102%; width:min(320px, 86vw); height:100vh; z-index:2000;
-    border-radius:0; overflow-y:auto; transition:left .3s ease; box-shadow:10px 0 30px rgba(0,0,0,0.15);
-  }
-  .filter-sidebar.open{ left:0; }
-  .drawer-overlay{
-    position:fixed; inset:0; background:rgba(0,0,0,0.4); backdrop-filter:blur(3px); z-index:1900;
-    opacity:0; visibility:hidden; transition:all .3s;
-  }
-  .drawer-overlay.open{ opacity:1; visibility:visible; }
+.slide-btn{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  width:38px;
+  height:38px;
+  border:none;
+  border-radius:50%;
+  background:var(--white);
+  box-shadow:0 2px 8px rgba(0,0,0,.12);
+  font-size:22px;
+  cursor:pointer;
+  color:var(--ink);
 }
 
-.filter-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid var(--line); }
-.filter-title{ font-family:'Libre Caslon Display',serif; font-size:20px; }
-.clear-all-btn{ background:none; border:none; color:var(--brass); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; cursor:pointer; }
+#prev{ left:14px; }
+#next{ right:14px; }
 
-.filter-group{ margin-bottom:20px; border-bottom:1px solid var(--ivory-dim); padding-bottom:16px; }
-.filter-group:last-child{ border-bottom:none; margin-bottom:0; padding-bottom:0; }
-.group-label{ font-size:11px; text-transform:uppercase; letter-spacing:1.5px; font-weight:700; color:var(--brass); margin-bottom:10px; display:block; }
-
-.checkbox-list{ display:flex; flex-direction:column; gap:8px; max-height:160px; overflow-y:auto; }
-.checkbox-item{ display:flex; align-items:center; gap:8px; font-size:13px; color:var(--ink); cursor:pointer; }
-.checkbox-item input[type="checkbox"]{ accent-color:var(--brass); width:15px; height:15px; cursor:pointer; }
-
-.size-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:6px; }
-.size-chip{
-  border:1px solid var(--line); background:var(--white); padding:8px 0; text-align:center;
-  font-size:12px; font-weight:600; border-radius:4px; cursor:pointer; transition:all .2s;
-}
-.size-chip.selected{ background:var(--ink); color:var(--ivory); border-color:var(--ink); }
-
-.price-inputs{ display:flex; align-items:center; gap:8px; }
-.price-field{ width:100%; padding:9px; border:1px solid var(--line); border-radius:4px; font-size:13px; font-family:inherit; outline:none; }
-
-/* TOP CONTROLS */
-.top-controls{
-  display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;
-  margin-bottom:18px; padding-bottom:12px; border-bottom:1px solid var(--line);
-}
-.results-count{ font-size:13px; color:#666; }
-.results-count strong{ color:var(--ink); }
-
-.mobile-filter-trigger{
-  display:inline-flex; align-items:center; gap:6px; background:var(--white); border:1px solid var(--line);
-  padding:8px 14px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer;
-}
-@media(min-width:992px){ .mobile-filter-trigger{ display:none; } }
-
-.sort-select{
-  background:var(--white); border:1px solid var(--line); padding:8px 12px; border-radius:6px;
-  font-size:13px; font-family:inherit; outline:none; cursor:pointer;
+.counter{
+  position:absolute;
+  bottom:16px;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(22,20,18,.75);
+  color:var(--ivory);
+  padding:5px 14px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:600;
 }
 
-/* PRODUCT CARDS */
-.products-grid{
-  display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:18px;
+/* ---------- DETAILS ---------- */
+
+.details{
+  padding:24px 20px 0;
 }
 
-.product-card{
-  background:var(--white); border:1px solid var(--line); border-radius:8px; overflow:hidden;
-  display:flex; flex-direction:column; position:relative; transition:transform .2s, box-shadow .2s;
-}
-.product-card:hover{ transform:translateY(-3px); box-shadow:0 8px 20px rgba(0,0,0,0.04); }
-
-.card-media{ position:relative; aspect-ratio:4/5; overflow:hidden; background:var(--ivory-dim); }
-.card-media img{ width:100%; height:100%; object-fit:cover; transition:transform .4s; }
-.product-card:hover .card-media img{ transform:scale(1.04); }
-
-.badge-tag{
-  position:absolute; top:10px; left:10px; background:rgba(22,20,18,0.85);
-  color:var(--ivory); font-size:9px; letter-spacing:1px; text-transform:uppercase; padding:4px 8px; font-weight:700; border-radius:3px;
+.eyebrow{
+  font-size:11px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--brass);
+  font-weight:700;
+  display:block;
+  margin-bottom:8px;
 }
 
-.card-body{ padding:16px; display:flex; flex-direction:column; flex:1; text-align:center; }
-.brand-name{ font-size:10px; text-transform:uppercase; letter-spacing:1.5px; color:var(--brass); font-weight:700; margin-bottom:4px; }
-.product-title{ font-family:'Libre Caslon Display',serif; font-size:18px; line-height:1.2; margin-bottom:8px; color:var(--ink); }
-
-.price-row{ display:flex; align-items:baseline; justify-content:center; gap:8px; margin-top:auto; margin-bottom:12px; }
-.price-curr{ font-size:18px; font-weight:700; font-family:'Libre Caslon Display',serif; color:var(--ink); }
-.price-old{ font-size:13px; text-decoration:line-through; color:#999; }
-
-.view-link{
-  display:block; width:100%; padding:10px; background:var(--ink); color:var(--ivory); text-align:center;
-  font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:1px; border-radius:4px; transition:background .2s;
+h1#name{
+  font-size:26px;
+  line-height:1.25;
 }
-.view-link:hover{ background:var(--brass); }
 
-/* EMPTY STATE */
-.empty-state{
-  text-align:center; padding:60px 20px; grid-column:1/-1; background:var(--white); border:1px solid var(--line); border-radius:10px;
+.price-box{
+  display:flex;
+  align-items:baseline;
+  gap:12px;
+  margin:16px 0 4px;
 }
-.empty-state h3{ font-size:24px; margin-bottom:6px; }
-.empty-state p{ font-size:13px; color:#777; margin-bottom:18px; }
 
-/* LOAD MORE */
-.load-more-wrap{ text-align:center; margin-top:30px; grid-column:1/-1; }
-.load-more-btn{
-  background:var(--white); border:1px solid var(--ink); color:var(--ink); padding:12px 30px;
-  font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase; cursor:pointer; border-radius:6px; transition:all .2s;
+.old-price{
+  font-size:17px;
+  color:#999;
+  text-decoration:line-through;
 }
-.load-more-btn:hover{ background:var(--ink); color:var(--ivory); }
+
+.price{
+  font-size:28px;
+  font-weight:700;
+  font-family:'Libre Caslon Display',serif;
+}
+
+.discount{
+  font-size:14px;
+  font-weight:700;
+  color:var(--oxblood);
+  margin-bottom:10px;
+}
+
+h3.section-label{
+  font-size:12px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:#666;
+  font-weight:700;
+  margin:22px 0 12px;
+}
+
+.sizes{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.sizes button{
+  min-width:52px;
+  height:52px;
+  padding:0 10px;
+  border:1px solid var(--line);
+  border-radius:6px;
+  background:var(--white);
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  color:var(--ink);
+  transition:.2s;
+}
+
+.sizes button:hover,
+.sizes button.selected{
+  background:var(--ink);
+  color:var(--ivory);
+  border-color:var(--ink);
+}
+
+.info{
+  margin:20px 0 0;
+  font-size:14px;
+  color:#666;
+  font-weight:500;
+}
+
+.btn{
+  display:block;
+  width:100%;
+  padding:17px;
+  margin-top:12px;
+  text-align:center;
+  text-decoration:none;
+  border-radius:6px;
+  font-weight:600;
+  font-size:15px;
+  letter-spacing:.3px;
+  border:none;
+  box-sizing:border-box;
+  cursor:pointer;
+}
+
+#wishlist{
+  background:var(--white);
+  color:var(--ink);
+  border:1px solid var(--line);
+}
+
+#addToCart{
+  background:var(--ink);
+  color:var(--ivory);
+}
+
+#addToCart:disabled{
+  background:#bbb;
+  cursor:not-allowed;
+}
+
+#whatsapp{
+  background:#25D366;
+  color:#fff;
+}
+
+.action-row{
+  margin-top:24px;
+  padding-bottom:10px;
+}
+
+.error-banner{
+  margin:60px 20px;
+  text-align:center;
+  color:#666;
+}
+
+.toast{
+  position:fixed;
+  bottom:24px;
+  left:50%;
+  transform:translateX(-50%) translateY(20px);
+  background:var(--ink);
+  color:var(--ivory);
+  padding:14px 22px;
+  border-radius:6px;
+  font-size:14px;
+  font-weight:600;
+  opacity:0;
+  pointer-events:none;
+  transition:.3s;
+  z-index:3000;
+  white-space:nowrap;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
-<header class="header">
-  <a href="index.html" class="logo-text">EXAMPLE CLOTHING</a>
-  <div class="header-icons">
-    <a href="profile.html" class="icon-link" aria-label="Account">
-      <svg viewBox="0 0 24 24"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z"/><path d="M4.5 20.5c1.4-3.6 4.3-5.5 7.5-5.5s6.1 1.9 7.5 5.5"/></svg>
-    </a>
-    <a href="cart.html" class="icon-link" aria-label="Cart">
-      <svg viewBox="0 0 24 24"><path d="M4 7h16l-1.4 10.3a2 2 0 0 1-2 1.7H7.4a2 2 0 0 1-2-1.7L4 7Z"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/></svg>
-      <span class="badge" id="cartCount">0</span>
-    </a>
-  </div>
-</header>
-
-<!-- SEARCH HERO -->
-<section class="search-hero">
-  <h1>Search Collection</h1>
-  <div class="search-input-wrap">
-    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <input type="text" id="searchInput" class="search-input" placeholder="Search by product name, SKU, brand, category..." autocomplete="off">
-    <button class="clear-search-btn" id="clearSearchBtn">&times;</button>
-  </div>
-</section>
-
-<!-- MAIN LAYOUT -->
-<div class="layout">
-
-  <div class="drawer-overlay" id="drawerOverlay"></div>
-
-  <!-- SIDEBAR FILTERS -->
-  <aside class="filter-sidebar" id="filterSidebar">
-    <div class="filter-header">
-      <span class="filter-title">Filters</span>
-      <button class="clear-all-btn" onclick="clearAllFilters()">Clear All</button>
-    </div>
-
-    <!-- Category -->
-    <div class="filter-group">
-      <span class="group-label">Category</span>
-      <div class="checkbox-list" id="categoryFilterList"></div>
-    </div>
-
-    <!-- Brand -->
-    <div class="filter-group">
-      <span class="group-label">Brand</span>
-      <div class="checkbox-list" id="brandFilterList"></div>
-    </div>
-
-    <!-- Size Filter -->
-    <div class="filter-group">
-      <span class="group-label">Size</span>
-      <div class="size-grid">
-        <div class="size-chip" data-size="XS" onclick="toggleSizeFilter(this, 'XS')">XS</div>
-        <div class="size-chip" data-size="S" onclick="toggleSizeFilter(this, 'S')">S</div>
-        <div class="size-chip" data-size="M" onclick="toggleSizeFilter(this, 'M')">M</div>
-        <div class="size-chip" data-size="L" onclick="toggleSizeFilter(this, 'L')">L</div>
-        <div class="size-chip" data-size="XL" onclick="toggleSizeFilter(this, 'XL')">XL</div>
-        <div class="size-chip" data-size="XXL" onclick="toggleSizeFilter(this, 'XXL')">XXL</div>
-      </div>
-    </div>
-
-    <!-- Price Range -->
-    <div class="filter-group">
-      <span class="group-label">Price Range (₹)</span>
-      <div class="price-inputs">
-        <input type="number" id="minPriceInput" class="price-field" placeholder="Min" min="0">
-        <span style="color:#888;">–</span>
-        <input type="number" id="maxPriceInput" class="price-field" placeholder="Max" min="0">
-      </div>
-    </div>
-
-    <!-- Stock Toggle -->
-    <div class="filter-group">
-      <label class="checkbox-item">
-        <input type="checkbox" id="inStockCheckbox" onchange="handleStockChange()">
-        <span>In Stock Only</span>
-      </label>
-    </div>
-  </aside>
-
-  <!-- CONTENT -->
-  <main>
-    <div class="top-controls">
-      <div class="results-count" id="resultsCount">Showing <strong>0</strong> products</div>
-      
-      <div style="display:flex; gap:10px;">
-        <button class="mobile-filter-trigger" id="mobileFilterTrigger">⚙️ Filters</button>
-
-        <select id="sortSelect" class="sort-select" onchange="handleSortChange(this.value)">
-          <option value="newest">Sort: Newest First</option>
-          <option value="featured">Sort: Featured</option>
-          <option value="price-low">Price: Low to High</option>
-          <option value="price-high">Price: High to Low</option>
-          <option value="name-asc">Name: A to Z</option>
-          <option value="name-desc">Name: Z to A</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- PRODUCTS GRID -->
-    <div class="products-grid" id="productsGrid"></div>
-
-    <!-- LOAD MORE -->
-    <div class="load-more-wrap" id="loadMoreWrap" style="display:none;">
-      <button class="load-more-btn" onclick="loadMoreProducts()">Load More Products</button>
-    </div>
-  </main>
-
+<div class="header">
+  <a href="javascript:history.back()" class="back-btn" aria-label="Back">
+    <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg>
+  </a>
+  <span class="header-title">EXAMPLE CLOTHING</span>
+  <a href="cart.html" class="cart-icon" aria-label="Cart">
+    <svg viewBox="0 0 24 24"><path d="M4 7h16l-1.4 10.3a2 2 0 0 1-2 1.7H7.4a2 2 0 0 1-2-1.7L4 7Z"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/></svg>
+    <span class="badge" id="cartCount">0</span>
+  </a>
 </div>
 
+<div id="productWrap">
+
+<div class="slider">
+  <img id="productImage" src="" alt="Product image">
+  <button id="prev" class="slide-btn" aria-label="Previous image">‹</button>
+  <button id="next" class="slide-btn" aria-label="Next image">›</button>
+  <div class="counter"><span id="current">1</span> / <span id="total">1</span></div>
+</div>
+
+<div class="details">
+
+  <span class="eyebrow">Genuine Brand</span>
+  <h1 id="name"></h1>
+
+  <div class="price-box">
+    <span class="old-price" id="oldPrice"></span>
+    <span class="price" id="price"></span>
+  </div>
+
+  <div class="discount" id="discount"></div>
+
+  <h3 class="section-label">Select Size</h3>
+  <div class="sizes" id="sizeRow">
+    <button id="sizeXS" data-size="XS">XS</button>
+    <button id="sizeS" data-size="S">S</button>
+    <button id="sizeM" data-size="M">M</button>
+    <button id="sizeL" data-size="L">L</button>
+    <button id="sizeXL" data-size="XL">XL</button>
+    <button id="sizeXXL" data-size="XXL">XXL</button>
+  </div>
+
+  <div class="info">Barcode: <span id="barcode"></span></div>
+
+  <div class="action-row">
+    <button class="btn" id="wishlist">♡ Add to Wishlist</button>
+    <button class="btn" id="addToCart">Add To Cart</button>
+    <a class="btn" href="#" id="whatsapp" target="_blank" rel="noopener">WhatsApp Order</a>
+  </div>
+
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
 <script type="module">
+
 import { db } from "./firebase.js";
-import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const PAGE_SIZE = 20;
+import {
+  doc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-let allProducts = [];
-let filteredProducts = [];
-let displayedCount = PAGE_SIZE;
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
 
-let filters = {
-  searchQuery: "",
-  categories: [],
-  brands: [],
-  sizes: [],
-  minPrice: null,
-  maxPrice: null,
-  inStockOnly: false,
-  sort: "newest"
-};
+const productWrap = document.getElementById("productWrap");
+const toast = document.getElementById("toast");
 
-const searchInput = document.getElementById("searchInput");
-const clearSearchBtn = document.getElementById("clearSearchBtn");
-const productsGrid = document.getElementById("productsGrid");
-const resultsCount = document.getElementById("resultsCount");
-const loadMoreWrap = document.getElementById("loadMoreWrap");
-const categoryFilterList = document.getElementById("categoryFilterList");
-const brandFilterList = document.getElementById("brandFilterList");
-const minPriceInput = document.getElementById("minPriceInput");
-const maxPriceInput = document.getElementById("maxPriceInput");
-const inStockCheckbox = document.getElementById("inStockCheckbox");
-const sortSelect = document.getElementById("sortSelect");
+function showToast(msg){
+  toast.innerText = msg;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2200);
+}
 
-// Mobile Drawer Toggle
-const mobileFilterTrigger = document.getElementById("mobileFilterTrigger");
-const filterSidebar = document.getElementById("filterSidebar");
-const drawerOverlay = document.getElementById("drawerOverlay");
+function showError(msg){
+  productWrap.innerHTML = `<div class="error-banner"><h3>${msg}</h3></div>`;
+}
 
-mobileFilterTrigger?.addEventListener("click", () => {
-  filterSidebar.classList.add("open");
-  drawerOverlay.classList.add("open");
-});
-drawerOverlay?.addEventListener("click", () => {
-  filterSidebar.classList.remove("open");
-  drawerOverlay.classList.remove("open");
-});
-
-// Update Cart Badge from localStorage
-function updateCartBadge() {
+function updateCartCount(){
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
   let totalQty = 0;
-  cart.forEach(i => totalQty += i.qty || 1);
+  cart.forEach(item => { totalQty += item.qty || 1; });
   document.getElementById("cartCount").innerText = totalQty;
 }
-updateCartBadge();
 
-// Helper to safely extract stock for a specific size (supports xsStock, sStock, etc.)
-function getStockForSize(product, size) {
-  const key = size.toLowerCase() + "Stock";
-  if (key in product) return Number(product[key]) || 0;
-  if (product.stock && typeof product.stock === 'object') return Number(product.stock[size]) || 0;
-  if (product.sizes && typeof product.sizes === 'object') return Number(product.sizes[size]) || 0;
-  if (typeof product.stock === 'number') return product.stock;
-  return 0;
-}
+updateCartCount();
 
-function getTotalStock(product) {
-  let total = 0;
-  ['XS', 'S', 'M', 'L', 'XL', 'XXL'].forEach(size => {
-    total += getStockForSize(product, size);
-  });
-  if (total > 0) return total;
-  if (typeof product.stock === 'number') return product.stock;
-  return 0;
-}
+if(!id){
+  showError("No product specified.");
+} else {
 
-// ---------------------------------------------------------------------------
-// 1. FETCH FIRESTORE CATALOG
-// ---------------------------------------------------------------------------
-async function initProductModule() {
   try {
-    const snap = await getDocs(collection(db, "products"));
-    allProducts = [];
+    const docRef = doc(db, "products", id);
+    const docSnap = await getDoc(docRef);
 
-    snap.forEach(docSnap => {
-      const data = docSnap.data();
-      allProducts.push({
-        id: docSnap.id,
-        name: data.name || "Untitled Product",
-        sku: data.sku || data.barcode || "",
-        brand: data.brand || "EXAMPLE",
-        category: data.category || "Uncategorized",
-        tags: Array.isArray(data.tags) ? data.tags : [],
-        keywords: Array.isArray(data.keywords) ? data.keywords : [],
-        price: Number(data.price) || 0,
-        offerPrice: data.offerPrice ? Number(data.offerPrice) : null,
-        xsStock: data.xsStock,
-        sStock: data.sStock,
-        mStock: data.mStock,
-        lStock: data.lStock,
-        xlStock: data.xlStock,
-        xxlStock: data.xxlStock,
-        stock: data.stock,
-        sizes: data.sizes,
-        isFeatured: data.isFeatured === true,
-        image: data.image || "hero-poster.jpg",
-        createdAt: data.createdAt || new Date().toISOString()
+    if(!docSnap.exists()){
+      showError("This product could not be found.");
+    } else {
+
+      const product = docSnap.data();
+      let selectedSize = null;
+
+      // ---- Images ----
+      const images = [
+        product.image?.replace("/upload/","/upload/f_auto,q_auto,w_900/"),
+        product.image2?.replace("/upload/","/upload/f_auto,q_auto,w_900/"),
+        product.image3?.replace("/upload/","/upload/f_auto,q_auto,w_900/")
+      ].filter(Boolean);
+
+      let currentImage = 0;
+      const imageElement = document.getElementById("productImage");
+
+      if(images.length > 0){
+        imageElement.src = images[0];
+        images.forEach(src => { const img = new Image(); img.src = src; });
+      }
+
+      document.getElementById("total").innerText = images.length || 1;
+
+      document.getElementById("next").onclick = () => {
+        if(images.length === 0) return;
+        currentImage = (currentImage + 1) % images.length;
+        imageElement.src = images[currentImage];
+        document.getElementById("current").innerText = currentImage + 1;
+      };
+
+      document.getElementById("prev").onclick = () => {
+        if(images.length === 0) return;
+        currentImage = (currentImage - 1 + images.length) % images.length;
+        imageElement.src = images[currentImage];
+        document.getElementById("current").innerText = currentImage + 1;
+      };
+
+      // ---- Text content (safe: textContent, not innerHTML) ----
+      document.getElementById("name").textContent = product.name || "";
+      document.getElementById("barcode").textContent = product.barcode || "-";
+
+      const price = Number(product.price) || 0;
+      const offerPrice = product.offerPrice ? Number(product.offerPrice) : null;
+
+      document.getElementById("price").textContent = "₹" + price;
+
+      if(offerPrice && offerPrice < price){
+        document.getElementById("oldPrice").textContent = "₹" + price;
+        document.getElementById("price").textContent = "₹" + offerPrice;
+        const discountPct = Math.round(((price - offerPrice) / price) * 100);
+        document.getElementById("discount").textContent = discountPct + "% OFF";
+      } else {
+        document.getElementById("oldPrice").style.display = "none";
+        document.getElementById("discount").style.display = "none";
+      }
+
+      // ---- Sizes ----
+      const sizeMap = {
+        XS: product.xsStock,
+        S: product.sStock,
+        M: product.mStock,
+        L: product.lStock,
+        XL: product.xlStock,
+        XXL: product.xxlStock
+      };
+
+      let anySizeAvailable = false;
+
+      Object.entries(sizeMap).forEach(([size, stock]) => {
+        const btn = document.getElementById("size" + size);
+        const stockNum = Number(stock) || 0;
+
+        if(stockNum <= 0){
+          btn.style.display = "none";
+          return;
+        }
+
+        anySizeAvailable = true;
+        btn.textContent = size + " (" + stockNum + ")";
+        btn.onclick = () => {
+          document.querySelectorAll(".sizes button").forEach(b => b.classList.remove("selected"));
+          btn.classList.add("selected");
+          selectedSize = size;
+        };
       });
-    });
 
-    buildFilterOptions();
-    readUrlParams();
-    applyFilters();
+      const addToCartBtn = document.getElementById("addToCart");
 
-  } catch (err) {
-    console.error("Error loading products:", err);
-    productsGrid.innerHTML = `<div class="empty-state"><h3>Catalog Load Error</h3><p>${err.message}</p></div>`;
-  }
-}
+      if(!anySizeAvailable){
+        addToCartBtn.textContent = "Out of Stock";
+        addToCartBtn.disabled = true;
+      }
 
-function buildFilterOptions() {
-  const categories = [...new Set(allProducts.map(p => p.category))].filter(Boolean).sort();
-  const brands = [...new Set(allProducts.map(p => p.brand))].filter(Boolean).sort();
+      // ---- Add to cart ----
+      addToCartBtn.onclick = () => {
+        if(!anySizeAvailable) return;
 
-  categoryFilterList.innerHTML = categories.map(cat => `
-    <label class="checkbox-item">
-      <input type="checkbox" value="${escapeHtml(cat)}" onchange="handleCategoryChange(this)">
-      <span>${escapeHtml(cat)}</span>
-    </label>
-  `).join('');
+        if(!selectedSize){
+          showToast("Please select a size");
+          return;
+        }
 
-  brandFilterList.innerHTML = brands.map(b => `
-    <label class="checkbox-item">
-      <input type="checkbox" value="${escapeHtml(b)}" onchange="handleBrandChange(this)">
-      <span>${escapeHtml(b)}</span>
-    </label>
-  `).join('');
-}
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-// ---------------------------------------------------------------------------
-// 2. SEARCH & FILTER ENGINE
-// ---------------------------------------------------------------------------
-function applyFilters() {
-  filteredProducts = allProducts.filter(product => {
-    // Search Query (Multi-field match)
-    if (filters.searchQuery) {
-      const tokens = filters.searchQuery.toLowerCase().split(/\s+/).filter(Boolean);
-      const searchableText = [
-        product.name,
-        product.sku,
-        product.brand,
-        product.category,
-        ...product.tags,
-        ...product.keywords
-      ].join(" ").toLowerCase();
+        const existing = cart.find(item => item.id === id && item.size === selectedSize);
 
-      const matchesSearch = tokens.every(token => searchableText.includes(token));
-      if (!matchesSearch) return false;
+        if(existing){
+          existing.qty = (existing.qty || 1) + 1;
+        } else {
+          cart.push({
+            id: id,
+            name: product.name,
+            price: price,
+            offerPrice: offerPrice,
+            image: product.image,
+            size: selectedSize,
+            qty: 1
+          });
+        }
+
+        localStorage.setItem("cart", JSON.stringify(cart));
+        updateCartCount();
+        showToast("Added to cart");
+      };
+
+      // ---- Wishlist ----
+      document.getElementById("wishlist").onclick = () => {
+        let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+
+        if(wishlist.some(item => item.id === id)){
+          showToast("Already in wishlist");
+          return;
+        }
+
+        wishlist.push({
+          id: id,
+          name: product.name,
+          price: price,
+          image: product.image
+        });
+
+        localStorage.setItem("wishlist", JSON.stringify(wishlist));
+        showToast("Added to wishlist");
+      };
+
+      // ---- WhatsApp ----
+      const waMessage = encodeURIComponent("I want " + (product.name || "this product"));
+      document.getElementById("whatsapp").href = "https://wa.me/919656003555?text=" + waMessage;
+
     }
-
-    // Category
-    if (filters.categories.length > 0 && !filters.categories.includes(product.category)) return false;
-
-    // Brand
-    if (filters.brands.length > 0 && !filters.brands.includes(product.brand)) return false;
-
-    // Size
-    if (filters.sizes.length > 0) {
-      const hasSizeInStock = filters.sizes.some(size => getStockForSize(product, size) > 0);
-      if (!hasSizeInStock) return false;
-    }
-
-    // Price
-    const effectivePrice = product.offerPrice ?? product.price;
-    if (filters.minPrice !== null && effectivePrice < filters.minPrice) return false;
-    if (filters.maxPrice !== null && effectivePrice > filters.maxPrice) return false;
-
-    // In Stock Only
-    if (filters.inStockOnly && getTotalStock(product) <= 0) return false;
-
-    return true;
-  });
-
-  // Sort
-  sortProducts(filteredProducts, filters.sort);
-
-  // URL Sync
-  syncUrlParams();
-
-  displayedCount = PAGE_SIZE;
-  renderProducts();
-}
-
-function sortProducts(list, sortType) {
-  const getTime = v => new Date(v).getTime() || 0;
-  
-  list.sort((a, b) => {
-    const priceA = a.offerPrice ?? a.price;
-    const priceB = b.offerPrice ?? b.price;
-
-    switch (sortType) {
-      case "price-low": return priceA - priceB;
-      case "price-high": return priceB - priceA;
-      case "name-asc": return a.name.localeCompare(b.name);
-      case "name-desc": return b.name.localeCompare(a.name);
-      case "featured": return (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0);
-      case "newest":
-      default: return getTime(b.createdAt) - getTime(a.createdAt);
-    }
-  });
-}
-
-// ---------------------------------------------------------------------------
-// 3. UI RENDERING (LINKS TARGET product.html?id=...)
-// ---------------------------------------------------------------------------
-function renderProducts() {
-  resultsCount.innerHTML = `Showing <strong>${filteredProducts.length}</strong> products`;
-
-  if (filteredProducts.length === 0) {
-    productsGrid.innerHTML = `
-      <div class="empty-state">
-        <h3>No Products Found</h3>
-        <p>No products match your search or filter options.</p>
-        <button class="clear-all-btn" style="padding:10px 20px; background:var(--ink); color:#fff; border-radius:4px;" onclick="clearAllFilters()">Clear All Filters</button>
-      </div>
-    `;
-    loadMoreWrap.style.display = "none";
-    return;
-  }
-
-  const itemsToDisplay = filteredProducts.slice(0, displayedCount);
-
-  productsGrid.innerHTML = itemsToDisplay.map(product => {
-    const effectivePrice = product.offerPrice ?? product.price;
-    const hasDiscount = product.offerPrice && product.offerPrice < product.price;
-
-    return `
-      <div class="product-card">
-        <div class="card-media">
-          ${product.isFeatured ? `<span class="badge-tag">Featured</span>` : ''}
-          <img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" onerror="this.src='hero-poster.jpg';">
-        </div>
-        <div class="card-body">
-          <div class="brand-name">${escapeHtml(product.brand)}</div>
-          <h3 class="product-title">${escapeHtml(product.name)}</h3>
-          <div class="price-row">
-            <span class="price-curr">₹${effectivePrice}</span>
-            ${hasDiscount ? `<span class="price-old">₹${product.price}</span>` : ''}
-          </div>
-
-          <!-- LINKS DIRECTLY TO product.html?id=YOUR_PRODUCT_ID -->
-          <a href="product.html?id=${encodeURIComponent(product.id)}" class="view-link">View Product</a>
-        </div>
-      </div>
-    `;
-  }).join('');
-
-  if (displayedCount < filteredProducts.length) {
-    loadMoreWrap.style.display = "block";
-  } else {
-    loadMoreWrap.style.display = "none";
+  } catch(err){
+    console.error(err);
+    showError("Something went wrong loading this product. Please try again.");
   }
 }
 
-window.loadMoreProducts = function() {
-  displayedCount += PAGE_SIZE;
-  renderProducts();
-};
-
-// ---------------------------------------------------------------------------
-// 4. DEBOUNCED SEARCH & CONTROLS
-// ---------------------------------------------------------------------------
-function debounce(func, delay = 300) {
-  let timer;
-  return (...args) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => func(...args), delay);
-  };
-}
-
-const debouncedSearch = debounce((val) => {
-  filters.searchQuery = val.trim();
-  clearSearchBtn.classList.toggle("show", filters.searchQuery.length > 0);
-  applyFilters();
-}, 300);
-
-searchInput.addEventListener("input", (e) => debouncedSearch(e.target.value));
-
-clearSearchBtn.addEventListener("click", () => {
-  searchInput.value = "";
-  filters.searchQuery = "";
-  clearSearchBtn.classList.remove("show");
-  applyFilters();
-});
-
-window.handleCategoryChange = function(checkbox) {
-  if (checkbox.checked) filters.categories.push(checkbox.value);
-  else filters.categories = filters.categories.filter(c => c !== checkbox.value);
-  applyFilters();
-};
-
-window.handleBrandChange = function(checkbox) {
-  if (checkbox.checked) filters.brands.push(checkbox.value);
-  else filters.brands = filters.brands.filter(b => b !== checkbox.value);
-  applyFilters();
-};
-
-window.toggleSizeFilter = function(chip, size) {
-  chip.classList.toggle("selected");
-  if (chip.classList.contains("selected")) filters.sizes.push(size);
-  else filters.sizes = filters.sizes.filter(s => s !== size);
-  applyFilters();
-};
-
-const debouncedPrice = debounce(() => {
-  filters.minPrice = minPriceInput.value ? Number(minPriceInput.value) : null;
-  filters.maxPrice = maxPriceInput.value ? Number(maxPriceInput.value) : null;
-  applyFilters();
-}, 300);
-
-minPriceInput.addEventListener("input", debouncedPrice);
-maxPriceInput.addEventListener("input", debouncedPrice);
-
-window.handleStockChange = function() {
-  filters.inStockOnly = inStockCheckbox.checked;
-  applyFilters();
-};
-
-window.handleSortChange = function(val) {
-  filters.sort = val;
-  applyFilters();
-};
-
-window.clearAllFilters = function() {
-  filters = {
-    searchQuery: "",
-    categories: [],
-    brands: [],
-    sizes: [],
-    minPrice: null,
-    maxPrice: null,
-    inStockOnly: false,
-    sort: "newest"
-  };
-
-  searchInput.value = "";
-  clearSearchBtn.classList.remove("show");
-  minPriceInput.value = "";
-  maxPriceInput.value = "";
-  inStockCheckbox.checked = false;
-  sortSelect.value = "newest";
-
-  document.querySelectorAll('#categoryFilterList input, #brandFilterList input').forEach(cb => cb.checked = false);
-  document.querySelectorAll('.size-chip').forEach(sc => sc.classList.remove("selected"));
-
-  applyFilters();
-};
-
-// ---------------------------------------------------------------------------
-// 5. URL SYNC
-// ---------------------------------------------------------------------------
-function syncUrlParams() {
-  const params = new URLSearchParams();
-  if (filters.searchQuery) params.set("q", filters.searchQuery);
-  if (filters.categories.length) params.set("category", filters.categories.join(","));
-  if (filters.brands.length) params.set("brand", filters.brands.join(","));
-  if (filters.sizes.length) params.set("size", filters.sizes.join(","));
-  if (filters.minPrice) params.set("minPrice", filters.minPrice);
-  if (filters.maxPrice) params.set("maxPrice", filters.maxPrice);
-  if (filters.inStockOnly) params.set("inStock", "true");
-  if (filters.sort !== "newest") params.set("sort", filters.sort);
-
-  const newUrl = `${window.location.pathname}${params.toString() ? '?' + params.toString() : ''}`;
-  window.history.replaceState({}, "", newUrl);
-}
-
-function readUrlParams() {
-  const params = new URLSearchParams(window.location.search);
-  
-  if (params.has("q")) {
-    filters.searchQuery = params.get("q");
-    searchInput.value = filters.searchQuery;
-    clearSearchBtn.classList.add("show");
-  }
-  if (params.has("category")) {
-    filters.categories = params.get("category").split(",");
-    document.querySelectorAll('#categoryFilterList input').forEach(cb => {
-      if (filters.categories.includes(cb.value)) cb.checked = true;
-    });
-  }
-  if (params.has("brand")) {
-    filters.brands = params.get("brand").split(",");
-    document.querySelectorAll('#brandFilterList input').forEach(cb => {
-      if (filters.brands.includes(cb.value)) cb.checked = true;
-    });
-  }
-  if (params.has("size")) {
-    filters.sizes = params.get("size").split(",");
-    document.querySelectorAll('.size-chip').forEach(sc => {
-      if (filters.sizes.includes(sc.dataset.size)) sc.classList.add("selected");
-    });
-  }
-  if (params.has("minPrice")) {
-    filters.minPrice = Number(params.get("minPrice"));
-    minPriceInput.value = filters.minPrice;
-  }
-  if (params.has("maxPrice")) {
-    filters.maxPrice = Number(params.get("maxPrice"));
-    maxPriceInput.value = filters.maxPrice;
-  }
-  if (params.get("inStock") === "true") {
-    filters.inStockOnly = true;
-    inStockCheckbox.checked = true;
-  }
-  if (params.has("sort")) {
-    filters.sort = params.get("sort");
-    sortSelect.value = filters.sort;
-  }
-}
-
-function escapeHtml(str) {
-  const div = document.createElement("div");
-  div.innerText = str || "";
-  return div.innerHTML;
-}
-
-// Initialize Catalog
-initProductModule();
 </script>
 
 </body>
