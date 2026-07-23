@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sale Collection — EXAMPLE CLOTHING</title>
+<title>Flat 60%+ OFF Sale — EXAMPLE CLOTHING</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -81,7 +81,7 @@ a{ color:inherit; }
 .eyebrow-dark{ font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--brass); font-weight:700; }
 .page-head h1{ font-size:28px; margin-top:6px; }
 
-/* SPECIAL OFFER BANNER */
+/* SPECIAL 60%+ OFFER BANNER */
 .sale-banner {
   background: var(--ink);
   color: var(--ivory);
@@ -94,7 +94,7 @@ a{ color:inherit; }
 
 .sale-banner h2 {
   font-family: 'Libre Caslon Display', serif;
-  font-size: 22px;
+  font-size: 24px;
   color: var(--brass-soft);
   margin-bottom: 6px;
   font-weight: 400;
@@ -105,7 +105,7 @@ a{ color:inherit; }
   font-size: 12px;
   color: var(--ivory-dim);
   line-height: 1.45;
-  max-width: 320px;
+  max-width: 340px;
   margin: 0 auto;
 }
 
@@ -211,19 +211,19 @@ a{ color:inherit; }
 </div>
 
 <div class="page-head">
-  <span class="eyebrow-dark">Limited Time</span>
+  <span class="eyebrow-dark">Exclusive Clearance</span>
   <h1>Sale Collection</h1>
 
   <div class="sale-banner">
-    <h2>Special Archive Sale</h2>
-    <p>Discover archival designs, seasonal styles, and rare essentials. Discounts are updated in real-time.</p>
+    <h2>Minimum 60% OFF Archive Sale</h2>
+    <p>Exclusive clearance selection. All items featured below carry a minimum discount of 60% OFF original retail price.</p>
   </div>
 </div>
 
 <!-- FILTER & SEARCH TOOLBAR -->
 <div class="filter-toolbar">
   <div class="search-wrap">
-    <input type="text" id="search" placeholder="Search sale items by name, brand, SKU...">
+    <input type="text" id="search" placeholder="Search 60%+ OFF items by name, brand, SKU...">
   </div>
 
   <div class="controls-row">
@@ -239,7 +239,7 @@ a{ color:inherit; }
     </div>
 
     <select id="sortSelect" class="sort-select" onchange="applyFiltersAndRender()">
-      <option value="discount-high">Highest Discount</option>
+      <option value="discount-high">Highest Discount First</option>
       <option value="price-low">Price: Low to High</option>
       <option value="price-high">Price: High to Low</option>
       <option value="newest">Newest First</option>
@@ -248,7 +248,7 @@ a{ color:inherit; }
 </div>
 
 <div class="results-bar">
-  <span id="resultsText">Loading sale items...</span>
+  <span id="resultsText">Loading 60%+ offer items...</span>
   <span class="clear-link" id="clearBtn" onclick="clearFilters()" style="display:none;">Clear Filters</span>
 </div>
 
@@ -263,7 +263,7 @@ a{ color:inherit; }
 import { db } from "./firebase.js";
 import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const CATEGORY_NAME = "sale";
+const MIN_DISCOUNT_PERCENTAGE = 60; // Strict requirement: Only 60%+ OFF products
 
 const productsDiv = document.getElementById("products");
 const searchInput = document.getElementById("search");
@@ -285,7 +285,7 @@ function showState(message){
     productsDiv.innerHTML = `<div class="state-msg">${message}</div>`;
 }
 
-// Safely check stock for size
+// Check stock for requested size
 function getStockForSize(product, size) {
     const k1 = size.toLowerCase().replace(/[^a-z0-9]/g, '') + "Stock";
     const k2 = "size" + size + "Stock";
@@ -300,7 +300,7 @@ function getStockForSize(product, size) {
 }
 
 async function loadProducts(){
-    showState("Loading sale catalog...");
+    showState("Loading 60%+ offer items...");
 
     try{
         const querySnapshot = await getDocs(collection(db, "products"));
@@ -339,11 +339,19 @@ function applyFiltersAndRender(){
     const searchText = searchInput.value.trim().toLowerCase();
 
     let filtered = allProducts.filter((product) => {
-        const cat = (product.category || "").toLowerCase();
-        const hasOffer = product.offerPrice && Number(product.offerPrice) < Number(product.price);
+        const price = Number(product.price) || 0;
+        const offerPrice = product.offerPrice ? Number(product.offerPrice) : null;
 
-        // Match if category is "sale" OR if product has an active offer price / discount
-        if (cat !== CATEGORY_NAME && !cat.includes("sale") && !hasOffer && product.isSale !== true) {
+        // Must have an offer price lower than original price
+        if (!offerPrice || price <= 0 || offerPrice >= price) {
+            return false;
+        }
+
+        // Calculate exact discount percentage
+        const discountPct = Math.round(((price - offerPrice) / price) * 100);
+
+        // STRICT FILTER: Minimum 60% OFF required!
+        if (discountPct < MIN_DISCOUNT_PERCENTAGE) {
             return false;
         }
 
@@ -375,10 +383,10 @@ function applyFiltersAndRender(){
         clearBtn.style.display = "none";
     }
 
-    resultsText.innerHTML = `Showing <strong>${filtered.length}</strong> sale items`;
+    resultsText.innerHTML = `Showing <strong>${filtered.length}</strong> items with 60%+ OFF`;
 
     if (filtered.length === 0) {
-        showState("No sale items match your active search or size filter.");
+        showState("No items currently available with 60% or higher discount.");
         return;
     }
 
@@ -391,10 +399,10 @@ function applyFiltersAndRender(){
         const origA = Number(a.price) || priceA;
         const origB = Number(b.price) || priceB;
 
-        const discountA = origA - priceA;
-        const discountB = origB - priceB;
+        const pctA = Math.round(((origA - priceA) / origA) * 100);
+        const pctB = Math.round(((origB - priceB) / origB) * 100);
 
-        if (sortVal === "discount-high") return discountB - discountA;
+        if (sortVal === "discount-high") return pctB - pctA;
         if (sortVal === "price-low") return priceA - priceB;
         if (sortVal === "price-high") return priceB - priceA;
         return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
@@ -405,26 +413,19 @@ function applyFiltersAndRender(){
         const name = escapeHtml(product.name);
         const image = escapeHtml(product.image);
         const price = Number(product.price) || 0;
-        const offerPrice = product.offerPrice ? Number(product.offerPrice) : null;
-        const hasOffer = offerPrice && offerPrice < price;
-
-        let discountBadgeHtml = "";
-        if (hasOffer) {
-            const pct = Math.round(((price - offerPrice) / price) * 100);
-            discountBadgeHtml = `<span class="discount-badge">${pct}% OFF</span>`;
-        }
-
-        const priceHtml = hasOffer
-            ? `<span class="old-price">₹${price}</span><span class="price">₹${offerPrice}</span>`
-            : `<span class="price">₹${price}</span>`;
+        const offerPrice = Number(product.offerPrice);
+        const pct = Math.round(((price - offerPrice) / price) * 100);
 
         return `
             <a href="product.html?id=${encodeURIComponent(product.id)}" class="card">
-                ${discountBadgeHtml}
+                <span class="discount-badge">${pct}% OFF</span>
                 <img src="${image}" alt="${name}" loading="lazy" onerror="this.outerHTML='&lt;div class=&quot;img-fallback&quot;&gt;No image&lt;/div&gt;'">
                 <div class="info">
                     <div class="name">${name}</div>
-                    <div class="price-row">${priceHtml}</div>
+                    <div class="price-row">
+                        <span class="old-price">₹${price}</span>
+                        <span class="price">₹${offerPrice}</span>
+                    </div>
                 </div>
             </a>
         `;
