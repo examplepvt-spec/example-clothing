@@ -607,21 +607,8 @@ import("./auth.js").then(({ checkUser }) => {
 });
 
 loadProducts();
-</script>
 
-</body>
 
-<div class="results-bar">
-  <span id="resultsText">Loading footwear...</span>
-  <span class="clear-link" id="clearBtn" onclick="clearFilters()" style="display:none;">Clear Filters</span>
-</div>
-
-<div id="products"></div>
-
-<a href="index.html" class="back">
-  <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg>
-  Back to Home
-</a>
 
 <script type="module">
 import { db } from "./firebase.js";
