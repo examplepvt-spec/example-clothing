@@ -190,16 +190,17 @@ a{ color:inherit; }
   <div class="controls-row">
     <div class="size-filter-row">
       <span class="size-label">Size:</span>
+       <button class="size-btn" data-size="6" onclick="toggleSize(this, '4')">UK 4</button>
+       <button class="size-btn" data-size="6" onclick="toggleSize(this, '5')">UK 5</button>
       <button class="size-btn" data-size="6" onclick="toggleSize(this, '6')">UK 6</button>
       <button class="size-btn" data-size="7" onclick="toggleSize(this, '7')">UK 7</button>
       <button class="size-btn" data-size="8" onclick="toggleSize(this, '8')">UK 8</button>
       <button class="size-btn" data-size="9" onclick="toggleSize(this, '9')">UK 9</button>
       <button class="size-btn" data-size="10" onclick="toggleSize(this, '10')">UK 10</button>
       <button class="size-btn" data-size="11" onclick="toggleSize(this, '11')">UK 11</button>
-      <button class="size-btn" data-size="S" onclick="toggleSize(this, 'S')">S</button>
-      <button class="size-btn" data-size="M" onclick="toggleSize(this, 'M')">M</button>
-      <button class="size-btn" data-size="L" onclick="toggleSize(this, 'L')">L</button>
-    </div>
+       <button class="size-btn" data-size="6" onclick="toggleSize(this, '12')">UK 12</button>
+       <button class="size-btn" data-size="6" onclick="toggleSize(this, '13')">UK 13</button>
+        </div>
 
     <select id="sortSelect" class="sort-select" onchange="applyFiltersAndRender()">
       <option value="newest">Sort: Newest First</option>
