@@ -9,6 +9,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+<!-- Preconnect to image hosts (adjust domain to match where your images are stored) -->
+<link rel="preconnect" href="https://firebasestorage.googleapis.com">
+<link rel="dns-prefetch" href="https://firebasestorage.googleapis.com">
+
 <style>
 :root{
   --ink:#161412;
@@ -119,6 +123,8 @@ a{ color:inherit; }
 .card{
   background:var(--white); border:1px solid var(--line); border-radius:6px; overflow:hidden;
   text-decoration:none; color:var(--ink); display:block; transition:transform .2s;
+  content-visibility:auto; /* Helps browser skip rendering off-screen cards */
+  contain-intrinsic-size:0 320px;
 }
 .card:hover{ transform:translateY(-3px); }
 
@@ -347,7 +353,7 @@ window.toggleSize = function(btn, size) {
     } else {
         selectedSizes = selectedSizes.filter(s => s !== size);
     }
-    currentPage = 1; // Reset to first page on filter change
+    currentPage = 1;
     applyFiltersAndRender();
 };
 
@@ -490,10 +496,15 @@ function applyFiltersAndRender(){
     const pageItems = filtered.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
     // 4. Render Product Cards
-    const html = pageItems.map((product) => {
+    const html = pageItems.map((product, index) => {
         const name = escapeHtml(product.name);
-        const image = escapeHtml(product.image);
+        // Use thumbnail if available, otherwise fall back to full image
+        const image = escapeHtml(product.thumbnail || product.image);
         const hasOffer = !!product.offerPrice;
+
+        // First 4 images load eagerly (visible immediately), rest lazy
+        const loadingAttr = index < 4 ? 'eager' : 'lazy';
+        const fetchPriority = index < 4 ? 'fetchpriority="high"' : '';
 
         const priceHtml = hasOffer
             ? `<span class="old-price">₹${escapeHtml(String(product.price))}</span><span class="price">₹${escapeHtml(String(product.offerPrice))}</span>`
@@ -501,7 +512,7 @@ function applyFiltersAndRender(){
 
         return `
             <a href="product.html?id=${encodeURIComponent(product.id)}" class="card">
-                <img src="${image}" alt="${name}" loading="lazy" onerror="this.outerHTML='&lt;div class=&quot;img-fallback&quot;&gt;No image&lt;/div&gt;'">
+                <img src="${image}" alt="${name}" loading="${loadingAttr}" decoding="async" ${fetchPriority} onerror="this.outerHTML='&lt;div class=&quot;img-fallback&quot;&gt;No image&lt;/div&gt;'">
                 <div class="info">
                     <div class="name">${name}</div>
                     <div class="price-row">${priceHtml}</div>
@@ -518,7 +529,7 @@ function applyFiltersAndRender(){
 searchInput.addEventListener("input", () => {
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
-        currentPage = 1; // Reset to first page on search
+        currentPage = 1;
         applyFiltersAndRender();
     }, 300);
 });
