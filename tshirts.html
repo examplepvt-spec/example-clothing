@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Polo T-Shirts Collection — EXAMPLE CLOTHING</title>
+<title>T-Shirts Collection — EXAMPLE CLOTHING</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -217,13 +217,13 @@ a{ color:inherit; }
 
 <div class="page-head">
   <span class="eyebrow-dark">Men</span>
-  <h1>Polo T-Shirts Collection</h1>
+  <h1>T-Shirts Collection</h1>
 </div>
 
 <!-- FILTER & SEARCH TOOLBAR -->
 <div class="filter-toolbar">
   <div class="search-wrap">
-    <input type="text" id="search" placeholder="Search polo t-shirts by name, brand, SKU...">
+    <input type="text" id="search" placeholder="Search t-shirts by name, brand, SKU...">
   </div>
 
   <div class="controls-row">
@@ -246,7 +246,7 @@ a{ color:inherit; }
 </div>
 
 <div class="results-bar">
-  <span id="resultsText">Loading polo t-shirts...</span>
+  <span id="resultsText">Loading t-shirts...</span>
   <span class="clear-link" id="clearBtn" onclick="clearFilters()" style="display:none;">Clear Filters</span>
 </div>
 
@@ -262,7 +262,7 @@ import { db } from "./firebase.js";
 import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // Page Category Configuration
-const CATEGORY_NAME = "polo t-shirts";
+const CATEGORY_NAME = "t-shirts";
 const PRODUCTS_PER_PAGE = 20;
 
 const productsDiv = document.getElementById("products");
@@ -296,7 +296,7 @@ function getStockForSize(product, size) {
 }
 
 async function loadProducts(){
-    showState("Loading polo t-shirts collection...");
+    showState("Loading t-shirts collection...");
 
     try{
         const querySnapshot = await getDocs(collection(db, "products"));
@@ -308,7 +308,7 @@ async function loadProducts(){
 
         applyFiltersAndRender(true);
     } catch(err){
-        console.error("Error loading polo t-shirts:", err);
+        console.error("Error loading t-shirts:", err);
         showState("Could not load products. Please check your connection and try again.");
     }
 }
@@ -382,8 +382,8 @@ function applyFiltersAndRender(resetPage = true){
     }
 
     if (filtered.length === 0) {
-        resultsText.innerHTML = `Showing <strong>0</strong> polo t-shirts`;
-        showState("No polo t-shirts match your active search or size filter.");
+        resultsText.innerHTML = `Showing <strong>0</strong> t-shirts`;
+        showState("No t-shirts match your active search or size filter.");
         return;
     }
 
@@ -407,7 +407,7 @@ function applyFiltersAndRender(resetPage = true){
     const endIndex = Math.min(startIndex + PRODUCTS_PER_PAGE, filtered.length);
     const paginatedProducts = filtered.slice(startIndex, endIndex);
 
-    resultsText.innerHTML = `Showing <strong>${startIndex + 1}–${endIndex}</strong> of <strong>${filtered.length}</strong> polo t-shirts`;
+    resultsText.innerHTML = `Showing <strong>${startIndex + 1}–${endIndex}</strong> of <strong>${filtered.length}</strong> t-shirts`;
 
     // Render Cards
     const cardsHtml = paginatedProducts.map((product) => {
