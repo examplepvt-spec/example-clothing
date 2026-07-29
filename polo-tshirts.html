@@ -112,7 +112,7 @@ a{ color:inherit; }
 .state-msg{ text-align:center; padding:60px 20px; color:#8a8578; font-size:15px; }
 
 /* ---------- GRID ---------- */
-.grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; padding:10px 22px 40px; }
+.grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; padding:10px 22px 20px; }
 @media(min-width:768px){ .grid{ grid-template-columns:repeat(3,1fr); gap:20px; } }
 @media(min-width:1024px){ .grid{ grid-template-columns:repeat(4,1fr); gap:20px; } }
 
@@ -130,6 +130,45 @@ a{ color:inherit; }
 .price-row{ display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; }
 .price{ font-size:17px; font-weight:700; font-family:'Libre Caslon Display',serif; }
 .old-price{ font-size:12px; color:#999; text-decoration:line-through; }
+
+/* ---------- PAGINATION ---------- */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 22px 30px;
+  flex-wrap: wrap;
+}
+
+.page-btn {
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all .2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.page-btn:hover:not(:disabled) {
+  border-color: var(--brass);
+  color: var(--brass);
+}
+
+.page-btn.active {
+  background: var(--ink);
+  color: var(--ivory);
+  border-color: var(--ink);
+}
+
+.page-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
 
 .back{ display:flex; align-items:center; gap:8px; justify-content:center; padding:6px 22px 40px; text-decoration:none; font-weight:600; font-size:14px; color:var(--ink); }
 .back svg{ width:16px; height:16px; stroke:var(--ink); fill:none; stroke-width:2; }
@@ -197,7 +236,7 @@ a{ color:inherit; }
       <button class="size-btn" data-size="XXL" onclick="toggleSize(this, 'XXL')">XXL</button>
     </div>
 
-    <select id="sortSelect" class="sort-select" onchange="applyFiltersAndRender()">
+    <select id="sortSelect" class="sort-select" onchange="applyFiltersAndRender(true)">
       <option value="newest">Sort: Newest First</option>
       <option value="price-low">Price: Low to High</option>
       <option value="price-high">Price: High to Low</option>
@@ -224,6 +263,7 @@ import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/
 
 // Page Category Configuration
 const CATEGORY_NAME = "polo t-shirts";
+const PRODUCTS_PER_PAGE = 20;
 
 const productsDiv = document.getElementById("products");
 const searchInput = document.getElementById("search");
@@ -234,6 +274,7 @@ const clearBtn = document.getElementById("clearBtn");
 let allProducts = [];
 let selectedSizes = [];
 let debounceTimer = null;
+let currentPage = 1;
 
 function escapeHtml(str){
     const div = document.createElement("div");
@@ -265,7 +306,7 @@ async function loadProducts(){
             allProducts.push({ id: docSnap.id, ...docSnap.data() });
         });
 
-        applyFiltersAndRender();
+        applyFiltersAndRender(true);
     } catch(err){
         console.error("Error loading polo t-shirts:", err);
         showState("Could not load products. Please check your connection and try again.");
@@ -279,7 +320,7 @@ window.toggleSize = function(btn, size) {
     } else {
         selectedSizes = selectedSizes.filter(s => s !== size);
     }
-    applyFiltersAndRender();
+    applyFiltersAndRender(true);
 };
 
 window.clearFilters = function() {
@@ -287,10 +328,23 @@ window.clearFilters = function() {
     selectedSizes = [];
     sortSelect.value = "newest";
     document.querySelectorAll(".size-btn").forEach(b => b.classList.remove("active"));
-    applyFiltersAndRender();
+    applyFiltersAndRender(true);
 };
 
-function applyFiltersAndRender(){
+window.goToPage = function(page) {
+    currentPage = page;
+    applyFiltersAndRender(false);
+    
+    // Scroll smoothly to top of products section
+    const offsetTop = document.querySelector('.page-head').offsetTop;
+    window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+};
+
+function applyFiltersAndRender(resetPage = true){
+    if (resetPage) {
+        currentPage = 1;
+    }
+
     const searchText = searchInput.value.trim().toLowerCase();
 
     let filtered = allProducts.filter((product) => {
@@ -327,9 +381,8 @@ function applyFiltersAndRender(){
         clearBtn.style.display = "none";
     }
 
-    resultsText.innerHTML = `Showing <strong>${filtered.length}</strong> polo t-shirts`;
-
     if (filtered.length === 0) {
+        resultsText.innerHTML = `Showing <strong>0</strong> polo t-shirts`;
         showState("No polo t-shirts match your active search or size filter.");
         return;
     }
@@ -346,8 +399,18 @@ function applyFiltersAndRender(){
         return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
     });
 
+    // Pagination Calculation
+    const totalPages = Math.ceil(filtered.length / PRODUCTS_PER_PAGE);
+    if (currentPage > totalPages) currentPage = totalPages;
+
+    const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
+    const endIndex = Math.min(startIndex + PRODUCTS_PER_PAGE, filtered.length);
+    const paginatedProducts = filtered.slice(startIndex, endIndex);
+
+    resultsText.innerHTML = `Showing <strong>${startIndex + 1}–${endIndex}</strong> of <strong>${filtered.length}</strong> polo t-shirts`;
+
     // Render Cards
-    const html = filtered.map((product) => {
+    const cardsHtml = paginatedProducts.map((product) => {
         const name = escapeHtml(product.name);
         const image = escapeHtml(product.image);
         const hasOffer = !!product.offerPrice;
@@ -367,14 +430,33 @@ function applyFiltersAndRender(){
         `;
     }).join("");
 
-    productsDiv.innerHTML = `<div class="grid">${html}</div>`;
+    // Render Pagination Controls
+    let paginationHtml = "";
+    if (totalPages > 1) {
+        paginationHtml += `<div class="pagination">`;
+        
+        // Prev button
+        paginationHtml += `<button class="page-btn" ${currentPage === 1 ? "disabled" : ""} onclick="goToPage(${currentPage - 1})">Prev</button>`;
+
+        // Page Numbers
+        for (let i = 1; i <= totalPages; i++) {
+            paginationHtml += `<button class="page-btn ${i === currentPage ? "active" : ""}" onclick="goToPage(${i})">${i}</button>`;
+        }
+
+        // Next button
+        paginationHtml += `<button class="page-btn" ${currentPage === totalPages ? "disabled" : ""} onclick="goToPage(${currentPage + 1})">Next</button>`;
+
+        paginationHtml += `</div>`;
+    }
+
+    productsDiv.innerHTML = `<div class="grid">${cardsHtml}</div>${paginationHtml}`;
 }
 
 // 300ms Debounce
 searchInput.addEventListener("input", () => {
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
-        applyFiltersAndRender();
+        applyFiltersAndRender(true);
     }, 300);
 });
 
