@@ -258,6 +258,29 @@ a{ color:inherit; }
   font-weight:600;
   font-size:14px;
 }
+
+.toast{
+  position:fixed;
+  bottom:90px;
+  left:50%;
+  transform:translateX(-50%) translateY(20px);
+  background:var(--ink);
+  color:var(--ivory);
+  padding:14px 22px;
+  border-radius:6px;
+  font-size:14px;
+  font-weight:600;
+  opacity:0;
+  pointer-events:none;
+  transition:.3s;
+  z-index:3000;
+  white-space:nowrap;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
 </style>
 </head>
 
@@ -280,17 +303,66 @@ a{ color:inherit; }
   <button class="pay-btn" id="proceedBtn">Proceed →</button>
 </div>
 
-<script>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+
+import { db } from "./firebase.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 const cartDiv = document.getElementById("cart");
 const totalDiv = document.getElementById("total");
 const proceedBtn = document.getElementById("proceedBtn");
+const toast = document.getElementById("toast");
 
-proceedBtn.onclick = () => {
+function showToast(msg){
+  toast.innerText = msg;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2200);
+}
+
+proceedBtn.onclick = async () => {
     if(cart.length === 0) return;
-    // checkout.html-ലേക്ക് കൃത്യമായി തിരിച്ചുവിടുവാൻ ഡബിൾ കോട്ടേഷൻ ചേർത്തു
+
+    // Validate stock for all cart items before redirecting
+    for (const item of cart) {
+        let availableStock = item.maxStock;
+
+        if (item.id && availableStock === undefined) {
+            try {
+                const docRef = doc(db, "products", item.id);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const prod = docSnap.data();
+                    const sizeKey = (item.size || "").toLowerCase() + "Stock";
+                    if (prod[sizeKey] !== undefined) {
+                        availableStock = Number(prod[sizeKey]) || 0;
+                        item.maxStock = availableStock;
+                    }
+                }
+            } catch (e) {
+                console.error("Error fetching stock:", e);
+            }
+        }
+
+        const stockNum = availableStock !== undefined ? Number(availableStock) : Infinity;
+        const currentQty = item.qty || 1;
+
+        if (currentQty > stockNum) {
+            if (stockNum === 1) {
+                showToast("Only 1 item available in stock.");
+            } else if (stockNum <= 0) {
+                showToast(`"${item.name || "Item"}" is out of stock.`);
+            } else {
+                showToast(`Only ${stockNum} items available in stock.`);
+            }
+            return;
+        }
+    }
+
+    // checkout.html-ലേക്ക് തിരിച്ചുവിടുവാൻ
     window.location.href = "checkout.html";
 };
 
@@ -379,9 +451,45 @@ function removeItem(index){
     renderCart();
 }
 
-function increaseQty(index){
+async function increaseQty(index){
     if(!cart[index]) return;
-    cart[index].qty = (cart[index].qty || 1) + 1;
+    const item = cart[index];
+    const currentQty = item.qty || 1;
+    let availableStock = item.maxStock;
+
+    // Fetch stock from Firestore if not cached on cart item
+    if (item.id && availableStock === undefined) {
+        try {
+            const docRef = doc(db, "products", item.id);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                const prod = docSnap.data();
+                const sizeKey = (item.size || "").toLowerCase() + "Stock";
+                if (prod[sizeKey] !== undefined) {
+                    availableStock = Number(prod[sizeKey]) || 0;
+                    item.maxStock = availableStock;
+                }
+            }
+        } catch (e) {
+            console.error("Error fetching stock:", e);
+        }
+    }
+
+    const maxStock = availableStock !== undefined ? Number(availableStock) : Infinity;
+
+    // Stop increasing quantity if stock limit is reached
+    if (currentQty + 1 > maxStock) {
+        if (maxStock === 1) {
+            showToast("Only 1 item available in stock.");
+        } else if (maxStock <= 0) {
+            showToast("Item is out of stock.");
+        } else {
+            showToast(`Only ${maxStock} items available in stock.`);
+        }
+        return;
+    }
+
+    cart[index].qty = currentQty + 1;
     saveCart();
     renderCart();
 }
