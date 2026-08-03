@@ -228,8 +228,6 @@ a{ color:inherit; }
 import { db } from "./firebase.js";
 import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const CATEGORY_NAME = "accessories";
-
 const productsDiv = document.getElementById("products");
 const searchInput = document.getElementById("search");
 const sortSelect = document.getElementById("sortSelect");
@@ -290,12 +288,15 @@ function applyFiltersAndRender(){
     let filtered = allProducts.filter((product) => {
         const cat = (product.category || "").toLowerCase();
 
-        // Must be in accessories category
-        if (cat !== CATEGORY_NAME && !cat.includes("accessori")) {
+        // Must belong to "accessories" OR "sunglasses" category
+        const isAccessory = cat === "accessories" || cat.includes("accessori");
+        const isSunglassCat = cat === "sunglasses" || cat.includes("sunglass");
+
+        if (!isAccessory && !isSunglassCat) {
             return false;
         }
 
-        // MUST be sunglasses-related
+        // Gather text for keyword check
         const itemText = [
             product.name,
             product.category,
@@ -304,9 +305,12 @@ function applyFiltersAndRender(){
             ...(Array.isArray(product.keywords) ? product.keywords : [])
         ].join(" ").toLowerCase();
 
-        // Hard filter: product must mention sunglass/sunglasses
-        if (!itemText.includes("sunglass") && !itemText.includes("eyewear") && !itemText.includes("shade")) {
-            return false;
+        // If categorized under general "Accessories", verify it is eyewear-related.
+        // If categorized directly under "Sunglasses", it is allowed to pass through.
+        if (!isSunglassCat) {
+            if (!itemText.includes("sunglass") && !itemText.includes("eyewear") && !itemText.includes("shade")) {
+                return false;
+            }
         }
 
         // Subtype Filter (Aviator, Wayfarer, Round, Sport, Polarized)
