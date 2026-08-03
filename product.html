@@ -542,12 +542,28 @@ if(!id){
           return;
         }
 
+        const availableStock = Number(sizeMap[selectedSize]) || 0;
+
         let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
         const existing = cart.find(item => item.id === id && item.size === selectedSize);
+        const currentQty = existing ? (existing.qty || 1) : 0;
+
+        // Stock validation check
+        if (currentQty + 1 > availableStock) {
+          if (availableStock === 1) {
+            showToast("Only 1 item available in stock.");
+          } else if (availableStock <= 0) {
+            showToast("Item is out of stock.");
+          } else {
+            showToast(`Only ${availableStock} items available in stock.`);
+          }
+          return;
+        }
 
         if(existing){
-          existing.qty = (existing.qty || 1) + 1;
+          existing.qty = currentQty + 1;
+          existing.maxStock = availableStock;
         } else {
           cart.push({
             id: id,
@@ -556,7 +572,8 @@ if(!id){
             offerPrice: offerPrice,
             image: product.image,
             size: selectedSize,
-            qty: 1
+            qty: 1,
+            maxStock: availableStock
           });
         }
 
