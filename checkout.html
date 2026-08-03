@@ -277,17 +277,22 @@ window.proceedToPayment = async function() {
   for (const item of cart) {
     let availableStock = item.maxStock;
 
-    if (item.id) {
+    if (item.id && availableStock === undefined) {
       try {
         const prodRef = doc(db, "products", item.id);
         const prodSnap = await getDoc(prodRef);
         if (prodSnap.exists()) {
           const productData = prodSnap.data();
-          const sizeKey = (item.size || "").toLowerCase() + "Stock";
-          if (productData[sizeKey] !== undefined) {
-            availableStock = Number(productData[sizeKey]) || 0;
-            item.maxStock = availableStock;
+          const isSizeless = productData.hasSizes === false || productData.hasSizes === "false" || (productData.category && productData.category.trim().toLowerCase() === "sunglasses");
+          if (isSizeless) {
+            availableStock = Number(productData.stock) || 0;
+          } else {
+            const sizeKey = (item.size || "").toLowerCase() + "Stock";
+            if (productData[sizeKey] !== undefined) {
+              availableStock = Number(productData[sizeKey]) || 0;
+            }
           }
+          item.maxStock = availableStock;
         }
       } catch (err) {
         console.error("Error validating stock:", err);
