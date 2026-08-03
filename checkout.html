@@ -267,11 +267,48 @@ function renderSummary() {
   bottomTotalEl.innerText = "₹" + currentTotal;
 }
 
-window.proceedToPayment = function() {
+window.proceedToPayment = async function() {
   if (cart.length === 0) {
     showToast("Your cart is empty");
     return;
   }
+
+  // Real-time stock validation check before checkout
+  for (const item of cart) {
+    let availableStock = item.maxStock;
+
+    if (item.id) {
+      try {
+        const prodRef = doc(db, "products", item.id);
+        const prodSnap = await getDoc(prodRef);
+        if (prodSnap.exists()) {
+          const productData = prodSnap.data();
+          const sizeKey = (item.size || "").toLowerCase() + "Stock";
+          if (productData[sizeKey] !== undefined) {
+            availableStock = Number(productData[sizeKey]) || 0;
+            item.maxStock = availableStock;
+          }
+        }
+      } catch (err) {
+        console.error("Error validating stock:", err);
+      }
+    }
+
+    const stockNum = availableStock !== undefined ? Number(availableStock) : Infinity;
+    const currentQty = item.qty || 1;
+
+    if (currentQty > stockNum) {
+      if (stockNum === 1) {
+        showToast("Only 1 item available in stock.");
+      } else if (stockNum <= 0) {
+        showToast(`"${item.name || "Product"}" is out of stock.`);
+      } else {
+        showToast(`Only ${stockNum} items available in stock.`);
+      }
+      return;
+    }
+  }
+
   if (!userAddress || !userAddress.addressLine1) {
     showToast("Please select a valid delivery address.");
     return;
