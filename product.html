@@ -446,7 +446,7 @@ if(!id){
       const product = docSnap.data();
       let selectedSize = null;
 
-      // Check if product has sizes or is sizeless (e.g., Sunglasses)
+      // Check hasSizes boolean field and category fallback
       const isSizeless = product.hasSizes === false || product.hasSizes === "false" || (product.category && product.category.trim().toLowerCase() === "sunglasses");
       const hasSizes = !isSizeless;
 
@@ -500,7 +500,7 @@ if(!id){
         document.getElementById("discount").style.display = "none";
       }
 
-      // ---- Stock and Sizes handling ----
+      // ---- Sizes and Stock handling ----
       let anySizeAvailable = false;
       const sizeMap = {
         XS: product.xsStock,
@@ -512,14 +512,14 @@ if(!id){
       };
 
       if (!hasSizes) {
-        // Products without sizes (e.g. Sunglasses)
+        // Hide size selection UI for sizeless products (e.g. Sunglasses)
         document.getElementById("sizeLabel").style.display = "none";
         document.getElementById("sizeRow").style.display = "none";
 
         const totalStock = Number(product.stock) || 0;
         anySizeAvailable = totalStock > 0;
       } else {
-        // Clothing products with sizes
+        // Clothing products
         Object.entries(sizeMap).forEach(([size, stock]) => {
           const btn = document.getElementById("size" + size);
           const stockNum = Number(stock) || 0;
