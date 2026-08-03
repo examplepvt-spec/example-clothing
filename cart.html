@@ -336,11 +336,16 @@ proceedBtn.onclick = async () => {
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists()) {
                     const prod = docSnap.data();
-                    const sizeKey = (item.size || "").toLowerCase() + "Stock";
-                    if (prod[sizeKey] !== undefined) {
-                        availableStock = Number(prod[sizeKey]) || 0;
-                        item.maxStock = availableStock;
+                    const isSizeless = prod.hasSizes === false || prod.hasSizes === "false" || (prod.category && prod.category.trim().toLowerCase() === "sunglasses");
+                    if (isSizeless) {
+                        availableStock = Number(prod.stock) || 0;
+                    } else {
+                        const sizeKey = (item.size || "").toLowerCase() + "Stock";
+                        if (prod[sizeKey] !== undefined) {
+                            availableStock = Number(prod[sizeKey]) || 0;
+                        }
                     }
+                    item.maxStock = availableStock;
                 }
             } catch (e) {
                 console.error("Error fetching stock:", e);
@@ -362,7 +367,6 @@ proceedBtn.onclick = async () => {
         }
     }
 
-    // checkout.html-ലേക്ക് തിരിച്ചുവിടുവാൻ
     window.location.href = "checkout.html";
 };
 
@@ -464,11 +468,16 @@ async function increaseQty(index){
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
                 const prod = docSnap.data();
-                const sizeKey = (item.size || "").toLowerCase() + "Stock";
-                if (prod[sizeKey] !== undefined) {
-                    availableStock = Number(prod[sizeKey]) || 0;
-                    item.maxStock = availableStock;
+                const isSizeless = prod.hasSizes === false || prod.hasSizes === "false" || (prod.category && prod.category.trim().toLowerCase() === "sunglasses");
+                if (isSizeless) {
+                    availableStock = Number(prod.stock) || 0;
+                } else {
+                    const sizeKey = (item.size || "").toLowerCase() + "Stock";
+                    if (prod[sizeKey] !== undefined) {
+                        availableStock = Number(prod[sizeKey]) || 0;
+                    }
                 }
+                item.maxStock = availableStock;
             }
         } catch (e) {
             console.error("Error fetching stock:", e);
