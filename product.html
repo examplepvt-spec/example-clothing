@@ -374,7 +374,7 @@ h3.section-label{
 
   <div class="discount" id="discount"></div>
 
-  <h3 class="section-label">Select Size</h3>
+  <h3 class="section-label" id="sizeLabel">Select Size</h3>
   <div class="sizes" id="sizeRow">
     <button id="sizeXS" data-size="XS">XS</button>
     <button id="sizeS" data-size="S">S</button>
@@ -446,6 +446,10 @@ if(!id){
       const product = docSnap.data();
       let selectedSize = null;
 
+      // Check if product has sizes or is sizeless (e.g., Sunglasses)
+      const isSizeless = product.hasSizes === false || product.hasSizes === "false" || (product.category && product.category.trim().toLowerCase() === "sunglasses");
+      const hasSizes = !isSizeless;
+
       // ---- Images ----
       const images = [
         product.image?.replace("/upload/","/upload/f_auto,q_auto,w_900/"),
@@ -477,7 +481,7 @@ if(!id){
         document.getElementById("current").innerText = currentImage + 1;
       };
 
-      // ---- Text content (safe: textContent, not innerHTML) ----
+      // ---- Text content ----
       document.getElementById("name").textContent = product.name || "";
       document.getElementById("barcode").textContent = product.barcode || "-";
 
@@ -496,7 +500,8 @@ if(!id){
         document.getElementById("discount").style.display = "none";
       }
 
-      // ---- Sizes ----
+      // ---- Stock and Sizes handling ----
+      let anySizeAvailable = false;
       const sizeMap = {
         XS: product.xsStock,
         S: product.sStock,
@@ -506,25 +511,33 @@ if(!id){
         XXL: product.xxlStock
       };
 
-      let anySizeAvailable = false;
+      if (!hasSizes) {
+        // Products without sizes (e.g. Sunglasses)
+        document.getElementById("sizeLabel").style.display = "none";
+        document.getElementById("sizeRow").style.display = "none";
 
-      Object.entries(sizeMap).forEach(([size, stock]) => {
-        const btn = document.getElementById("size" + size);
-        const stockNum = Number(stock) || 0;
+        const totalStock = Number(product.stock) || 0;
+        anySizeAvailable = totalStock > 0;
+      } else {
+        // Clothing products with sizes
+        Object.entries(sizeMap).forEach(([size, stock]) => {
+          const btn = document.getElementById("size" + size);
+          const stockNum = Number(stock) || 0;
 
-        if(stockNum <= 0){
-          btn.style.display = "none";
-          return;
-        }
+          if(stockNum <= 0){
+            btn.style.display = "none";
+            return;
+          }
 
-        anySizeAvailable = true;
-        btn.textContent = size + " (" + stockNum + ")";
-        btn.onclick = () => {
-          document.querySelectorAll(".sizes button").forEach(b => b.classList.remove("selected"));
-          btn.classList.add("selected");
-          selectedSize = size;
-        };
-      });
+          anySizeAvailable = true;
+          btn.textContent = size + " (" + stockNum + ")";
+          btn.onclick = () => {
+            document.querySelectorAll(".sizes button").forEach(b => b.classList.remove("selected"));
+            btn.classList.add("selected");
+            selectedSize = size;
+          };
+        });
+      }
 
       const addToCartBtn = document.getElementById("addToCart");
 
@@ -537,16 +550,22 @@ if(!id){
       addToCartBtn.onclick = () => {
         if(!anySizeAvailable) return;
 
-        if(!selectedSize){
-          showToast("Please select a size");
-          return;
-        }
-
-        const availableStock = Number(sizeMap[selectedSize]) || 0;
-
+        let availableStock = 0;
+        let existing = null;
         let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-        const existing = cart.find(item => item.id === id && item.size === selectedSize);
+        if(hasSizes){
+          if(!selectedSize){
+            showToast("Please select a size");
+            return;
+          }
+          availableStock = Number(sizeMap[selectedSize]) || 0;
+          existing = cart.find(item => item.id === id && item.size === selectedSize);
+        } else {
+          availableStock = Number(product.stock) || 0;
+          existing = cart.find(item => item.id === id && (!item.size || item.hasSizes === false));
+        }
+
         const currentQty = existing ? (existing.qty || 1) : 0;
 
         // Stock validation check
@@ -571,7 +590,8 @@ if(!id){
             price: price,
             offerPrice: offerPrice,
             image: product.image,
-            size: selectedSize,
+            size: hasSizes ? selectedSize : null,
+            hasSizes: hasSizes,
             qty: 1,
             maxStock: availableStock
           });
