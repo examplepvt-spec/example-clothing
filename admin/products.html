@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Products Management — Admin | Example Clothing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/global.css" />
+  <link rel="stylesheet" href="./css/admin.css" />
+</head>
+<body data-page="products">
+  <div class="admin-layout">
+
+    <!-- SIDEBAR OVERLAY (Mobile) -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar" id="admin-sidebar">
+      <div class="admin-logo">
+        <span class="admin-logo-brand">EXAMPLE</span>
+        <span class="admin-logo-sub">ADMIN PORTAL</span>
+      </div>
+
+      <nav class="admin-nav">
+        <ul>
+          <li>
+            <a href="dashboard.html" class="admin-nav-link" data-nav="dashboard">
+              <span class="nav-icon">📊</span> Dashboard
+            </a>
+          </li>
+          <li>
+            <a href="products.html" class="admin-nav-link active" data-nav="products">
+              <span class="nav-icon">🏷️</span> Products
+            </a>
+          </li>
+          <li>
+            <a href="orders.html" class="admin-nav-link" data-nav="orders">
+              <span class="nav-icon">📦</span> Orders
+            </a>
+          </li>
+          <li class="nav-divider"></li>
+          <li>
+            <a href="../index.html" class="admin-nav-link admin-nav-link--muted" target="_blank">
+              <span class="nav-icon">🌐</span> View Storefront ↗
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="admin-user">
+        <div class="admin-user-avatar" id="admin-user-avatar">A</div>
+        <div class="admin-user-info">
+          <span class="admin-user-name" id="admin-user-name">Admin</span>
+          <span class="admin-user-email" id="admin-user-email">admin@example.com</span>
+        </div>
+        <button id="logout-btn" class="admin-nav-link admin-nav-link--btn" style="padding:0; margin-left:auto; width:auto; border:none;" title="Logout">🚪</button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-main">
+
+      <!-- HEADER -->
+      <header class="admin-header">
+        <div class="admin-header-left">
+          <button class="admin-sidebar-toggle" id="sidebar-toggle" aria-label="Toggle Navigation">
+            <span></span><span></span><span></span>
+          </button>
+          <div>
+            <h1 class="admin-page-title">Products Management</h1>
+            <div class="admin-breadcrumb">Inventory Control & Stock Management</div>
+          </div>
+        </div>
+
+        <div class="admin-header-actions">
+          <button class="btn btn-primary btn-sm" id="add-product-btn">+ Add Product</button>
+        </div>
+      </header>
+
+      <!-- CONTENT -->
+      <div class="admin-content">
+
+        <!-- FILTER & SEARCH BAR -->
+        <div class="section-block" style="padding: 16px 20px;">
+          <div class="filter-bar">
+            <div class="filter-bar-left">
+              <div class="search-wrap">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="product-search" class="admin-search-input" placeholder="Search by name, category, barcode..." />
+              </div>
+
+              <select id="category-filter" class="admin-select">
+                <option value="">All Categories</option>
+                <option value="t-shirts">T-Shirts</option>
+                <option value="shirts">Shirts</option>
+                <option value="polo-tshirts">Polo T-Shirts</option>
+                <option value="jeans-pants">Jeans & Pants</option>
+                <option value="shorts">Shorts</option>
+                <option value="jackets">Jackets</option>
+                <option value="footwear">Footwear</option>
+                <option value="sunglasses">Sunglasses</option>
+                <option value="accessories">Accessories</option>
+                <option value="men">Men</option>
+                <option value="women">Women</option>
+                <option value="kids">Kids</option>
+                <option value="sale">Sale</option>
+              </select>
+            </div>
+
+            <div class="filter-bar-right">
+              <span class="table-count" id="products-count">0 products</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRODUCTS TABLE BLOCK -->
+        <div class="section-block">
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Image</th>
+                  <th class="sortable" data-sort="id">ID <span class="sort-arrow">⇅</span></th>
+                  <th class="sortable" data-sort="name">Product Name <span class="sort-arrow">⇅</span></th>
+                  <th class="sortable" data-sort="category">Category <span class="sort-arrow">⇅</span></th>
+                  <th class="sortable" data-sort="price">Price <span class="sort-arrow">⇅</span></th>
+                  <th>Badge</th>
+                  <th>Per-Size Stock</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="products-body">
+                <tr><td colspan="9" class="table-empty">Loading products...</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="pagination" id="products-pagination"></div>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- ADD / EDIT PRODUCT MODAL -->
+  <div class="admin-modal-overlay" id="product-modal">
+    <div class="admin-modal admin-modal--large">
+      <div class="admin-modal-header">
+        <div>
+          <h2 class="admin-modal-title" id="modal-title">Add Product</h2>
+          <span class="admin-modal-subtitle">Manage product details and per-size stock counts</span>
+        </div>
+        <button class="admin-modal-close" id="modal-close" aria-label="Close modal">×</button>
+      </div>
+
+      <div class="admin-modal-body">
+        <form id="product-form" onsubmit="return false;">
+          <div class="form-row--2">
+            <div class="form-group">
+              <label for="p-id">Product Document ID <small class="text-dim">(Auto-generated if blank)</small></label>
+              <input type="text" id="p-id" placeholder="e.g. tshirt-navy-001" />
+            </div>
+
+            <div class="form-group">
+              <label for="p-barcode">Barcode / SKU</label>
+              <input type="text" id="p-barcode" placeholder="e.g. EX-TS-001" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="p-name">Product Name <span class="req">*</span></label>
+            <input type="text" id="p-name" placeholder="e.g. Oversized Vintage Wash Tee" required />
+          </div>
+
+          <div class="form-row--2">
+            <div class="form-group">
+              <label for="p-category">Category <span class="req">*</span></label>
+              <select id="p-category" required>
+                <option value="">Select Category</option>
+                <option value="t-shirts">T-Shirts</option>
+                <option value="shirts">Shirts</option>
+                <option value="polo-tshirts">Polo T-Shirts</option>
+                <option value="jeans-pants">Jeans & Pants</option>
+                <option value="shorts">Shorts</option>
+                <option value="jackets">Jackets</option>
+                <option value="footwear">Footwear</option>
+                <option value="sunglasses">Sunglasses</option>
+                <option value="accessories">Accessories</option>
+                <option value="men">Men</option>
+                <option value="women">Women</option>
+                <option value="kids">Kids</option>
+                <option value="sale">Sale</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="p-subcategory">Subcategory</label>
+              <input type="text" id="p-subcategory" placeholder="e.g. tshirts, jackets" />
+            </div>
+          </div>
+
+          <div class="form-row--3">
+            <div class="form-group">
+              <label for="p-price">Price (₹) <span class="req">*</span></label>
+              <input type="number" id="p-price" placeholder="1299" min="0" required />
+            </div>
+
+            <div class="form-group">
+              <label for="p-offer-price">Offer Price (₹)</label>
+              <input type="number" id="p-offer-price" placeholder="999" min="0" />
+            </div>
+
+            <div class="form-group">
+              <label for="p-badge">Badge</label>
+              <select id="p-badge">
+                <option value="">None</option>
+                <option value="SALE">SALE</option>
+                <option value="NEW">NEW</option>
+                <option value="SURPLUS">SURPLUS</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- SIZES & STOCK SECTION -->
+          <div class="form-section-title">
+            <h3>Inventory & Stock Configuration</h3>
+          </div>
+
+          <div class="form-group">
+            <label class="check-label">
+              <input type="checkbox" id="p-has-sizes" checked />
+              <span>This product has size options (XS, S, M, L, XL, XXL)</span>
+            </label>
+          </div>
+
+          <!-- SIZED STOCK INPUTS -->
+          <div id="sized-stock-block" class="form-row--3" style="margin-bottom:16px;">
+            <div class="form-group">
+              <label for="p-xs-stock">XS Stock</label>
+              <input type="number" id="p-xs-stock" value="0" min="0" />
+            </div>
+            <div class="form-group">
+              <label for="p-s-stock">S Stock</label>
+              <input type="number" id="p-s-stock" value="0" min="0" />
+            </div>
+            <div class="form-group">
+              <label for="p-m-stock">M Stock</label>
+              <input type="number" id="p-m-stock" value="0" min="0" />
+            </div>
+            <div class="form-group">
+              <label for="p-l-stock">L Stock</label>
+              <input type="number" id="p-l-stock" value="0" min="0" />
+            </div>
+            <div class="form-group">
+              <label for="p-xl-stock">XL Stock</label>
+              <input type="number" id="p-xl-stock" value="0" min="0" />
+            </div>
+            <div class="form-group">
+              <label for="p-xxl-stock">XXL Stock</label>
+              <input type="number" id="p-xxl-stock" value="0" min="0" />
+            </div>
+          </div>
+
+          <!-- SIZELESS STOCK INPUT -->
+          <div id="sizeless-stock-block" class="form-group" style="display:none;">
+            <label for="p-stock">Total Stock (Sizeless items e.g. Sunglasses)</label>
+            <input type="number" id="p-stock" value="0" min="0" />
+          </div>
+
+          <!-- IMAGES SECTION -->
+          <div class="form-section-title">
+            <h3>Product Images</h3>
+          </div>
+
+          <div class="form-group">
+            <label for="p-image">Main Image URL <span class="req">*</span></label>
+            <input type="url" id="p-image" placeholder="https://..." required />
+          </div>
+
+          <div class="form-row--2">
+            <div class="form-group">
+              <label for="p-image2">Second Image URL</label>
+              <input type="url" id="p-image2" placeholder="https://..." />
+            </div>
+
+            <div class="form-group">
+              <label for="p-image3">Third Image URL</label>
+              <input type="url" id="p-image3" placeholder="https://..." />
+            </div>
+          </div>
+
+          <!-- DETAILS SECTION -->
+          <div class="form-section-title">
+            <h3>Details & Options</h3>
+          </div>
+
+          <div class="form-group">
+            <label for="p-description">Description</label>
+            <textarea id="p-description" placeholder="Product details, fit info, description..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="p-material">Material & Fabric Info</label>
+            <input type="text" id="p-material" placeholder="e.g. 100% Cotton, 220 GSM" />
+          </div>
+
+          <div class="form-group">
+            <label class="check-label">
+              <input type="checkbox" id="p-featured" />
+              <span>Mark as Featured Product (Displayed prominently on home/category pages)</span>
+            </label>
+          </div>
+        </form>
+      </div>
+
+      <div class="admin-modal-footer">
+        <button class="btn btn-ghost" id="modal-cancel">Cancel</button>
+        <button class="btn btn-primary" id="modal-save">Save Product</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./js/admin-products.js"></script>
+</body>
+</html>

@@ -1,0 +1,221 @@
+/* ============================================================
+   EXAMPLE CLOTHING STORE — global.css
+   Design System: Dark Luxury
+   ============================================================ */
+
+/* ── Google Fonts ─────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap');
+
+/* ── CSS Custom Properties ────────────────────────────────── */
+:root {
+  /* Backgrounds */
+  --bg:            #0a0a0a;
+  --bg-2:          #111111;
+  --surface:       #1a1a1a;
+  --surface-2:     #222222;
+
+  /* Typography */
+  --text:          #f5f0eb;
+  --text-muted:    #888888;
+  --text-dim:      #555555;
+
+  /* Accent (Gold) */
+  --accent:        #c9a84c;
+  --accent-dark:   #a8893d;
+  --accent-light:  #e8c96a;
+
+  /* Borders */
+  --border:        #2a2a2a;
+  --border-light:  #333333;
+
+  /* Status */
+  --danger:        #e05252;
+  --success:       #4caf7d;
+
+  /* Shape */
+  --radius:        2px;
+  --radius-lg:     6px;
+
+  /* Motion */
+  --transition:    0.3s ease;
+
+  /* Fonts */
+  --font-display:  'Playfair Display', serif;
+  --font-body:     'Inter', sans-serif;
+
+  /* Layout */
+  --max-width:     1440px;
+  --nav-height:    72px;
+}
+
+/* ── CSS Reset ────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+img,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+p,
+h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* ── Typography Scale ─────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--text);
+  letter-spacing: 0.01em;
+}
+
+h1 { font-size: clamp(2.5rem, 6vw, 5rem);  font-weight: 900; }
+h2 { font-size: clamp(1.75rem, 4vw, 3rem); }
+h3 { font-size: clamp(1.35rem, 3vw, 2rem); }
+h4 { font-size: clamp(1.15rem, 2.5vw, 1.5rem); }
+h5 { font-size: clamp(1rem, 2vw, 1.25rem);  font-weight: 600; }
+h6 { font-size: 1rem;                         font-weight: 600; }
+
+p  { font-size: 1rem; line-height: 1.75; color: var(--text-muted); }
+small { font-size: 0.8125rem; }
+
+/* ── Custom Scrollbar ─────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--accent-dark);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-dark) var(--bg);
+}
+
+/* ── Selection ────────────────────────────────────────────── */
+::selection {
+  background-color: var(--accent);
+  color: #0a0a0a;
+}
+
+/* ── Layout Utilities ─────────────────────────────────────── */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: clamp(16px, 4vw, 64px);
+}
+
+/* ── Typography Utilities ─────────────────────────────────── */
+.text-accent  { color: var(--accent); }
+.text-muted   { color: var(--text-muted); }
+.text-dim     { color: var(--text-dim); }
+.text-danger  { color: var(--danger); }
+.text-success { color: var(--success); }
+.text-center  { text-align: center; }
+.uppercase    { text-transform: uppercase; letter-spacing: 0.1em; }
+.font-display { font-family: var(--font-display); }
+
+/* ── Buttons ──────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 28px;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition),
+              border-color var(--transition), transform var(--transition),
+              box-shadow var(--transition);
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #0a0a0a;
+  border-color: var(--accent);
+}
+.btn-primary:hover {
+  background: var(--accent-light);
+  border-color: var(--accent-light);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.btn-secondary:hover {
+  background: rgba(201, 168, 76, 0.08);
+}

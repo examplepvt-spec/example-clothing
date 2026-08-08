@@ -1,0 +1,60 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper function to check if the requesting user is an authorized admin
+    function isAdmin() {
+      return request.auth != null &&
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == "admin";
+    }
+
+    // Admins Collection
+    match /admins/{adminId} {
+      allow read: if request.auth != null && (request.auth.uid == adminId || isAdmin());
+      allow write: if isAdmin();
+    }
+
+    // Products Collection
+    match /products/{productId} {
+      // Anyone can read/view products
+      allow read: if true;
+      // Only authorized admins can create, update, or delete products
+      allow write: if isAdmin();
+    }
+
+    // Orders Collection
+    match /orders/{orderId} {
+      // Admins can read all orders. Users can read their own orders. Guests can read by order ID.
+      allow read: if isAdmin() || 
+                  (request.auth != null && resource.data.userId == request.auth.uid) ||
+                  resource.data.userId == "guest";
+      
+      // Customers and guests can create orders during checkout
+      allow create: if true;
+
+      // Only admins can update (status, tracking) or delete orders
+      allow update, delete: if isAdmin();
+    }
+
+    // Customers Collection & Subcollections
+    match /customers/{userId} {
+      // Customers can read/write their own document. Admins can read all.
+      allow read: if isAdmin() || (request.auth != null && request.auth.uid == userId);
+      allow write: if request.auth != null && request.auth.uid == userId;
+
+      // Addresses Subcollection
+      match /addresses/{addressId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+
+      // Customer Orders Subcollection
+      match /orders/{orderId} {
+        allow read: if request.auth != null && request.auth.uid == userId;
+        allow create: if request.auth != null && request.auth.uid == userId;
+        allow update, delete: if isAdmin();
+      }
+    }
+
+  }
+}

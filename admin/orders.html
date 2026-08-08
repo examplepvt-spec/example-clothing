@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orders Fulfillment — Admin | Example Clothing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/global.css" />
+  <link rel="stylesheet" href="./css/admin.css" />
+</head>
+<body data-page="orders">
+  <div class="admin-layout">
+
+    <!-- SIDEBAR OVERLAY (Mobile) -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar" id="admin-sidebar">
+      <div class="admin-logo">
+        <span class="admin-logo-brand">EXAMPLE</span>
+        <span class="admin-logo-sub">ADMIN PORTAL</span>
+      </div>
+
+      <nav class="admin-nav">
+        <ul>
+          <li>
+            <a href="dashboard.html" class="admin-nav-link" data-nav="dashboard">
+              <span class="nav-icon">📊</span> Dashboard
+            </a>
+          </li>
+          <li>
+            <a href="products.html" class="admin-nav-link" data-nav="products">
+              <span class="nav-icon">🏷️</span> Products
+            </a>
+          </li>
+          <li>
+            <a href="orders.html" class="admin-nav-link active" data-nav="orders">
+              <span class="nav-icon">📦</span> Orders
+            </a>
+          </li>
+          <li class="nav-divider"></li>
+          <li>
+            <a href="../index.html" class="admin-nav-link admin-nav-link--muted" target="_blank">
+              <span class="nav-icon">🌐</span> View Storefront ↗
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="admin-user">
+        <div class="admin-user-avatar" id="admin-user-avatar">A</div>
+        <div class="admin-user-info">
+          <span class="admin-user-name" id="admin-user-name">Admin</span>
+          <span class="admin-user-email" id="admin-user-email">admin@example.com</span>
+        </div>
+        <button id="logout-btn" class="admin-nav-link admin-nav-link--btn" style="padding:0; margin-left:auto; width:auto; border:none;" title="Logout">🚪</button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-main">
+
+      <!-- HEADER -->
+      <header class="admin-header">
+        <div class="admin-header-left">
+          <button class="admin-sidebar-toggle" id="sidebar-toggle" aria-label="Toggle Navigation">
+            <span></span><span></span><span></span>
+          </button>
+          <div>
+            <h1 class="admin-page-title">Order Management</h1>
+            <div class="admin-breadcrumb">Order Processing, Fulfillment & Tracking</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- CONTENT -->
+      <div class="admin-content">
+
+        <!-- FILTER & SEARCH BAR -->
+        <div class="section-block" style="padding: 16px 20px;">
+          <div class="filter-bar">
+            <div class="filter-bar-left">
+              <div class="search-wrap">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="order-search" class="admin-search-input" placeholder="Search by Order ID, customer, phone..." />
+              </div>
+
+              <select id="status-filter" class="admin-select">
+                <option value="">All Statuses</option>
+                <option value="pending">Pending</option>
+                <option value="processing">Processing</option>
+                <option value="shipped">Shipped</option>
+                <option value="delivered">Delivered</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+
+            <div class="filter-bar-right">
+              <span class="table-count" id="orders-count">0 orders</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ORDERS TABLE BLOCK -->
+        <div class="section-block">
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th class="sortable" data-sort="orderId">Order ID <span class="sort-arrow">⇅</span></th>
+                  <th class="sortable" data-sort="address">Customer <span class="sort-arrow">⇅</span></th>
+                  <th>Items</th>
+                  <th class="sortable" data-sort="totalPrice">Total <span class="sort-arrow">⇅</span></th>
+                  <th class="sortable" data-sort="orderStatus">Status <span class="sort-arrow">⇅</span></th>
+                  <th class="sortable" data-sort="createdAt">Date <span class="sort-arrow">↓</span></th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="orders-body">
+                <tr><td colspan="7" class="table-empty">Loading orders...</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="pagination" id="orders-pagination"></div>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- ORDER DETAIL & FULFILLMENT MODAL -->
+  <div class="admin-modal-overlay" id="order-modal">
+    <div class="admin-modal admin-modal--large">
+      <div class="admin-modal-header">
+        <div>
+          <h2 class="admin-modal-title">Order Details <span id="modal-order-id" class="text-accent"></span></h2>
+          <span class="admin-modal-subtitle">Placed on <span id="modal-order-date"></span></span>
+        </div>
+        <button class="admin-modal-close" id="order-modal-close" aria-label="Close modal">×</button>
+      </div>
+
+      <div class="admin-modal-body">
+        <!-- STATUS UPDATER BAR -->
+        <div class="order-status-bar">
+          <span class="status-bar-label">Fulfillment Status:</span>
+          <select id="o-status" class="admin-select order-status-select">
+            <option value="Pending">Pending</option>
+            <option value="Processing">Processing</option>
+            <option value="Shipped">Shipped</option>
+            <option value="Delivered">Delivered</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </div>
+
+        <!-- SHIPPING & TRACKING SECTION -->
+        <div class="order-detail-section">
+          <div class="order-detail-section-title">Shipping & Tracking Information</div>
+          <div class="form-row--3">
+            <div class="form-group">
+              <label for="o-courier">Courier Partner</label>
+              <input type="text" id="o-courier" placeholder="e.g. DTDC, BlueDart, Delhivery" />
+            </div>
+            <div class="form-group">
+              <label for="o-tracking-num">Tracking / AWB Number</label>
+              <input type="text" id="o-tracking-num" placeholder="e.g. D123456789" />
+            </div>
+            <div class="form-group">
+              <label for="o-tracking-url">Tracking URL</label>
+              <input type="url" id="o-tracking-url" placeholder="https://..." />
+            </div>
+          </div>
+        </div>
+
+        <!-- CUSTOMER INFORMATION -->
+        <div class="order-detail-section">
+          <div class="order-detail-section-title">Customer & Delivery Address</div>
+          <div class="order-info-grid">
+            <div class="order-info-item">
+              <span class="info-label">Customer Name</span>
+              <span class="info-value" id="info-cust-name">—</span>
+            </div>
+            <div class="order-info-item">
+              <span class="info-label">Phone Number</span>
+              <span class="info-value" id="info-cust-phone">—</span>
+            </div>
+            <div class="order-info-item">
+              <span class="info-label">Email Address</span>
+              <span class="info-value" id="info-cust-email">—</span>
+            </div>
+            <div class="order-info-item order-info-item--full">
+              <span class="info-label">Shipping Address</span>
+              <span class="info-value" id="info-cust-address">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ORDERED ITEMS -->
+        <div class="order-detail-section">
+          <div class="order-detail-section-title">Ordered Items</div>
+          <div id="order-items-list">
+            <!-- Items rendered here -->
+          </div>
+        </div>
+
+        <!-- FINANCIAL SUMMARY -->
+        <div class="order-summary-section">
+          <div class="order-payment-info">
+            <div class="order-info-item" style="margin-bottom:8px;">
+              <span class="info-label">Payment Method</span>
+              <span class="info-value" id="info-payment-method">—</span>
+            </div>
+            <div class="order-info-item" style="margin-bottom:8px;">
+              <span class="info-label">Payment Status</span>
+              <span class="info-value" id="info-payment-status">—</span>
+            </div>
+            <div class="order-info-item">
+              <span class="info-label">UTR / Reference No</span>
+              <span class="info-value" id="info-utr">—</span>
+            </div>
+          </div>
+
+          <div class="order-price-summary">
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <span id="summary-subtotal">₹0</span>
+            </div>
+            <div class="summary-row">
+              <span>Delivery Charge</span>
+              <span id="summary-delivery">FREE</span>
+            </div>
+            <div class="summary-row summary-row--total">
+              <span>Total Price</span>
+              <span id="summary-total">₹0</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="admin-modal-footer">
+        <button class="btn btn-ghost" id="order-modal-cancel">Cancel</button>
+        <button class="btn btn-primary" id="order-modal-save">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./js/admin-orders.js"></script>
+</body>
+</html>

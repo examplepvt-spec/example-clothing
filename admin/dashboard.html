@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Admin | Example Clothing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/global.css" />
+  <link rel="stylesheet" href="./css/admin.css" />
+</head>
+<body data-page="dashboard">
+  <div class="admin-layout">
+
+    <!-- SIDEBAR OVERLAY (Mobile) -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar" id="admin-sidebar">
+      <div class="admin-logo">
+        <span class="admin-logo-brand">EXAMPLE</span>
+        <span class="admin-logo-sub">ADMIN PORTAL</span>
+      </div>
+
+      <nav class="admin-nav">
+        <ul>
+          <li>
+            <a href="dashboard.html" class="admin-nav-link active" data-nav="dashboard">
+              <span class="nav-icon">📊</span> Dashboard
+            </a>
+          </li>
+          <li>
+            <a href="products.html" class="admin-nav-link" data-nav="products">
+              <span class="nav-icon">🏷️</span> Products
+            </a>
+          </li>
+          <li>
+            <a href="orders.html" class="admin-nav-link" data-nav="orders">
+              <span class="nav-icon">📦</span> Orders
+            </a>
+          </li>
+          <li class="nav-divider"></li>
+          <li>
+            <a href="../index.html" class="admin-nav-link admin-nav-link--muted" target="_blank">
+              <span class="nav-icon">🌐</span> View Storefront ↗
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="admin-user">
+        <div class="admin-user-avatar" id="admin-user-avatar">A</div>
+        <div class="admin-user-info">
+          <span class="admin-user-name" id="admin-user-name">Admin</span>
+          <span class="admin-user-email" id="admin-user-email">admin@example.com</span>
+        </div>
+        <button id="logout-btn" class="admin-nav-link admin-nav-link--btn" style="padding:0; margin-left:auto; width:auto; border:none;" title="Logout">🚪</button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-main">
+
+      <!-- HEADER -->
+      <header class="admin-header">
+        <div class="admin-header-left">
+          <button class="admin-sidebar-toggle" id="sidebar-toggle" aria-label="Toggle Navigation">
+            <span></span><span></span><span></span>
+          </button>
+          <div>
+            <h1 class="admin-page-title">Dashboard Overview</h1>
+            <div class="admin-page-date" id="current-date">Loading date...</div>
+          </div>
+        </div>
+
+        <div class="admin-header-actions">
+          <a href="products.html" class="btn btn-primary btn-sm">+ Add Product</a>
+        </div>
+      </header>
+
+      <!-- CONTENT -->
+      <div class="admin-content">
+
+        <!-- STATS GRID -->
+        <div class="stats-grid">
+          <div class="stat-card stat-card--gold">
+            <span class="stat-icon">🏷️</span>
+            <div class="stat-value" id="stat-products">0</div>
+            <div class="stat-label">Total Products</div>
+          </div>
+
+          <div class="stat-card">
+            <span class="stat-icon">📦</span>
+            <div class="stat-value" id="stat-orders">0</div>
+            <div class="stat-label">Total Orders</div>
+          </div>
+
+          <div class="stat-card stat-card--gold">
+            <span class="stat-icon">💰</span>
+            <div class="stat-value" id="stat-revenue">₹0</div>
+            <div class="stat-label">Total Revenue</div>
+          </div>
+
+          <div class="stat-card">
+            <span class="stat-icon">⏳</span>
+            <div class="stat-value" id="stat-pending">0</div>
+            <div class="stat-label">Pending Orders</div>
+          </div>
+        </div>
+
+        <!-- RECENT ORDERS BLOCK -->
+        <div class="section-block">
+          <div class="section-header">
+            <h2 class="section-title">Recent Orders</h2>
+            <a href="orders.html" class="view-all-link">View All Orders →</a>
+          </div>
+
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Customer</th>
+                  <th>Items</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="recent-orders-body">
+                <tr><td colspan="7" class="table-empty">Loading orders...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- FEATURED / LOW-STOCK PRODUCTS BLOCK -->
+        <div class="section-block">
+          <div class="section-header">
+            <h2 class="section-title">Featured & Low-Stock Products</h2>
+            <a href="products.html" class="view-all-link">Manage Inventory →</a>
+          </div>
+
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Image</th>
+                  <th>Product Name</th>
+                  <th>Category</th>
+                  <th>Price</th>
+                  <th>Badge</th>
+                  <th>Stock</th>
+                  <th>Featured</th>
+                </tr>
+              </thead>
+              <tbody id="featured-body">
+                <tr><td colspan="7" class="table-empty">Loading products...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <script type="module" src="./js/admin-dashboard.js"></script>
+</body>
+</html>

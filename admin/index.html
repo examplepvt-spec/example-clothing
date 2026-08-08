@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login — Example Clothing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/global.css" />
+  <link rel="stylesheet" href="./css/admin.css" />
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0a0a0a;
+      background-image:
+        radial-gradient(ellipse at 20% 50%, rgba(201,168,76,0.04) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(201,168,76,0.03) 0%, transparent 50%);
+    }
+    .login-wrapper {
+      width: 100%;
+      max-width: 420px;
+      padding: 24px 16px;
+      animation: fadeInUp 0.5s ease both;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .login-logo { text-align: center; margin-bottom: 8px; }
+    .login-logo .brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.6rem;
+      font-weight: 700;
+      color: #c9a84c;
+      letter-spacing: 0.18em;
+      line-height: 1;
+      display: block;
+    }
+    .login-logo .subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.35em;
+      color: #888;
+      margin-top: 6px;
+      display: block;
+    }
+    .login-divider {
+      width: 48px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #c9a84c, transparent);
+      margin: 20px auto;
+    }
+    .login-card {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 36px 32px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+    }
+    .login-card h2 {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #f5f0eb;
+      margin: 0 0 28px;
+      text-align: center;
+    }
+    .form-group { margin-bottom: 18px; }
+    .form-group label {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: #999;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .input-wrap { position: relative; }
+    .form-group input {
+      width: 100%;
+      background: #0f0f0f;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      color: #f5f0eb;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      padding: 12px 14px;
+      box-sizing: border-box;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-group input:focus {
+      border-color: #c9a84c;
+      box-shadow: 0 0 0 3px rgba(201,168,76,0.12);
+    }
+    .form-group input.has-toggle { padding-right: 44px; }
+    .toggle-pw {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #666;
+      font-size: 1rem;
+      line-height: 1;
+      padding: 4px;
+      transition: color 0.2s;
+    }
+    .toggle-pw:hover { color: #c9a84c; }
+    .error-msg {
+      display: none;
+      background: rgba(220,60,60,0.12);
+      border: 1px solid rgba(220,60,60,0.35);
+      border-radius: 8px;
+      color: #e88;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      padding: 10px 14px;
+      margin-bottom: 18px;
+      text-align: center;
+    }
+    .error-msg.visible { display: block; }
+    .btn-login {
+      width: 100%;
+      background: #c9a84c;
+      color: #0a0a0a;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 8px;
+      padding: 14px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+      margin-top: 8px;
+    }
+    .btn-login:hover {
+      background: #d9b85c;
+      box-shadow: 0 6px 24px rgba(201,168,76,0.3);
+    }
+    .btn-login:active { transform: scale(0.98); }
+    .btn-login:disabled { opacity: 0.6; cursor: not-allowed; }
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 24px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      color: #666;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: #c9a84c; }
+  </style>
+</head>
+<body data-page="login">
+  <div class="login-wrapper">
+    <div class="login-logo">
+      <span class="brand">EXAMPLE</span>
+      <span class="subtitle">ADMIN PORTAL</span>
+    </div>
+    <div class="login-divider"></div>
+    <div class="login-card">
+      <h2>Sign in to continue</h2>
+      <div id="error-msg" class="error-msg" role="alert"></div>
+      <form id="login-form" novalidate>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="admin@example.com" autocomplete="username" required />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-wrap">
+            <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password" class="has-toggle" required />
+            <button type="button" class="toggle-pw" id="toggle-pw" aria-label="Toggle password visibility">&#128065;</button>
+          </div>
+        </div>
+        <button type="submit" class="btn-login" id="login-btn">Login</button>
+      </form>
+    </div>
+    <a href="../index.html" class="back-link">&#8592; Back to Storefront</a>
+  </div>
+
+  <script type="module">
+    import { adminLogin } from "./js/admin-auth.js";
+    import { auth, db } from "../firebase.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const form = document.getElementById('login-form');
+    const emailEl = document.getElementById('email');
+    const passEl = document.getElementById('password');
+    const togglePw = document.getElementById('toggle-pw');
+    const errorMsg = document.getElementById('error-msg');
+    const loginBtn = document.getElementById('login-btn');
+
+    // If already logged in as admin, redirect immediately
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        try {
+          const snap = await getDoc(doc(db, "admins", user.uid));
+          if (snap.exists() && snap.data().role === "admin") {
+            window.location.href = 'dashboard.html';
+          }
+        } catch (e) {
+          console.error("Auth check failed:", e);
+        }
+      }
+    });
+
+    togglePw && togglePw.addEventListener('click', () => {
+      const isText = passEl.type === 'text';
+      passEl.type = isText ? 'password' : 'text';
+      togglePw.textContent = isText ? '👁' : '🙈';
+    });
+
+    form && form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorMsg.classList.remove('visible');
+      errorMsg.textContent = '';
+      loginBtn.disabled = true;
+      loginBtn.textContent = 'Logging in…';
+
+      const email = emailEl.value.trim();
+      const password = passEl.value;
+
+      if (!email || !password) {
+        errorMsg.textContent = 'Please enter both email and password.';
+        errorMsg.classList.add('visible');
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Login';
+        return;
+      }
+
+      const result = await adminLogin(email, password);
+
+      if (result.success) {
+        window.location.href = 'dashboard.html';
+      } else {
+        errorMsg.textContent = result.error || 'Invalid admin credentials.';
+        errorMsg.classList.add('visible');
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Login';
+        passEl.value = '';
+        passEl.focus();
+      }
+    });
+  </script>
+</body>
+</html>
