@@ -2,56 +2,63 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Helper function to check if the requesting user is an authorized admin
+    // Helper function: verifies if the requesting user is an authorized admin
     function isAdmin() {
       return request.auth != null &&
         exists(/databases/$(database)/documents/admins/$(request.auth.uid)) &&
         get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == "admin";
     }
 
-    // Admins Collection
+    // 1. Admins Collection
     match /admins/{adminId} {
       allow read: if request.auth != null && (request.auth.uid == adminId || isAdmin());
       allow write: if isAdmin();
     }
 
-    // Products Collection
+    // 2. Products Collection
     match /products/{productId} {
-      // Anyone can read/view products
+      // Public read access for storefront catalog browsing
       allow read: if true;
-      // Only authorized admins can create, update, or delete products
+      // Admin-only creation, modification, and deletion
       allow write: if isAdmin();
     }
 
-    // Orders Collection
+    // 3. Global Orders Collection
     match /orders/{orderId} {
-      // Admins can read all orders. Users can read their own orders. Guests can read by order ID.
-      allow read: if isAdmin() || 
-                  (request.auth != null && resource.data.userId == request.auth.uid) ||
-                  resource.data.userId == "guest";
-      
-      // Customers and guests can create orders during checkout
-      allow create: if true;
+      // Strictly Admin-Only Read (get & list), Update, and Delete
+      // Prevents all public or customer enumeration/reading of global order documents and PII
+      allow read, update, delete: if isAdmin();
 
-      // Only admins can update (status, tracking) or delete orders
-      allow update, delete: if isAdmin();
+      // Order Creation Validation for Checkout (payment.html)
+      allow create: if request.resource.data.orderStatus == "Pending" &&
+                       request.resource.data.paymentStatus == "Pending Verification" &&
+                       request.resource.data.userId == (request.auth != null ? request.auth.uid : "guest") &&
+                       request.resource.data.keys().hasAll(['orderId', 'userEmail', 'address', 'items', 'totalPrice', 'createdAt']);
     }
 
-    // Customers Collection & Subcollections
+    // 4. Customers Collection & Subcollections
     match /customers/{userId} {
-      // Customers can read/write their own document. Admins can read all.
+      // Customer profile: Customer can access only their own document. Admins can read all.
       allow read: if isAdmin() || (request.auth != null && request.auth.uid == userId);
       allow write: if request.auth != null && request.auth.uid == userId;
 
-      // Addresses Subcollection
+      // Addresses Subcollection: Access strictly isolated to document owner
       match /addresses/{addressId} {
         allow read, write: if request.auth != null && request.auth.uid == userId;
       }
 
-      // Customer Orders Subcollection
+      // Customer Orders Subcollection: Customer order history mirror
       match /orders/{orderId} {
+        // Customer can read only their own order copies
         allow read: if request.auth != null && request.auth.uid == userId;
-        allow create: if request.auth != null && request.auth.uid == userId;
+        
+        // Customer can create order copies strictly under their own UID path
+        allow create: if request.auth != null && 
+                         request.auth.uid == userId &&
+                         request.resource.data.orderStatus == "Pending" &&
+                         request.resource.data.paymentStatus == "Pending Verification";
+        
+        // Admin-only updates (fulfillment status, tracking details) and deletion
         allow update, delete: if isAdmin();
       }
     }
