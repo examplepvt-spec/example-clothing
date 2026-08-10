@@ -153,7 +153,7 @@ function applyProductFilters() {
       (p.barcode || "").toLowerCase().includes(searchVal) ||
       String(p.id || "").toLowerCase().includes(searchVal);
 
-    const matchCat = !catVal || (p.category || "").toLowerCase() === catVal;
+    const matchCat = !catVal || normalizeCategoryForAdmin(p.category) === catVal;
     return matchSearch && matchCat;
   });
 
@@ -305,7 +305,7 @@ function openProductModal(product) {
 
   setValue("p-name", product ? product.name : "");
   setValue("p-barcode", product ? (product.barcode || "") : "");
-  setValue("p-category", product ? product.category : "");
+  setValue("p-category", product ? normalizeCategoryForAdmin(product.category) : "");
   setValue("p-subcategory", product ? (product.subcategory || "") : "");
   setValue("p-price", product ? product.price : "");
   setValue("p-offer-price", product ? (product.offerPrice || "") : "");
@@ -351,6 +351,71 @@ function updateSizeFieldsVisibility() {
   if (sizelessBlock) sizelessBlock.style.display = hasSizes ? "none" : "block";
 }
 
+function normalizeCategoryForAdmin(rawCategory) {
+  if (!rawCategory) return "";
+  const cat = String(rawCategory).trim().toLowerCase();
+
+  if (cat === "polo t-shirts" || cat === "polo tshirts" || cat === "polo t-shirt" || cat === "polo-tshirts") {
+    return "polo-tshirts";
+  }
+  if (cat === "jeans" || cat === "jeans-pants" || cat === "jeans & pants" || cat === "pants") {
+    return "jeans-pants";
+  }
+  if (cat === "t-shirts" || cat === "tshirts" || cat === "t-shirt") {
+    return "t-shirts";
+  }
+  if (cat === "shirts" || cat === "shirt") {
+    return "shirts";
+  }
+  if (cat === "shorts" || cat === "short") {
+    return "shorts";
+  }
+  if (cat === "jackets" || cat === "jacket") {
+    return "jackets";
+  }
+  if (cat === "footwear" || cat === "shoes") {
+    return "footwear";
+  }
+  if (cat === "sunglasses" || cat === "sunglass") {
+    return "sunglasses";
+  }
+  if (cat === "accessories" || cat === "accessory") {
+    return "accessories";
+  }
+  if (cat === "men") return "men";
+  if (cat === "women") return "women";
+  if (cat === "kids") return "kids";
+  if (cat === "sale") return "sale";
+
+  return cat;
+}
+
+function mapCategoryForSave(selectedCategory, originalCategory) {
+  if (!selectedCategory) return "";
+
+  if (originalCategory && normalizeCategoryForAdmin(originalCategory) === selectedCategory) {
+    return originalCategory;
+  }
+
+  const saveMap = {
+    "polo-tshirts": "polo t-shirts",
+    "jeans-pants": "jeans",
+    "t-shirts": "t-shirts",
+    "shirts": "shirts",
+    "shorts": "shorts",
+    "jackets": "jackets",
+    "footwear": "footwear",
+    "sunglasses": "sunglasses",
+    "accessories": "accessories",
+    "men": "men",
+    "women": "women",
+    "kids": "kids",
+    "sale": "sale"
+  };
+
+  return saveMap[selectedCategory] || selectedCategory;
+}
+
 async function saveProduct() {
   const saveBtn = document.getElementById("modal-save");
   if (saveBtn) {
@@ -361,14 +426,17 @@ async function saveProduct() {
   try {
     const idInput = document.getElementById("p-id");
     const name = getValue("p-name").trim();
-    const category = getValue("p-category").trim();
+    const selectedCategory = getValue("p-category").trim();
     const price = Number(getValue("p-price"));
 
-    if (!name || !category || isNaN(price)) {
+    if (!name || !selectedCategory || isNaN(price)) {
       alert("Please fill in required fields (Name, Category, Price).");
       if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = "Save Product"; }
       return;
     }
+
+    const editingProduct = ProductsState.all.find(p => String(p.id) === String(ProductsState.editingId));
+    const category = mapCategoryForSave(selectedCategory, editingProduct ? editingProduct.category : null);
 
     const hasSizes = document.getElementById("p-has-sizes")?.checked;
     const offerPriceRaw = getValue("p-offer-price");

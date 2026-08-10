@@ -70,6 +70,10 @@ async function loadStatsAndTables() {
 
     // 3. Compute Metrics
     const totalRevenue = orders.reduce((sum, o) => {
+      const status = String(o.orderStatus || o.status || "").trim().toLowerCase();
+      if (status === "cancelled" || status === "pending" || status === "pending verification") {
+        return sum;
+      }
       const price = Number(o.totalPrice || o.subtotal || o.totalAmount || 0);
       return sum + price;
     }, 0);
