@@ -156,11 +156,18 @@ h1{
 
 .btn-secondary:hover{
   background:var(--ivory-dim);
-}
+.top-header{ display:flex; align-items:center; justify-content:space-between; width:100%; max-width:520px; margin:0 auto 20px; padding:0 10px; }
+.top-header a{ text-decoration:none; color:var(--ink); font-weight:600; font-size:14px; }
+.top-header .logo{ font-family:'Cormorant Garamond',serif; font-size:18px; letter-spacing:3px; }
 </style>
 </head>
 
 <body>
+
+<div class="top-header">
+  <a href="javascript:void(0)" onclick="if(document.referrer && document.referrer.indexOf(location.host)!==-1){history.back();}else{location.href='index.html';}">← Back</a>
+  <a href="index.html" class="logo">EXAMPLE CLOTHING</a>
+</div>
 
 <div class="success-card">
   

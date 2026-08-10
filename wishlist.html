@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Wishlist — EXAMPLE CLOTHING</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --ink:#161412;
+  --ivory:#f6f3ec;
+  --ivory-dim:#eee9dd;
+  --brass:#9c7a3c;
+  --brass-soft:#c7ab74;
+  --oxblood:#5e2430;
+  --line:#e2dccb;
+  --white:#ffffff;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+body{
+  background:var(--ivory);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  padding-bottom:80px;
+  -webkit-font-smoothing:antialiased;
+}
+
+a{ color:inherit; text-decoration:none; }
+
+/* HEADER */
+.header{
+  background:rgba(246,243,236,.95);
+  backdrop-filter:blur(10px);
+  padding:0 18px;
+  height:64px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid var(--line);
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.back-btn{
+  width:36px;
+  height:36px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  text-decoration:none;
+}
+
+.back-btn:hover{ background:var(--ivory-dim); }
+
+.back-btn svg{
+  width:19px;
+  height:19px;
+  stroke:var(--ink);
+  fill:none;
+  stroke-width:1.8;
+}
+
+.header-title{
+  font-family:'Libre Caslon Display',serif;
+  font-size:20px;
+  flex:1;
+  text-align:center;
+}
+
+.cart-icon{
+  position:relative;
+  width:36px;
+  height:36px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  text-decoration:none;
+}
+
+.cart-icon svg{
+  width:20px;
+  height:20px;
+  stroke:var(--ink);
+  fill:none;
+  stroke-width:1.8;
+}
+
+.badge{
+  position:absolute;
+  top:2px;
+  right:2px;
+  background:var(--brass);
+  color:var(--white);
+  min-width:16px;
+  height:16px;
+  border-radius:50%;
+  font-size:9px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 3px;
+}
+
+/* CONTAINER */
+.container{
+  max-width:700px;
+  margin:0 auto;
+  padding:24px 18px;
+}
+
+.page-heading{
+  font-family:'Libre Caslon Display',serif;
+  font-size:26px;
+  font-weight:400;
+  margin-bottom:20px;
+  border-bottom:1px solid var(--line);
+  padding-bottom:12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.item-count-label{
+  font-family:'Inter',sans-serif;
+  font-size:13px;
+  color:#666;
+  font-weight:400;
+}
+
+/* WISHLIST GRID / LIST */
+.wishlist-list{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.wishlist-item{
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  box-shadow:0 2px 8px rgba(0,0,0,.03);
+  transition:transform .2s, box-shadow .2s;
+}
+
+.wishlist-item:hover{
+  transform:translateY(-1px);
+  box-shadow:0 4px 14px rgba(0,0,0,.06);
+}
+
+.item-img{
+  width:72px;
+  height:72px;
+  object-fit:contain;
+  background:var(--ivory-dim);
+  border-radius:6px;
+  flex-shrink:0;
+}
+
+.item-img-placeholder{
+  width:72px;
+  height:72px;
+  background:var(--ivory-dim);
+  border-radius:6px;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--brass);
+  font-size:12px;
+}
+
+.item-info{
+  flex:1;
+  min-width:0;
+}
+
+.item-name{
+  font-family:'Libre Caslon Display',serif;
+  font-size:17px;
+  color:var(--ink);
+  margin-bottom:4px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.item-price{
+  font-size:15px;
+  font-weight:600;
+  color:var(--ink);
+}
+
+.item-price .old-price{
+  font-size:13px;
+  color:#888;
+  text-decoration:line-through;
+  margin-left:6px;
+  font-weight:400;
+}
+
+.item-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-shrink:0;
+}
+
+.btn-move{
+  background:var(--ink);
+  color:var(--ivory);
+  border:none;
+  padding:10px 16px;
+  border-radius:4px;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.5px;
+  cursor:pointer;
+  transition:background .2s;
+  white-space:nowrap;
+}
+
+.btn-move:hover{
+  background:var(--brass);
+}
+
+.btn-remove{
+  background:none;
+  border:1px solid var(--line);
+  color:#777;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:all .2s;
+  flex-shrink:0;
+}
+
+.btn-remove:hover{
+  background:var(--oxblood);
+  color:var(--white);
+  border-color:var(--oxblood);
+}
+
+.btn-remove svg{
+  width:14px;
+  height:14px;
+  stroke:currentColor;
+  fill:none;
+  stroke-width:2;
+}
+
+/* EMPTY STATE */
+.empty-state{
+  text-align:center;
+  padding:70px 20px;
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:8px;
+}
+
+.empty-icon{
+  font-size:44px;
+  margin-bottom:14px;
+  color:var(--brass);
+  display:block;
+}
+
+.empty-state h2{
+  font-family:'Libre Caslon Display',serif;
+  font-size:24px;
+  margin-bottom:8px;
+}
+
+.empty-state p{
+  font-size:14px;
+  color:#666;
+  margin-bottom:24px;
+  line-height:1.5;
+}
+
+.btn-browse{
+  display:inline-block;
+  background:var(--ink);
+  color:var(--ivory);
+  padding:14px 28px;
+  border-radius:4px;
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  transition:background .2s;
+}
+
+.btn-browse:hover{
+  background:var(--brass);
+}
+
+/* TOAST */
+.toast{
+  position:fixed;
+  bottom:30px;
+  left:50%;
+  transform:translateX(-50%) translateY(20px);
+  background:var(--ink);
+  color:var(--ivory);
+  padding:12px 24px;
+  border-radius:50px;
+  font-size:13px;
+  font-weight:500;
+  opacity:0;
+  pointer-events:none;
+  transition:all .3s;
+  z-index:2000;
+  white-space:nowrap;
+  box-shadow:0 4px 16px rgba(0,0,0,.15);
+}
+
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+@media(max-width:500px){
+  .wishlist-item{
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .item-actions{
+    width:100%;
+    justify-content:space-between;
+    padding-top:8px;
+    border-top:1px dashed var(--line);
+  }
+  .btn-move{
+    flex:1;
+    text-align:center;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <a href="javascript:void(0)" onclick="if(document.referrer && document.referrer.indexOf(location.host)!==-1){history.back();}else{location.href='index.html';}" class="back-btn" aria-label="Back">
+    <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg>
+  </a>
+  <a href="index.html" class="header-title" style="text-decoration:none;">My Wishlist</a>
+  <a href="cart.html" class="cart-icon" aria-label="Cart">
+    <svg viewBox="0 0 24 24"><path d="M4 7h16l-1.4 10.3a2 2 0 0 1-2 1.7H7.4a2 2 0 0 1-2-1.7L4 7Z"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/></svg>
+    <span class="badge" id="cartCount">0</span>
+  </a>
+</div>
+
+<!-- CONTENT CONTAINER -->
+<div class="container">
+  <div class="page-heading">
+    <span>Saved Items</span>
+    <span class="item-count-label" id="itemCountLabel">0 items</span>
+  </div>
+
+  <div id="wishlistContainer"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let wishlist = [];
+let cart = [];
+
+function initWishlist() {
+  try {
+    wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+    if (!Array.isArray(wishlist)) wishlist = [];
+  } catch (e) {
+    console.error("Invalid wishlist data in localStorage:", e);
+    wishlist = [];
+  }
+
+  try {
+    cart = JSON.parse(localStorage.getItem("cart")) || [];
+    if (!Array.isArray(cart)) cart = [];
+  } catch (e) {
+    console.error("Invalid cart data in localStorage:", e);
+    cart = [];
+  }
+
+  updateCartBadge();
+  renderWishlist();
+}
+
+function updateCartBadge() {
+  const cartBadge = document.getElementById("cartCount");
+  if (cartBadge) {
+    let totalQty = 0;
+    cart.forEach(item => { totalQty += Number(item.qty) || 1; });
+    cartBadge.textContent = totalQty;
+  }
+}
+
+function showToast(msg) {
+  const toast = document.getElementById("toast");
+  if (!toast) return;
+  toast.textContent = msg;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2200);
+}
+
+function formatPrice(val) {
+  const num = Number(val) || 0;
+  return "₹" + num.toLocaleString("en-IN");
+}
+
+function renderWishlist() {
+  const container = document.getElementById("wishlistContainer");
+  const countLabel = document.getElementById("itemCountLabel");
+
+  if (countLabel) {
+    countLabel.textContent = `${wishlist.length} item${wishlist.length !== 1 ? 's' : ''}`;
+  }
+
+  if (!container) return;
+
+  if (wishlist.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <span class="empty-icon">♡</span>
+        <h2>Your Wishlist is Empty</h2>
+        <p>Save your favorite items here to view or move to cart anytime.</p>
+        <a href="index.html" class="btn-browse">Browse Collections</a>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="wishlist-list">
+      ${wishlist.map((item, index) => {
+        const id = item.id || index;
+        const name = item.name || "Product";
+        const displayPrice = item.offerPrice || item.price || 0;
+        const oldPrice = (item.offerPrice && item.price && Number(item.price) > Number(item.offerPrice)) ? item.price : null;
+        const image = item.image || "";
+
+        const imgHtml = image
+          ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(name)}" class="item-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" /><div class="item-img-placeholder" style="display:none;">No image</div>`
+          : `<div class="item-img-placeholder">No image</div>`;
+
+        return `
+          <div class="wishlist-item" data-id="${escapeHtml(id)}">
+            ${imgHtml}
+            <div class="item-info">
+              <h3 class="item-name">${escapeHtml(name)}</h3>
+              <div class="item-price">
+                ${formatPrice(displayPrice)}
+                ${oldPrice ? `<span class="old-price">${formatPrice(oldPrice)}</span>` : ''}
+              </div>
+            </div>
+            <div class="item-actions">
+              <button class="btn-move" onclick="moveToCart(${index})">Move to Cart</button>
+              <button class="btn-remove" onclick="removeFromWishlist(${index})" aria-label="Remove item">
+                <svg viewBox="0 0 24 24"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join("")}
+    </div>
+  `;
+}
+
+function removeFromWishlist(index) {
+  if (index < 0 || index >= wishlist.length) return;
+  const removedName = wishlist[index].name || "Item";
+  wishlist.splice(index, 1);
+  try {
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+  } catch (e) {
+    console.error("Error saving wishlist to localStorage:", e);
+  }
+  renderWishlist();
+  showToast(`Removed "${removedName}" from wishlist`);
+}
+
+function moveToCart(index) {
+  if (index < 0 || index >= wishlist.length) return;
+  const item = wishlist[index];
+  
+  try {
+    cart = JSON.parse(localStorage.getItem("cart")) || [];
+    if (!Array.isArray(cart)) cart = [];
+  } catch (e) {
+    cart = [];
+  }
+
+  // Find if already in cart
+  const existing = cart.find(c => String(c.id) === String(item.id));
+  if (existing) {
+    existing.qty = (Number(existing.qty) || 1) + 1;
+  } else {
+    cart.push({
+      id: item.id,
+      name: item.name || "Product",
+      price: Number(item.price) || Number(item.offerPrice) || 0,
+      offerPrice: item.offerPrice ? Number(item.offerPrice) : null,
+      image: item.image || "",
+      size: item.size || null,
+      hasSizes: !!item.size,
+      qty: 1
+    });
+  }
+
+  try {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  } catch (e) {
+    console.error("Error saving cart to localStorage:", e);
+  }
+
+  updateCartBadge();
+
+  // Remove from wishlist after moving
+  wishlist.splice(index, 1);
+  try {
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+  } catch (e) {
+    console.error("Error updating wishlist in localStorage:", e);
+  }
+
+  renderWishlist();
+  showToast(`Moved "${item.name || 'Item'}" to cart`);
+}
+
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.innerText = str ?? "";
+  return div.innerHTML;
+}
+
+document.addEventListener("DOMContentLoaded", initWishlist);
+</script>
+
+</body>
+</html>

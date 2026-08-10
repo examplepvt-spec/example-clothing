@@ -324,7 +324,7 @@ button.btn:hover::after{
 
 <div class="register-box">
 
-  <div class="brand">EXAMPLE</div>
+  <a href="index.html" class="brand" style="display:block; text-decoration:none;">EXAMPLE</a>
   <span class="brand-tag">Premium Fashion</span>
 
   <h1>Create Account</h1>
@@ -365,7 +365,7 @@ button.btn:hover::after{
   </button>
 
   <div class="links">
-    <a href="index.html">← Back to Home</a>
+    <a href="index.html" onclick="if(document.referrer && document.referrer.indexOf(location.host)!==-1){history.back();return false;}">← Back to Home</a>
   </div>
 
 </div>

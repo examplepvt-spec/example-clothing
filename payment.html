@@ -65,10 +65,10 @@ h2{ font-family:'Libre Caslon Display',serif; font-size:20px; margin-bottom:12px
 <body>
 
 <div class="header">
-  <a href="checkout.html" class="back-btn" aria-label="Back">
+  <a href="checkout.html" onclick="if(document.referrer && document.referrer.indexOf(location.host)!==-1){history.back();return false;}" class="back-btn" aria-label="Back">
     <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg>
   </a>
-  <span class="header-title">Payment (Testing Mode)</span>
+  <a href="index.html" class="header-title" style="text-decoration:none;">Payment (Testing Mode) — EXAMPLE CLOTHING</a>
 </div>
 
 <div class="container">
