@@ -81,32 +81,215 @@ a{ color:inherit; }
 .eyebrow-dark{ font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--brass); font-weight:700; }
 .page-head h1{ font-size:28px; margin-top:6px; }
 
-.filter-toolbar{ padding:12px 22px 10px; display:flex; flex-direction:column; gap:12px; }
+.filter-toolbar{
+  padding:12px 22px 10px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+@media(min-width:1024px){
+  .filter-toolbar{
+    flex-direction:row;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+  }
+}
+
+.search-wrap{
+  position:relative;
+  width:100%;
+}
+
+@media(min-width:1024px){
+  .search-wrap{
+    max-width:420px;
+  }
+}
+
+.search-icon{
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  width:18px;
+  height:18px;
+  stroke:#8a8578;
+  fill:none;
+  stroke-width:2;
+  pointer-events:none;
+}
 
 .search-wrap input{
-  width:100%; padding:13px 16px; border:1px solid var(--line); border-radius:6px;
-  font-size:14px; font-family:'Inter',sans-serif; background:var(--white); color:var(--ink); outline:none;
+  width:100%;
+  padding:12px 38px 12px 42px;
+  border:1px solid var(--line);
+  border-radius:6px;
+  font-size:14px;
+  font-family:'Inter',sans-serif;
+  background:var(--white);
+  color:var(--ink);
+  outline:none;
+  transition:all .2s;
 }
-.search-wrap input:focus{ border-color:var(--brass); }
 
-.controls-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+.search-wrap input:focus{
+  border-color:var(--ink);
+  box-shadow:0 0 0 2px rgba(22,20,18,.1);
+}
 
-.size-filter-row{ display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
-.size-label{ font-size:11px; font-weight:700; text-transform:uppercase; color:var(--brass); margin-right:4px; }
+.search-clear-btn{
+  position:absolute;
+  right:10px;
+  top:50%;
+  transform:translateY(-50%);
+  width:24px;
+  height:24px;
+  border:none;
+  background:var(--ivory-dim);
+  color:var(--ink);
+  border-radius:50%;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  font-size:12px;
+  line-height:1;
+  padding:0;
+  transition:all .2s;
+}
+
+.search-clear-btn:hover{
+  background:var(--ink);
+  color:var(--white);
+}
+
+.search-clear-btn:focus-visible{
+  outline:2px solid var(--brass);
+  outline-offset:2px;
+}
+
+.controls-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:12px;
+}
+
+@media(min-width:1024px){
+  .controls-row{
+    flex:1;
+    justify-content:flex-end;
+    gap:16px;
+  }
+}
+
+.size-filter-row{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+}
+
+.size-label{
+  font-size:11px;
+  font-weight:700;
+  text-transform:uppercase;
+  color:var(--brass);
+  margin-right:4px;
+}
 
 .size-btn{
-  padding:6px 12px; border:1px solid var(--line); background:var(--white); color:var(--ink);
-  font-size:12px; font-weight:600; border-radius:4px; cursor:pointer; transition:all .2s;
+  min-height:38px;
+  padding:8px 14px;
+  border:1px solid var(--line);
+  background:var(--white);
+  color:var(--ink);
+  font-size:13px;
+  font-weight:600;
+  border-radius:4px;
+  cursor:pointer;
+  transition:all .2s;
 }
-.size-btn.active{ background:var(--ink); color:var(--ivory); border-color:var(--ink); }
+
+.size-btn:hover{
+  border-color:var(--brass);
+  color:var(--brass);
+}
+
+.size-btn.active{
+  background:var(--ink);
+  color:var(--ivory);
+  border-color:var(--ink);
+}
+
+.size-btn:focus-visible{
+  outline:2px solid var(--brass);
+  outline-offset:2px;
+}
 
 .sort-select{
-  padding:8px 12px; border:1px solid var(--line); background:var(--white); color:var(--ink);
-  font-size:12px; font-weight:600; border-radius:4px; outline:none; cursor:pointer; font-family:inherit;
+  min-height:38px;
+  padding:8px 32px 8px 14px;
+  border:1px solid var(--line);
+  background:var(--white);
+  color:var(--ink);
+  font-size:13px;
+  font-weight:600;
+  border-radius:4px;
+  outline:none;
+  cursor:pointer;
+  font-family:inherit;
+  appearance:none;
+  -webkit-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23161412' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 12px center;
+  transition:all .2s;
 }
 
-.results-bar{ padding:0 22px 10px; font-size:12px; color:#777; display:flex; justify-content:space-between; }
-.clear-link{ color:var(--brass); font-weight:600; cursor:pointer; text-decoration:underline; }
+.sort-select:focus-visible{
+  border-color:var(--ink);
+  box-shadow:0 0 0 2px rgba(22,20,18,.1);
+}
+
+.results-bar{
+  padding:0 22px 10px;
+  font-size:12px;
+  color:#777;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.clear-pill-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  padding:6px 14px;
+  background:var(--white);
+  border:1px solid var(--oxblood);
+  color:var(--oxblood);
+  font-size:11px;
+  font-weight:700;
+  border-radius:20px;
+  cursor:pointer;
+  transition:all .2s;
+  font-family:'Inter',sans-serif;
+  letter-spacing:.3px;
+}
+
+.clear-pill-btn:hover{
+  background:var(--oxblood);
+  color:var(--white);
+}
+
+.clear-pill-btn:focus-visible{
+  outline:2px solid var(--oxblood);
+  outline-offset:2px;
+}
 
 /* ---------- STATES & SKELETON ---------- */
 .state-box{
@@ -414,20 +597,22 @@ a{ color:inherit; }
 <!-- FILTER & SEARCH TOOLBAR -->
 <div class="filter-toolbar">
   <div class="search-wrap">
-    <input type="text" id="search" placeholder="Search polo t-shirts by name, brand, SKU...">
+    <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <input type="text" id="search" placeholder="Search polo t-shirts by name, brand, SKU..." aria-label="Search polo t-shirts by name, brand, SKU, barcode, or tags">
+    <button type="button" id="searchClearBtn" class="search-clear-btn" aria-label="Clear search text">✕</button>
   </div>
 
   <div class="controls-row">
     <div class="size-filter-row">
       <span class="size-label">Size:</span>
-      <button class="size-btn" data-size="S" onclick="toggleSize(this, 'S')">S</button>
-      <button class="size-btn" data-size="M" onclick="toggleSize(this, 'M')">M</button>
-      <button class="size-btn" data-size="L" onclick="toggleSize(this, 'L')">L</button>
-      <button class="size-btn" data-size="XL" onclick="toggleSize(this, 'XL')">XL</button>
-      <button class="size-btn" data-size="XXL" onclick="toggleSize(this, 'XXL')">XXL</button>
+      <button type="button" class="size-btn" data-size="S" aria-pressed="false" onclick="toggleSize(this, 'S')">S</button>
+      <button type="button" class="size-btn" data-size="M" aria-pressed="false" onclick="toggleSize(this, 'M')">M</button>
+      <button type="button" class="size-btn" data-size="L" aria-pressed="false" onclick="toggleSize(this, 'L')">L</button>
+      <button type="button" class="size-btn" data-size="XL" aria-pressed="false" onclick="toggleSize(this, 'XL')">XL</button>
+      <button type="button" class="size-btn" data-size="XXL" aria-pressed="false" onclick="toggleSize(this, 'XXL')">XXL</button>
     </div>
 
-    <select id="sortSelect" class="sort-select" onchange="applyFiltersAndRender(true)">
+    <select id="sortSelect" class="sort-select" aria-label="Sort polo t-shirts collection" onchange="applyFiltersAndRender(true)">
       <option value="newest">Sort: Newest First</option>
       <option value="price-low">Price: Low to High</option>
       <option value="price-high">Price: High to Low</option>
@@ -438,7 +623,7 @@ a{ color:inherit; }
 
 <div class="results-bar">
   <span id="resultsText">Loading polo t-shirts...</span>
-  <span class="clear-link" id="clearBtn" onclick="clearFilters()" style="display:none;">Clear Filters</span>
+  <button type="button" class="clear-pill-btn" id="clearBtn" aria-label="Clear active search and size filters" onclick="clearFilters()" style="display:none;">Clear Filters ✕</button>
 </div>
 
 <div id="products"></div>
@@ -562,7 +747,10 @@ async function loadProducts(){
 
 window.toggleSize = function(btn, size) {
     btn.classList.toggle("active");
-    if (btn.classList.contains("active")) {
+    const isActive = btn.classList.contains("active");
+    btn.setAttribute("aria-pressed", isActive ? "true" : "false");
+
+    if (isActive) {
         selectedSizes.push(size);
     } else {
         selectedSizes = selectedSizes.filter(s => s !== size);
@@ -572,9 +760,15 @@ window.toggleSize = function(btn, size) {
 
 window.clearFilters = function() {
     searchInput.value = "";
+    const searchClearBtn = document.getElementById("searchClearBtn");
+    if (searchClearBtn) searchClearBtn.style.display = "none";
+
     selectedSizes = [];
     sortSelect.value = "newest";
-    document.querySelectorAll(".size-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".size-btn").forEach(b => {
+        b.classList.remove("active");
+        b.setAttribute("aria-pressed", "false");
+    });
     applyFiltersAndRender(true);
 };
 
@@ -757,8 +951,22 @@ function applyFiltersAndRender(resetPage = true){
     productsDiv.innerHTML = `<div class="grid">${cardsHtml}</div>${paginationHtml}`;
 }
 
+// Search Clear Button Handler
+const searchClearBtn = document.getElementById("searchClearBtn");
+if (searchClearBtn) {
+    searchClearBtn.addEventListener("click", () => {
+        searchInput.value = "";
+        searchClearBtn.style.display = "none";
+        searchInput.focus();
+        applyFiltersAndRender(true);
+    });
+}
+
 // 300ms Debounce
 searchInput.addEventListener("input", () => {
+    if (searchClearBtn) {
+        searchClearBtn.style.display = searchInput.value.trim().length > 0 ? "flex" : "none";
+    }
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
         applyFiltersAndRender(true);
