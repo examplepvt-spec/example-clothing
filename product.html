@@ -130,17 +130,54 @@ a{
   justify-content:center;
 }
 
+/* ---------- PRODUCT WRAPPER & RESPONSIVE LAYOUT ---------- */
+
+#productWrap{
+  width:100%;
+  max-width:1180px;
+  margin:0 auto;
+}
+
+@media(min-width:900px){
+  #productWrap{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:48px;
+    padding:40px 32px;
+    align-items:start;
+  }
+
+  .gallery-area{
+    position:sticky;
+    top:90px;
+  }
+
+  .details{
+    padding:0;
+  }
+}
+
+@media(max-width:899px){
+  #productWrap{
+    display:block;
+  }
+  .details{
+    padding:24px 20px 0;
+  }
+}
+
 /* ---------- SLIDER ---------- */
 
 .slider{
   position:relative;
   background:var(--ivory-dim);
   overflow:hidden;
+  border-radius:8px;
 }
 
 .slider img{
   width:100%;
-  height:420px;
+  height:440px;
   object-fit:contain;
   background:var(--ivory-dim);
   display:block;
@@ -159,6 +196,16 @@ a{
   font-size:22px;
   cursor:pointer;
   color:var(--ink);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:all .2s;
+  z-index:2;
+}
+
+.slide-btn:hover{
+  background:var(--ink);
+  color:var(--ivory);
 }
 
 #prev{ left:14px; }
@@ -175,13 +222,48 @@ a{
   border-radius:20px;
   font-size:12px;
   font-weight:600;
+  z-index:2;
+}
+
+/* ---------- THUMBNAILS ---------- */
+
+.thumb-strip{
+  display:flex;
+  gap:10px;
+  margin-top:14px;
+  overflow-x:auto;
+  padding:2px 0 6px;
+  -webkit-overflow-scrolling:touch;
+}
+
+.thumb-btn{
+  width:64px;
+  height:64px;
+  border-radius:6px;
+  border:1px solid var(--line);
+  background:var(--ivory-dim);
+  padding:0;
+  cursor:pointer;
+  overflow:hidden;
+  flex-shrink:0;
+  transition:all .2s;
+  outline:none;
+}
+
+.thumb-btn img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.thumb-btn:hover,
+.thumb-btn.active{
+  border-color:var(--ink);
+  box-shadow:0 0 0 2px var(--ink);
 }
 
 /* ---------- DETAILS ---------- */
-
-.details{
-  padding:24px 20px 0;
-}
 
 .eyebrow{
   font-size:11px;
@@ -447,11 +529,14 @@ h3.section-label{
 
 <div id="productWrap">
 
-<div class="slider">
-  <img id="productImage" src="" alt="Product image">
-  <button id="prev" class="slide-btn" aria-label="Previous image">‹</button>
-  <button id="next" class="slide-btn" aria-label="Next image">›</button>
-  <div class="counter"><span id="current">1</span> / <span id="total">1</span></div>
+<div class="gallery-area">
+  <div class="slider" id="slider">
+    <img id="productImage" src="" alt="Product image">
+    <button id="prev" class="slide-btn" aria-label="Previous image">‹</button>
+    <button id="next" class="slide-btn" aria-label="Next image">›</button>
+    <div class="counter" id="counter"><span id="current">1</span> / <span id="total">1</span></div>
+  </div>
+  <div class="thumb-strip" id="thumbStrip" style="display:none;"></div>
 </div>
 
 <div class="details">
@@ -585,6 +670,31 @@ if(!id){
 
       let currentImage = 0;
       const imageElement = document.getElementById("productImage");
+      const prevBtn = document.getElementById("prev");
+      const nextBtn = document.getElementById("next");
+      const counterEl = document.getElementById("counter");
+      const thumbStrip = document.getElementById("thumbStrip");
+      const sliderEl = document.getElementById("slider");
+
+      function updateGallery(index) {
+        if (images.length === 0) return;
+        currentImage = (index + images.length) % images.length;
+        imageElement.src = images[currentImage];
+        document.getElementById("current").innerText = currentImage + 1;
+
+        if (thumbStrip) {
+          const thumbs = thumbStrip.querySelectorAll(".thumb-btn");
+          thumbs.forEach((t, i) => {
+            if (i === currentImage) {
+              t.classList.add("active");
+              t.setAttribute("aria-current", "true");
+            } else {
+              t.classList.remove("active");
+              t.removeAttribute("aria-current");
+            }
+          });
+        }
+      }
 
       if(images.length > 0){
         imageElement.src = images[0];
@@ -593,19 +703,60 @@ if(!id){
 
       document.getElementById("total").innerText = images.length || 1;
 
-      document.getElementById("next").onclick = () => {
-        if(images.length === 0) return;
-        currentImage = (currentImage + 1) % images.length;
-        imageElement.src = images[currentImage];
-        document.getElementById("current").innerText = currentImage + 1;
-      };
+      if (images.length <= 1) {
+        if (prevBtn) prevBtn.style.display = "none";
+        if (nextBtn) nextBtn.style.display = "none";
+        if (counterEl) counterEl.style.display = "none";
+        if (thumbStrip) thumbStrip.style.display = "none";
+      } else {
+        if (prevBtn) prevBtn.style.display = "flex";
+        if (nextBtn) nextBtn.style.display = "flex";
+        if (counterEl) counterEl.style.display = "block";
+        if (thumbStrip) {
+          thumbStrip.style.display = "flex";
+          thumbStrip.innerHTML = images.map((src, i) => `
+            <button type="button" class="thumb-btn ${i === 0 ? 'active' : ''}" data-index="${i}" aria-label="View image ${i + 1} of ${images.length}" ${i === 0 ? 'aria-current="true"' : ''}>
+              <img src="${src}" alt="Thumbnail ${i + 1}" />
+            </button>
+          `).join("");
 
-      document.getElementById("prev").onclick = () => {
-        if(images.length === 0) return;
-        currentImage = (currentImage - 1 + images.length) % images.length;
-        imageElement.src = images[currentImage];
-        document.getElementById("current").innerText = currentImage + 1;
-      };
+          thumbStrip.querySelectorAll(".thumb-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+              const idx = parseInt(btn.getAttribute("data-index"), 10);
+              updateGallery(idx);
+            });
+          });
+        }
+
+        if (prevBtn) prevBtn.onclick = () => updateGallery(currentImage - 1);
+        if (nextBtn) nextBtn.onclick = () => updateGallery(currentImage + 1);
+
+        // Touch Swipe Support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        if (sliderEl) {
+          sliderEl.addEventListener("touchstart", (e) => {
+            if (e.touches && e.touches.length > 0) {
+              touchStartX = e.touches[0].clientX;
+            }
+          }, { passive: true });
+
+          sliderEl.addEventListener("touchend", (e) => {
+            if (e.changedTouches && e.changedTouches.length > 0) {
+              touchEndX = e.changedTouches[0].clientX;
+              const diff = touchStartX - touchEndX;
+              if (Math.abs(diff) > 40) {
+                if (diff > 0) {
+                  updateGallery(currentImage + 1);
+                } else {
+                  updateGallery(currentImage - 1);
+                }
+              }
+            }
+          }, { passive: true });
+        }
+      }
 
       // ---- Text content ----
       document.getElementById("name").textContent = product.name || "";
