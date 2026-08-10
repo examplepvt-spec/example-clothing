@@ -81,35 +81,324 @@ a{ color:inherit; }
 .eyebrow-dark{ font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--brass); font-weight:700; }
 .page-head h1{ font-size:28px; margin-top:6px; }
 
-.filter-toolbar{ padding:12px 22px 10px; display:flex; flex-direction:column; gap:12px; }
+.filter-toolbar{
+  padding:12px 22px 10px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+@media(min-width:1024px){
+  .filter-toolbar{
+    flex-direction:row;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+  }
+}
+
+.search-wrap{
+  position:relative;
+  width:100%;
+}
+
+@media(min-width:1024px){
+  .search-wrap{
+    max-width:420px;
+  }
+}
+
+.search-icon{
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  width:18px;
+  height:18px;
+  stroke:#8a8578;
+  fill:none;
+  stroke-width:2;
+  pointer-events:none;
+}
 
 .search-wrap input{
-  width:100%; padding:13px 16px; border:1px solid var(--line); border-radius:6px;
-  font-size:14px; font-family:'Inter',sans-serif; background:var(--white); color:var(--ink); outline:none;
+  width:100%;
+  padding:12px 38px 12px 42px;
+  border:1px solid var(--line);
+  border-radius:6px;
+  font-size:14px;
+  font-family:'Inter',sans-serif;
+  background:var(--white);
+  color:var(--ink);
+  outline:none;
+  transition:all .2s;
 }
-.search-wrap input:focus{ border-color:var(--brass); }
 
-.controls-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+.search-wrap input:focus{
+  border-color:var(--ink);
+  box-shadow:0 0 0 2px rgba(22,20,18,.1);
+}
 
-.size-filter-row{ display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
-.size-label{ font-size:11px; font-weight:700; text-transform:uppercase; color:var(--brass); margin-right:4px; }
+.search-clear-btn{
+  position:absolute;
+  right:10px;
+  top:50%;
+  transform:translateY(-50%);
+  width:24px;
+  height:24px;
+  border:none;
+  background:var(--ivory-dim);
+  color:var(--ink);
+  border-radius:50%;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  font-size:12px;
+  line-height:1;
+  padding:0;
+  transition:all .2s;
+}
+
+.search-clear-btn:hover{
+  background:var(--ink);
+  color:var(--white);
+}
+
+.search-clear-btn:focus-visible{
+  outline:2px solid var(--brass);
+  outline-offset:2px;
+}
+
+.controls-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:12px;
+}
+
+@media(min-width:1024px){
+  .controls-row{
+    flex:1;
+    justify-content:flex-end;
+    gap:16px;
+  }
+}
+
+.size-filter-row{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+}
+
+.size-label{
+  font-size:11px;
+  font-weight:700;
+  text-transform:uppercase;
+  color:var(--brass);
+  margin-right:4px;
+}
 
 .size-btn{
-  padding:6px 12px; border:1px solid var(--line); background:var(--white); color:var(--ink);
-  font-size:12px; font-weight:600; border-radius:4px; cursor:pointer; transition:all .2s;
+  min-height:38px;
+  padding:8px 14px;
+  border:1px solid var(--line);
+  background:var(--white);
+  color:var(--ink);
+  font-size:13px;
+  font-weight:600;
+  border-radius:4px;
+  cursor:pointer;
+  transition:all .2s;
 }
-.size-btn.active{ background:var(--ink); color:var(--ivory); border-color:var(--ink); }
+
+.size-btn:hover{
+  border-color:var(--brass);
+  color:var(--brass);
+}
+
+.size-btn.active{
+  background:var(--ink);
+  color:var(--ivory);
+  border-color:var(--ink);
+}
+
+.size-btn:focus-visible{
+  outline:2px solid var(--brass);
+  outline-offset:2px;
+}
 
 .sort-select{
-  padding:8px 12px; border:1px solid var(--line); background:var(--white); color:var(--ink);
-  font-size:12px; font-weight:600; border-radius:4px; outline:none; cursor:pointer; font-family:inherit;
+  min-height:38px;
+  padding:8px 32px 8px 14px;
+  border:1px solid var(--line);
+  background:var(--white);
+  color:var(--ink);
+  font-size:13px;
+  font-weight:600;
+  border-radius:4px;
+  outline:none;
+  cursor:pointer;
+  font-family:inherit;
+  appearance:none;
+  -webkit-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23161412' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 12px center;
+  transition:all .2s;
 }
 
-.results-bar{ padding:0 22px 10px; font-size:12px; color:#777; display:flex; justify-content:space-between; }
-.clear-link{ color:var(--brass); font-weight:600; cursor:pointer; text-decoration:underline; }
+.sort-select:focus-visible{
+  border-color:var(--ink);
+  box-shadow:0 0 0 2px rgba(22,20,18,.1);
+}
 
-/* ---------- STATES ---------- */
-.state-msg{ text-align:center; padding:60px 20px; color:#8a8578; font-size:15px; }
+.results-bar{
+  padding:0 22px 10px;
+  font-size:12px;
+  color:#777;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.clear-pill-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  padding:6px 14px;
+  background:var(--white);
+  border:1px solid var(--oxblood);
+  color:var(--oxblood);
+  font-size:11px;
+  font-weight:700;
+  border-radius:20px;
+  cursor:pointer;
+  transition:all .2s;
+  font-family:'Inter',sans-serif;
+  letter-spacing:.3px;
+}
+
+.clear-pill-btn:hover{
+  background:var(--oxblood);
+  color:var(--white);
+}
+
+.clear-pill-btn:focus-visible{
+  outline:2px solid var(--oxblood);
+  outline-offset:2px;
+}
+
+/* ---------- STATES & SKELETON ---------- */
+.state-box{
+  text-align:center;
+  padding:50px 20px;
+  max-width:440px;
+  margin:0 auto;
+  color:var(--ink);
+}
+
+.state-icon{
+  width:48px;
+  height:48px;
+  stroke:var(--brass);
+  fill:none;
+  stroke-width:1.6;
+  margin-bottom:14px;
+}
+
+.state-title{
+  font-family:'Libre Caslon Display',serif;
+  font-size:22px;
+  font-weight:400;
+  margin-bottom:8px;
+  color:var(--ink);
+}
+
+.state-desc{
+  font-size:13px;
+  color:#777;
+  line-height:1.5;
+  margin-bottom:20px;
+}
+
+.state-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px 20px;
+  background:var(--ink);
+  color:var(--ivory);
+  border:none;
+  border-radius:4px;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  transition:all .2s;
+  font-family:'Inter',sans-serif;
+}
+
+.state-btn:hover{
+  background:var(--brass);
+  color:var(--white);
+}
+
+/* SKELETON GRID */
+.skeleton-card{
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:6px;
+  overflow:hidden;
+}
+
+.skeleton-img{
+  width:100%;
+  height:220px;
+  background:var(--ivory-dim);
+  position:relative;
+  overflow:hidden;
+}
+
+.skeleton-img::after,
+.skeleton-text::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.4), transparent);
+  animation:skeletonPulse 1.5s infinite;
+}
+
+@keyframes skeletonPulse{
+  0%{ transform:translateX(-100%); }
+  100%{ transform:translateX(100%); }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .skeleton-img::after,
+  .skeleton-text::after{
+    animation:none;
+  }
+}
+
+.skeleton-info{
+  padding:14px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.skeleton-text{
+  background:var(--ivory-dim);
+  border-radius:4px;
+  height:14px;
+  position:relative;
+  overflow:hidden;
+}
+
+.skeleton-text.title{ width:80%; height:16px; }
+.skeleton-text.price{ width:40%; height:14px; }
 
 /* ---------- GRID ---------- */
 .grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; padding:10px 22px 40px; }
@@ -122,8 +411,90 @@ a{ color:inherit; }
 }
 .card:hover{ transform:translateY(-3px); }
 
-.card img{ width:100%; height:220px; object-fit:contain; background:var(--ivory-dim); display:block; }
-.card .img-fallback{ width:100%; height:220px; display:flex; align-items:center; justify-content:center; background:var(--ivory-dim); color:var(--brass); font-size:13px; }
+.card-img-wrap{
+  position:relative;
+  width:100%;
+  height:220px;
+  background:var(--ivory-dim);
+  overflow:hidden;
+}
+
+.card-img-wrap img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+}
+
+.card .img-fallback{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--ivory-dim);
+  color:var(--brass);
+  font-size:13px;
+}
+
+.card-discount-badge{
+  position:absolute;
+  top:8px;
+  left:8px;
+  background:var(--oxblood);
+  color:var(--white);
+  font-size:10px;
+  font-weight:700;
+  padding:3px 7px;
+  border-radius:4px;
+  letter-spacing:.5px;
+  box-shadow:0 2px 6px rgba(0,0,0,.15);
+  z-index:2;
+}
+
+.card-wishlist-btn{
+  position:absolute;
+  top:8px;
+  right:8px;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:rgba(255,255,255,.9);
+  backdrop-filter:blur(4px);
+  border:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:all .2s;
+  z-index:3;
+  padding:0;
+  outline:none;
+}
+
+.card-wishlist-btn:hover{
+  background:var(--white);
+  transform:scale(1.1);
+}
+
+.card-wishlist-btn svg{
+  width:16px;
+  height:16px;
+  stroke:var(--ink);
+  fill:none;
+  stroke-width:2;
+  transition:all .2s;
+}
+
+.card-wishlist-btn.active{
+  background:var(--white);
+  border-color:var(--oxblood);
+}
+
+.card-wishlist-btn.active svg{
+  stroke:var(--oxblood);
+  fill:var(--oxblood);
+}
 
 .info{ padding:14px; }
 .name{ font-size:14px; font-weight:600; margin-bottom:8px; line-height:1.35; min-height:38px; }
@@ -187,20 +558,22 @@ a{ color:inherit; }
 <!-- FILTER & SEARCH TOOLBAR -->
 <div class="filter-toolbar">
   <div class="search-wrap">
-    <input type="text" id="search" placeholder="Search jackets by name, brand, SKU...">
+    <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <input type="text" id="search" placeholder="Search jackets by name, brand, SKU..." aria-label="Search jackets by name, brand, SKU, barcode, or tags">
+    <button type="button" id="searchClearBtn" class="search-clear-btn" aria-label="Clear search text">✕</button>
   </div>
 
   <div class="controls-row">
     <div class="size-filter-row">
       <span class="size-label">Size:</span>
-      <button class="size-btn" data-size="S" onclick="toggleSize(this, 'S')">S</button>
-      <button class="size-btn" data-size="M" onclick="toggleSize(this, 'M')">M</button>
-      <button class="size-btn" data-size="L" onclick="toggleSize(this, 'L')">L</button>
-      <button class="size-btn" data-size="XL" onclick="toggleSize(this, 'XL')">XL</button>
-      <button class="size-btn" data-size="XXL" onclick="toggleSize(this, 'XXL')">XXL</button>
+      <button type="button" class="size-btn" data-size="S" aria-pressed="false" onclick="toggleSize(this, 'S')">S</button>
+      <button type="button" class="size-btn" data-size="M" aria-pressed="false" onclick="toggleSize(this, 'M')">M</button>
+      <button type="button" class="size-btn" data-size="L" aria-pressed="false" onclick="toggleSize(this, 'L')">L</button>
+      <button type="button" class="size-btn" data-size="XL" aria-pressed="false" onclick="toggleSize(this, 'XL')">XL</button>
+      <button type="button" class="size-btn" data-size="XXL" aria-pressed="false" onclick="toggleSize(this, 'XXL')">XXL</button>
     </div>
 
-    <select id="sortSelect" class="sort-select" onchange="applyFiltersAndRender()">
+    <select id="sortSelect" class="sort-select" aria-label="Sort jackets collection" onchange="applyFiltersAndRender()">
       <option value="newest">Sort: Newest First</option>
       <option value="price-low">Price: Low to High</option>
       <option value="price-high">Price: High to Low</option>
@@ -211,7 +584,7 @@ a{ color:inherit; }
 
 <div class="results-bar">
   <span id="resultsText">Loading jackets...</span>
-  <span class="clear-link" id="clearBtn" onclick="clearFilters()" style="display:none;">Clear Filters</span>
+  <button type="button" class="clear-pill-btn" id="clearBtn" aria-label="Clear active search and size filters" onclick="clearFilters()" style="display:none;">Clear Filters ✕</button>
 </div>
 
 <div id="products"></div>
@@ -244,9 +617,101 @@ function escapeHtml(str){
     return div.innerHTML;
 }
 
-function showState(message){
-    productsDiv.innerHTML = `<div class="state-msg">${message}</div>`;
+function renderSkeletonLoading() {
+    resultsText.innerHTML = `Loading jackets...`;
+    productsDiv.innerHTML = `
+        <div class="grid" aria-hidden="true">
+            <div class="skeleton-card">
+                <div class="skeleton-img"></div>
+                <div class="skeleton-info">
+                    <div class="skeleton-text title"></div>
+                    <div class="skeleton-text price"></div>
+                </div>
+            </div>
+            <div class="skeleton-card">
+                <div class="skeleton-img"></div>
+                <div class="skeleton-info">
+                    <div class="skeleton-text title"></div>
+                    <div class="skeleton-text price"></div>
+                </div>
+            </div>
+            <div class="skeleton-card">
+                <div class="skeleton-img"></div>
+                <div class="skeleton-info">
+                    <div class="skeleton-text title"></div>
+                    <div class="skeleton-text price"></div>
+                </div>
+            </div>
+            <div class="skeleton-card">
+                <div class="skeleton-img"></div>
+                <div class="skeleton-info">
+                    <div class="skeleton-text title"></div>
+                    <div class="skeleton-text price"></div>
+                </div>
+            </div>
+        </div>
+    `;
 }
+
+function showEmptyState() {
+    resultsText.innerHTML = `Showing <strong>0</strong> jackets`;
+    productsDiv.innerHTML = `
+        <div class="state-box">
+            <svg class="state-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M8 11h6"/></svg>
+            <div class="state-title">No products found</div>
+            <div class="state-desc">Try changing your search or filters.</div>
+            <button type="button" class="state-btn" aria-label="Reset all active filters" onclick="clearFilters()">Reset Filters</button>
+        </div>
+    `;
+}
+
+function showErrorState(message) {
+    resultsText.innerHTML = `Unable to load jackets`;
+    productsDiv.innerHTML = `
+        <div class="state-box">
+            <svg class="state-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+            <div class="state-title">Could not load collection</div>
+            <div class="state-desc">${escapeHtml(message || "Please check your connection and try again.")}</div>
+            <button type="button" class="state-btn" aria-label="Retry loading collection" onclick="loadProducts()">Try Again</button>
+        </div>
+    `;
+}
+
+function getOptimizedImageUrl(url) {
+    if (!url) return "";
+    if (typeof url === "string" && url.includes("/upload/")) {
+        return url.replace("/upload/", "/upload/f_auto,q_auto,w_600/");
+    }
+    return url;
+}
+
+window.handleCardWishlist = function(event, productId) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+    const existingIndex = wishlist.findIndex(item => item.id === productId);
+
+    if (existingIndex !== -1) {
+        wishlist.splice(existingIndex, 1);
+        localStorage.setItem("wishlist", JSON.stringify(wishlist));
+    } else {
+        const p = allProducts.find(item => item.id === productId);
+        if (p) {
+            const price = Number(p.price) || 0;
+            const offerPrice = p.offerPrice ? Number(p.offerPrice) : null;
+            wishlist.push({
+                id: p.id,
+                name: p.name,
+                price: offerPrice || price,
+                image: p.image
+            });
+            localStorage.setItem("wishlist", JSON.stringify(wishlist));
+        }
+    }
+
+    applyFiltersAndRender();
+};
 
 // Check stock for requested size
 function getStockForSize(product, size) {
@@ -258,7 +723,7 @@ function getStockForSize(product, size) {
 }
 
 async function loadProducts(){
-    showState("Loading jackets collection...");
+    renderSkeletonLoading();
 
     try{
         const querySnapshot = await getDocs(collection(db, "products"));
@@ -271,13 +736,16 @@ async function loadProducts(){
         applyFiltersAndRender();
     } catch(err){
         console.error("Error loading jackets:", err);
-        showState("Could not load products. Please check your connection and try again.");
+        showErrorState("Please check your connection and try again.");
     }
 }
 
 window.toggleSize = function(btn, size) {
     btn.classList.toggle("active");
-    if (btn.classList.contains("active")) {
+    const isActive = btn.classList.contains("active");
+    btn.setAttribute("aria-pressed", isActive ? "true" : "false");
+
+    if (isActive) {
         selectedSizes.push(size);
     } else {
         selectedSizes = selectedSizes.filter(s => s !== size);
@@ -287,9 +755,15 @@ window.toggleSize = function(btn, size) {
 
 window.clearFilters = function() {
     searchInput.value = "";
+    const searchClearBtn = document.getElementById("searchClearBtn");
+    if (searchClearBtn) searchClearBtn.style.display = "none";
+
     selectedSizes = [];
     sortSelect.value = "newest";
-    document.querySelectorAll(".size-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".size-btn").forEach(b => {
+        b.classList.remove("active");
+        b.setAttribute("aria-pressed", "false");
+    });
     applyFiltersAndRender();
 };
 
@@ -333,7 +807,7 @@ function applyFiltersAndRender(){
     resultsText.innerHTML = `Showing <strong>${filtered.length}</strong> jackets`;
 
     if (filtered.length === 0) {
-        showState("No jackets match your active search or size filter.");
+        showEmptyState();
         return;
     }
 
@@ -350,18 +824,41 @@ function applyFiltersAndRender(){
     });
 
     // Render Cards
+    const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+
     const html = filtered.map((product) => {
         const name = escapeHtml(product.name);
-        const image = escapeHtml(product.image);
-        const hasOffer = !!product.offerPrice;
+        const rawImage = product.image || "";
+        const optImage = escapeHtml(getOptimizedImageUrl(rawImage));
+
+        const price = Number(product.price) || 0;
+        const offerPrice = product.offerPrice ? Number(product.offerPrice) : null;
+        const hasOffer = offerPrice && offerPrice < price;
+
+        let discountBadgeHtml = "";
+        if (hasOffer) {
+            const discountPct = Math.round(((price - offerPrice) / price) * 100);
+            if (discountPct > 0) {
+                discountBadgeHtml = `<span class="card-discount-badge">${discountPct}% OFF</span>`;
+            }
+        }
 
         const priceHtml = hasOffer
-            ? `<span class="old-price">₹${escapeHtml(String(product.price))}</span><span class="price">₹${escapeHtml(String(product.offerPrice))}</span>`
-            : `<span class="price">₹${escapeHtml(String(product.price))}</span>`;
+            ? `<span class="old-price">₹${escapeHtml(String(price))}</span><span class="price">₹${escapeHtml(String(offerPrice))}</span>`
+            : `<span class="price">₹${escapeHtml(String(price))}</span>`;
+
+        const isWishlisted = wishlist.some(item => item.id === product.id);
 
         return `
             <a href="product.html?id=${encodeURIComponent(product.id)}" class="card">
-                <img src="${image}" alt="${name}" loading="lazy" onerror="this.outerHTML='&lt;div class=&quot;img-fallback&quot;&gt;No image&lt;/div&gt;'">
+                <div class="card-img-wrap">
+                    <img src="${optImage}" alt="${name}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="img-fallback" style="display:none;">No image</div>
+                    ${discountBadgeHtml}
+                    <button type="button" class="card-wishlist-btn ${isWishlisted ? 'active' : ''}" data-id="${escapeHtml(product.id)}" aria-label="${isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}" onclick="handleCardWishlist(event, '${escapeHtml(product.id)}')">
+                        <svg viewBox="0 0 24 24"><path d="M12 20.2s-7.6-4.5-9.9-9C.6 8 2 4.5 5.4 3.7c2-.5 3.9.3 5 2 .3.4.5.9.6 1.3.1-.4.3-.9.6-1.3 1.1-1.7 3-2.5 5-2 3.4.8 4.8 4.3 3.3 7.5-2.3 4.5-9.9 9-9.9 9Z"/></svg>
+                    </button>
+                </div>
                 <div class="info">
                     <div class="name">${name}</div>
                     <div class="price-row">${priceHtml}</div>
@@ -373,8 +870,22 @@ function applyFiltersAndRender(){
     productsDiv.innerHTML = `<div class="grid">${html}</div>`;
 }
 
+// Search Clear Button Handler
+const searchClearBtn = document.getElementById("searchClearBtn");
+if (searchClearBtn) {
+    searchClearBtn.addEventListener("click", () => {
+        searchInput.value = "";
+        searchClearBtn.style.display = "none";
+        searchInput.focus();
+        applyFiltersAndRender();
+    });
+}
+
 // 300ms Debounce
 searchInput.addEventListener("input", () => {
+    if (searchClearBtn) {
+        searchClearBtn.style.display = searchInput.value.trim().length > 0 ? "flex" : "none";
+    }
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
         applyFiltersAndRender();
